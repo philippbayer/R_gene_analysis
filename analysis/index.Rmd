@@ -10,4 +10,6 @@ editor_options:
 
 Welcome to my research website.
 
-Click on this [link](first-analysis.html) to see my results.
+Plotting of NBS/RLK/RLP plots: [link](first-analysis.html)
+
+EDA of PAV and different classes: [link](eda.html)

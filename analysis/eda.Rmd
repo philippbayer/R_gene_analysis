@@ -1,0 +1,36 @@
+---
+title: "eda"
+author: "Philipp Bayer"
+date: "2020-09-18"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup}
+library(tidyverse)
+library(knitr)
+```
+
+## Introduction
+Here i make some of the tables for the manuscript.
+
+```{r}
+files_to_make_tables_for <- list.files(path = './data', pattern = '*lst')
+files_to_make_tables_for
+```
+
+The following will print warnings because I assume 3 columns, but some files have only 2:
+
+```{r results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+for(i in seq_along(files_to_make_tables_for)) {
+  f <- files_to_make_tables_for[i]
+  fh <- read_tsv(paste('./data/', f, sep=''), col_names = c('Name','Class','Type'))
+  fh <- fh %>% unite(United, Class, Type)
+  # remove NAs in files with 2 columns
+  fh$United <- gsub(pattern = '_NA', replacement = '', fh$United)
+  print(f)
+  print(kable(table(fh$United), 'html'))
+}
+```
+
