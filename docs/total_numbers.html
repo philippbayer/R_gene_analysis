@@ -11,9 +11,9 @@
 
 <meta name="author" content="Philipp Bayer" />
 
-<meta name="date" content="2020-09-17" />
+<meta name="date" content="2020-09-18" />
 
-<title>first-analysis</title>
+<title>total_numbers</title>
 
 <script src="site_libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -381,9 +381,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">first-analysis</h1>
+<h1 class="title toc-ignore">total_numbers</h1>
 <h4 class="author">Philipp Bayer</h4>
-<h4 class="date">2020-09-17</h4>
+<h4 class="date">2020-09-18</h4>
 
 </div>
 
@@ -531,7 +531,7 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <div id="versions" class="tab-pane fade">
 
 <p>
-These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/first-analysis.Rmd</code>) and HTML (<code>docs/first-analysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/total_numbers.Rmd</code>) and HTML (<code>docs/total_numbers.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -572,57 +572,6 @@ Philipp Bayer
 wflow_publish(c(“analysis/eda.Rmd”, “analysis/first-analysis.Rmd”,
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-c24a270
-</td>
-<td>
-Philipp Bayer
-</td>
-<td>
-2020-09-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-6f536bc
-</td>
-<td>
-Philipp Bayer
-</td>
-<td>
-2020-09-18
-</td>
-<td>
-wflow_git_commit(all = T)
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-6f536bc
-</td>
-<td>
-Philipp Bayer
-</td>
-<td>
-2020-09-18
-</td>
-<td>
-wflow_git_commit(all = T)
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -630,6 +579,7 @@ wflow_git_commit(all = T)
 </div>
 </div>
 </div>
+<p>This is the same analysis as first-analysis, but with total numbers, not percentages genes lost</p>
 <pre class="r"><code>knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 library(tidyverse)
 library(patchwork)
@@ -638,6 +588,7 @@ library(dabestr)
 library(dabestr)
 library(cowplot)
 library(ggsignif)
+library(ggforce)
 
 theme_set(theme_cowplot())</code></pre>
 <div id="introduction" class="section level2">
@@ -654,25 +605,40 @@ pav_table &lt;- read_tsv(&#39;./data/soybean_pan_pav.matrix_gene.txt&#39;)</code
 <h2>NBS part</h2>
 <p>Let’s pull the NBS genes from the table</p>
 <pre class="r"><code>nbs &lt;- read_tsv(&#39;./data/Lee.NBS.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;))
-# have to remove the .t1s 
+nbs</code></pre>
+<pre><code># A tibble: 486 x 2
+   Name                   Class
+   &lt;chr&gt;                  &lt;chr&gt;
+ 1 UWASoyPan00953.t1      CN   
+ 2 GlymaLee.13G222900.1.p CN   
+ 3 GlymaLee.18G227000.1.p CN   
+ 4 GlymaLee.18G080600.1.p CN   
+ 5 GlymaLee.20G036200.1.p CN   
+ 6 UWASoyPan01876.t1      CN   
+ 7 UWASoyPan04211.t1      CN   
+ 8 GlymaLee.19G105400.1.p CN   
+ 9 GlymaLee.18G085100.1.p CN   
+10 GlymaLee.11G142600.1.p CN   
+# ... with 476 more rows</code></pre>
+<pre class="r"><code># have to remove the .t1s 
 nbs$Name &lt;- gsub(&#39;.t1&#39;,&#39;&#39;, nbs$Name)</code></pre>
 <pre class="r"><code>nbs_pav_table &lt;- pav_table %&gt;% filter(Individual %in% nbs$Name)</code></pre>
 <pre class="r"><code>names &lt;- c()
-percs &lt;- c()
+presences &lt;- c()
 
 for (i in seq_along(nbs_pav_table)){
   if ( i == 1) next
   thisind &lt;- colnames(nbs_pav_table)[i]
   pavs &lt;- nbs_pav_table[[i]]
-  perc &lt;- sum(pavs) / length(pavs) * 100
+  presents &lt;- sum(pavs)
   names &lt;- c(names, thisind)
-  percs &lt;- c(percs, perc)
+  presences &lt;- c(presences, presents)
 }
-nbs_res_tibb &lt;- new_tibble(list(names = names, percs = percs))</code></pre>
+nbs_res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
 <p>OK what do these presence percentages look like?</p>
-<pre class="r"><code>ggplot(data=nbs_res_tibb, aes(x=percs)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>On average, 91.7701034% of NBS genes are present in each individual.</p>
+<pre class="r"><code>ggplot(data=nbs_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>On average, 446.0027027 of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
 <pre class="r"><code>nbs_groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
 nbs_joined_groups &lt;- left_join(nbs_res_tibb, nbs_groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
@@ -681,77 +647,82 @@ nbs_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, 
 nbs_joined_groups$`Group in violin table` &lt;- gsub(&#39;Old_cultivar&#39;, &#39;Old cultivar&#39;, nbs_joined_groups$`Group in violin table`)
 
 nbs_joined_groups$`Group in violin table` &lt;- factor(nbs_joined_groups$`Group in violin table`, levels=c(NA, &#39;Wild-type&#39;, &#39;Landrace&#39;, &#39;Old cultivar&#39;, &#39;Modern cultivar&#39;))</code></pre>
-<pre class="r"><code>library(ggforce)
-nbs_vio &lt;- nbs_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
-  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+<pre class="r"><code>nbs_vio &lt;- nbs_joined_groups %&gt;% filter(!is.na(`Group in violin table`)) %&gt;% 
+  ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_violin(draw_quantiles = c(0.5)) +
   geom_sina(alpha=0.5) +
   geom_smooth(aes(group=1), method=&#39;glm&#39;) +
-  scale_fill_manual(values=col_list)+
-  guides(fill = FALSE) +
-  ylim(c(87, 100))
+  scale_fill_manual(values=col_list) +
+  guides(fill = FALSE)
 
 nbs_vio</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>nbs_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
-  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_smooth(aes(group=1), method=&#39;lm&#39;, se = FALSE) +
   geom_jitter() +
   scale_fill_manual(values=col_list)+
-  guides(fill = FALSE)# +</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>  #ylim(c(0, 100))</code></pre>
+  guides(fill = FALSE)</code></pre>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>nbs_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
-  summarise(min_perc = min(percs),
-            max_perc = max(percs),
-            mean_perc = mean(percs),
-            median_perc = median(percs),
-            std_perc = sd(percs)) %&gt;% 
+  summarise(min_present = min(presences),
+            max_present = max(presences),
+            mean_present = mean(presences),
+            median_present = median(presences),
+            std_present = sd(presences)) %&gt;% 
   knitr::kable()</code></pre>
 <table>
+<colgroup>
+<col width="25%" />
+<col width="13%" />
+<col width="13%" />
+<col width="15%" />
+<col width="17%" />
+<col width="13%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Group in violin table</th>
-<th align="right">min_perc</th>
-<th align="right">max_perc</th>
-<th align="right">mean_perc</th>
-<th align="right">median_perc</th>
-<th align="right">std_perc</th>
+<th align="right">min_present</th>
+<th align="right">max_present</th>
+<th align="right">mean_present</th>
+<th align="right">median_present</th>
+<th align="right">std_present</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Wild-type</td>
-<td align="right">89.50617</td>
-<td align="right">97.32510</td>
-<td align="right">93.19939</td>
-<td align="right">93.20988</td>
-<td align="right">1.4754746</td>
+<td align="right">435</td>
+<td align="right">473</td>
+<td align="right">452.9490</td>
+<td align="right">453</td>
+<td align="right">7.170806</td>
 </tr>
 <tr class="even">
 <td align="left">Landrace</td>
-<td align="right">88.27160</td>
-<td align="right">95.67901</td>
-<td align="right">91.54130</td>
-<td align="right">91.56379</td>
-<td align="right">1.0312082</td>
+<td align="right">429</td>
+<td align="right">465</td>
+<td align="right">444.8907</td>
+<td align="right">445</td>
+<td align="right">5.011672</td>
 </tr>
 <tr class="odd">
 <td align="left">Old cultivar</td>
-<td align="right">89.09465</td>
-<td align="right">93.82716</td>
-<td align="right">91.53695</td>
-<td align="right">91.56379</td>
-<td align="right">1.0701423</td>
+<td align="right">433</td>
+<td align="right">456</td>
+<td align="right">444.8696</td>
+<td align="right">445</td>
+<td align="right">5.200892</td>
 </tr>
 <tr class="even">
 <td align="left">Modern cultivar</td>
-<td align="right">88.68313</td>
-<td align="right">93.62140</td>
-<td align="right">91.01125</td>
-<td align="right">90.94650</td>
-<td align="right">0.8329189</td>
+<td align="right">431</td>
+<td align="right">455</td>
+<td align="right">442.3147</td>
+<td align="right">442</td>
+<td align="right">4.047986</td>
 </tr>
 </tbody>
 </table>
@@ -760,96 +731,181 @@ nbs_vio</code></pre>
 <h2>RLK part</h2>
 <p>Let’s do the same plot with RLKs</p>
 <pre class="r"><code>rlk &lt;- read_tsv(&#39;./data/Lee.RLK.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;, &#39;Subtype&#39;))
-
-# have to remove the .t1s 
+rlk</code></pre>
+<pre><code># A tibble: 1,173 x 3
+   Name                   Class Subtype       
+   &lt;chr&gt;                  &lt;chr&gt; &lt;chr&gt;         
+ 1 GlymaLee.01G001800.1.p RLK   lrr           
+ 2 GlymaLee.01G004900.1.p RLK   lrr           
+ 3 GlymaLee.01G007300.1.p RLK   lrr           
+ 4 GlymaLee.01G007400.1.p RLK   lrr           
+ 5 GlymaLee.01G012800.1.p RLK   other_receptor
+ 6 GlymaLee.01G018800.1.p RLK   lrr           
+ 7 GlymaLee.01G021100.1.p RLK   other_receptor
+ 8 GlymaLee.01G025500.1.p RLK   lysm          
+ 9 GlymaLee.01G026500.1.p RLK   other_receptor
+10 GlymaLee.01G027000.1.p RLK   lrr           
+# ... with 1,163 more rows</code></pre>
+<pre class="r"><code># have to remove the .t1s 
 rlk$Name &lt;- gsub(&#39;.t1&#39;,&#39;&#39;, rlk$Name)</code></pre>
-<pre class="r"><code>rlk_pav_table &lt;- pav_table %&gt;% filter(Individual %in% rlk$Name)</code></pre>
+<pre class="r"><code>rlk_pav_table &lt;- pav_table %&gt;% filter(Individual %in% rlk$Name)
+rlk_pav_table</code></pre>
+<pre><code># A tibble: 1,173 x 1,111
+   Individual `AB-01` `AB-02` `BR-01` `BR-02` `BR-03` `BR-04` `BR-05` `BR-06`
+   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 GlymaLee.~       1       1       1       1       1       1       1       1
+ 2 GlymaLee.~       1       1       1       1       1       1       1       1
+ 3 GlymaLee.~       1       1       1       1       1       1       1       1
+ 4 GlymaLee.~       1       1       1       1       1       1       1       1
+ 5 GlymaLee.~       1       1       1       1       1       1       1       1
+ 6 GlymaLee.~       1       1       1       1       1       1       1       1
+ 7 GlymaLee.~       1       1       1       1       1       1       1       1
+ 8 GlymaLee.~       1       1       1       1       1       1       1       1
+ 9 GlymaLee.~       1       1       1       1       1       1       1       1
+10 GlymaLee.~       1       1       1       1       1       1       1       1
+# ... with 1,163 more rows, and 1,102 more variables: `BR-07` &lt;dbl&gt;,
+#   `BR-08` &lt;dbl&gt;, `BR-09` &lt;dbl&gt;, `BR-10` &lt;dbl&gt;, `BR-11` &lt;dbl&gt;, `BR-12` &lt;dbl&gt;,
+#   `BR-13` &lt;dbl&gt;, `BR-14` &lt;dbl&gt;, `BR-15` &lt;dbl&gt;, `BR-16` &lt;dbl&gt;, `BR-17` &lt;dbl&gt;,
+#   `BR-18` &lt;dbl&gt;, `BR-20` &lt;dbl&gt;, `BR-23` &lt;dbl&gt;, `BR-24` &lt;dbl&gt;, `BR-29` &lt;dbl&gt;,
+#   `BR-30` &lt;dbl&gt;, `BR-32` &lt;dbl&gt;, DT2000 &lt;dbl&gt;, ESS &lt;dbl&gt;, For &lt;dbl&gt;,
+#   HN001 &lt;dbl&gt;, HN002 &lt;dbl&gt;, HN003 &lt;dbl&gt;, HN004 &lt;dbl&gt;, HN005 &lt;dbl&gt;,
+#   HN006 &lt;dbl&gt;, HN007 &lt;dbl&gt;, HN008 &lt;dbl&gt;, HN009 &lt;dbl&gt;, HN010 &lt;dbl&gt;,
+#   HN011 &lt;dbl&gt;, HN012 &lt;dbl&gt;, HN013 &lt;dbl&gt;, HN015 &lt;dbl&gt;, HN016B &lt;dbl&gt;,
+#   HN017B &lt;dbl&gt;, HN018 &lt;dbl&gt;, HN019 &lt;dbl&gt;, HN021 &lt;dbl&gt;, HN022 &lt;dbl&gt;,
+#   HN023 &lt;dbl&gt;, HN024 &lt;dbl&gt;, HN025 &lt;dbl&gt;, HN026 &lt;dbl&gt;, HN027 &lt;dbl&gt;,
+#   HN028 &lt;dbl&gt;, HN029 &lt;dbl&gt;, HN030 &lt;dbl&gt;, HN031 &lt;dbl&gt;, HN032 &lt;dbl&gt;,
+#   HN033 &lt;dbl&gt;, HN034 &lt;dbl&gt;, HN035 &lt;dbl&gt;, HN036 &lt;dbl&gt;, HN037 &lt;dbl&gt;,
+#   HN038 &lt;dbl&gt;, HN039 &lt;dbl&gt;, HN040 &lt;dbl&gt;, HN041 &lt;dbl&gt;, HN042 &lt;dbl&gt;,
+#   HN043 &lt;dbl&gt;, HN044 &lt;dbl&gt;, HN045 &lt;dbl&gt;, HN046 &lt;dbl&gt;, HN047 &lt;dbl&gt;,
+#   HN048 &lt;dbl&gt;, HN049 &lt;dbl&gt;, HN050 &lt;dbl&gt;, HN051 &lt;dbl&gt;, HN052 &lt;dbl&gt;,
+#   HN053 &lt;dbl&gt;, HN054 &lt;dbl&gt;, HN055 &lt;dbl&gt;, HN056 &lt;dbl&gt;, HN057 &lt;dbl&gt;,
+#   HN058 &lt;dbl&gt;, HN059 &lt;dbl&gt;, HN060 &lt;dbl&gt;, HN061 &lt;dbl&gt;, HN062 &lt;dbl&gt;,
+#   HN063 &lt;dbl&gt;, HN064 &lt;dbl&gt;, HN065 &lt;dbl&gt;, HN066 &lt;dbl&gt;, HN067 &lt;dbl&gt;,
+#   HN068 &lt;dbl&gt;, HN069 &lt;dbl&gt;, HN070 &lt;dbl&gt;, HN071 &lt;dbl&gt;, HN072 &lt;dbl&gt;,
+#   HN073 &lt;dbl&gt;, HN074 &lt;dbl&gt;, HN075 &lt;dbl&gt;, HN076 &lt;dbl&gt;, HN077 &lt;dbl&gt;,
+#   HN078 &lt;dbl&gt;, HN079 &lt;dbl&gt;, HN080 &lt;dbl&gt;, HN081 &lt;dbl&gt;, ...</code></pre>
 <pre class="r"><code>names &lt;- c()
-percs &lt;- c()
+presences &lt;- c()
 
 for (i in seq_along(rlk_pav_table)){
   if ( i == 1) next
   thisind &lt;- colnames(rlk_pav_table)[i]
   pavs &lt;- rlk_pav_table[[i]]
-  perc &lt;- sum(pavs) / length(pavs) * 100
+  presents &lt;- sum(pavs)
   names &lt;- c(names, thisind)
-  percs &lt;- c(percs, perc)
+  presences &lt;- c(presences, presents)
 }
-rlk_res_tibb &lt;- new_tibble(list(names = names, percs = percs))</code></pre>
+rlk_res_tibb &lt;- new_tibble(list(names = names, presences = presences))
+rlk_res_tibb</code></pre>
+<pre><code># A tibble: 1,110 x 2
+   names presences
+   &lt;chr&gt;     &lt;dbl&gt;
+ 1 AB-01      1167
+ 2 AB-02      1162
+ 3 BR-01      1166
+ 4 BR-02      1165
+ 5 BR-03      1166
+ 6 BR-04      1167
+ 7 BR-05      1164
+ 8 BR-06      1167
+ 9 BR-07      1165
+10 BR-08      1167
+# ... with 1,100 more rows</code></pre>
 <p>OK what do these presence percentages look like?</p>
-<pre class="r"><code>ggplot(data=rlk_res_tibb, aes(x=percs)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>On average, 99.190418% of NBS genes are present in each individual.</p>
+<pre class="r"><code>ggplot(data=rlk_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>On average, 1163.5036036% of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
 <pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
-
-rlk_joined_groups &lt;- left_join(rlk_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
+groups</code></pre>
+<pre><code># A tibble: 1,069 x 3
+   `Data-storage-ID` `PI-ID`   `Group in violin table`
+   &lt;chr&gt;             &lt;chr&gt;     &lt;chr&gt;                  
+ 1 SRR1533284        PI416890  landrace               
+ 2 SRR1533282        PI323576  landrace               
+ 3 SRR1533292        PI157421  landrace               
+ 4 SRR1533216        PI594615  landrace               
+ 5 SRR1533239        PI603336  landrace               
+ 6 USB-108           PI165675  landrace               
+ 7 HNEX-13           PI253665D landrace               
+ 8 USB-382           PI603549  landrace               
+ 9 SRR1533236        PI587552  landrace               
+10 SRR1533332        PI567293  landrace               
+# ... with 1,059 more rows</code></pre>
+<pre class="r"><code>rlk_joined_groups &lt;- left_join(rlk_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
 <pre class="r"><code>rlk_joined_groups$`Group in violin table` &lt;- gsub(&#39;landrace&#39;, &#39;Landrace&#39;, rlk_joined_groups$`Group in violin table`)
 rlk_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;, rlk_joined_groups$`Group in violin table`)
 rlk_joined_groups$`Group in violin table` &lt;- gsub(&#39;Old_cultivar&#39;, &#39;Old cultivar&#39;, rlk_joined_groups$`Group in violin table`)
 
 rlk_joined_groups$`Group in violin table` &lt;- factor(rlk_joined_groups$`Group in violin table`, levels=c(NA, &#39;Wild-type&#39;, &#39;Landrace&#39;, &#39;Old cultivar&#39;, &#39;Modern cultivar&#39;))</code></pre>
 <pre class="r"><code>rlk_vio &lt;- rlk_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
-  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_violin(draw_quantiles = c(0.5)) +
   geom_sina(alpha=0.5) +
   geom_smooth(aes(group=1), method=&#39;lm&#39;, se = FALSE) +
   scale_fill_manual(values=col_list)+
-  guides(fill = FALSE)# +
-  #ylim(c(87, 100))
+  guides(fill = FALSE)
 rlk_vio</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlk_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
-  summarise(min_perc = min(percs),
-            max_perc = max(percs),
-            mean_perc = mean(percs),
-            median_perc = median(percs),
-            std_perc = sd(percs)) %&gt;% 
+  summarise(min_present = min(presences),
+            max_present = max(presences),
+            mean_present = mean(presences),
+            median_present = median(presences),
+            std_present = sd(presences)) %&gt;% 
   knitr::kable()</code></pre>
 <table>
+<colgroup>
+<col width="25%" />
+<col width="13%" />
+<col width="13%" />
+<col width="15%" />
+<col width="17%" />
+<col width="13%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Group in violin table</th>
-<th align="right">min_perc</th>
-<th align="right">max_perc</th>
-<th align="right">mean_perc</th>
-<th align="right">median_perc</th>
-<th align="right">std_perc</th>
+<th align="right">min_present</th>
+<th align="right">max_present</th>
+<th align="right">mean_present</th>
+<th align="right">median_present</th>
+<th align="right">std_present</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Wild-type</td>
-<td align="right">98.38022</td>
-<td align="right">99.74425</td>
-<td align="right">99.26314</td>
-<td align="right">99.31799</td>
-<td align="right">0.2177805</td>
+<td align="right">1154</td>
+<td align="right">1170</td>
+<td align="right">1164.357</td>
+<td align="right">1165</td>
+<td align="right">2.554565</td>
 </tr>
 <tr class="even">
 <td align="left">Landrace</td>
-<td align="right">98.63598</td>
-<td align="right">99.57374</td>
-<td align="right">99.16600</td>
-<td align="right">99.14749</td>
-<td align="right">0.1278145</td>
+<td align="right">1157</td>
+<td align="right">1168</td>
+<td align="right">1163.217</td>
+<td align="right">1163</td>
+<td align="right">1.499264</td>
 </tr>
 <tr class="odd">
 <td align="left">Old cultivar</td>
-<td align="right">98.97698</td>
-<td align="right">99.40324</td>
-<td align="right">99.19752</td>
-<td align="right">99.23274</td>
-<td align="right">0.1199946</td>
+<td align="right">1161</td>
+<td align="right">1166</td>
+<td align="right">1163.587</td>
+<td align="right">1164</td>
+<td align="right">1.407537</td>
 </tr>
 <tr class="even">
 <td align="left">Modern cultivar</td>
-<td align="right">98.80648</td>
-<td align="right">99.57374</td>
-<td align="right">99.18922</td>
-<td align="right">99.14749</td>
-<td align="right">0.1255006</td>
+<td align="right">1159</td>
+<td align="right">1168</td>
+<td align="right">1163.490</td>
+<td align="right">1163</td>
+<td align="right">1.472122</td>
 </tr>
 </tbody>
 </table>
@@ -858,28 +914,28 @@ rlk_vio</code></pre>
 <h2>RLP part</h2>
 <p>And now with RLPs</p>
 <pre class="r"><code>rlp &lt;- read_tsv(&#39;./data/Lee.RLP.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;, &#39;Subtype&#39;))
-
 # have to remove the .t1s 
 rlp$Name &lt;- gsub(&#39;.t1&#39;,&#39;&#39;, rlp$Name)</code></pre>
 <pre class="r"><code>rlp_pav_table &lt;- pav_table %&gt;% filter(Individual %in% rlp$Name)</code></pre>
 <pre class="r"><code>names &lt;- c()
-percs &lt;- c()
+presences &lt;- c()
 
 for (i in seq_along(rlp_pav_table)){
   if ( i == 1) next
   thisind &lt;- colnames(rlp_pav_table)[i]
   pavs &lt;- rlp_pav_table[[i]]
-  perc &lt;- sum(pavs) / length(pavs) * 100
+  presents &lt;- sum(pavs)
   names &lt;- c(names, thisind)
-  percs &lt;- c(percs, perc)
+  presences &lt;- c(presences, presents)
 }
-rlp_res_tibb &lt;- new_tibble(list(names = names, percs = percs))</code></pre>
+rlp_res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
 <p>OK what do these presence percentages look like?</p>
-<pre class="r"><code>ggplot(data=rlp_res_tibb, aes(x=percs)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>On average, 95.6496496% of NBS genes are present in each individual.</p>
+<pre class="r"><code>ggplot(data=rlp_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>On average, 172.1693694% of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
 <pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
+
 rlp_joined_groups &lt;- left_join(rlp_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
 <pre class="r"><code>rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;landrace&#39;, &#39;Landrace&#39;, rlp_joined_groups$`Group in violin table`)
 rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;, rlp_joined_groups$`Group in violin table`)
@@ -887,74 +943,81 @@ rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;Old_cultivar&#39;, &#3
 
 rlp_joined_groups$`Group in violin table` &lt;- factor(rlp_joined_groups$`Group in violin table`, levels=c(NA, &#39;Wild-type&#39;, &#39;Landrace&#39;, &#39;Old cultivar&#39;, &#39;Modern cultivar&#39;))</code></pre>
 <pre class="r"><code>rlp_vio &lt;- rlp_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
-  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_violin(draw_quantiles = c(0.5)) +
   geom_sina(alpha=0.5) +
     geom_smooth(aes(group=1), method=&#39;lm&#39;, se = FALSE) +
   scale_fill_manual(values=col_list)+
-  guides(fill = FALSE) +
-  ylim(c(87, 100))
+  guides(fill = FALSE)
 rlp_vio</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlp_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
-  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_jitter() +
   #geom_sina(alpha=0.5) +
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE) +
   ylim(c(87, 100))</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlp_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
-  summarise(min_perc = min(percs),
-            max_perc = max(percs),
-            mean_perc = mean(percs),
-            median_perc = median(percs),
-            std_perc = sd(percs)) %&gt;% 
+  summarise(min_present = min(presences),
+            max_present = max(presences),
+            mean_present = mean(presences),
+            median_present = median(presences),
+            std_present = sd(presences)) %&gt;% 
   knitr::kable()</code></pre>
 <table>
+<colgroup>
+<col width="25%" />
+<col width="13%" />
+<col width="13%" />
+<col width="15%" />
+<col width="17%" />
+<col width="13%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Group in violin table</th>
-<th align="right">min_perc</th>
-<th align="right">max_perc</th>
-<th align="right">mean_perc</th>
-<th align="right">median_perc</th>
-<th align="right">std_perc</th>
+<th align="right">min_present</th>
+<th align="right">max_present</th>
+<th align="right">mean_present</th>
+<th align="right">median_present</th>
+<th align="right">std_present</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">Wild-type</td>
-<td align="right">93.33333</td>
-<td align="right">98.33333</td>
-<td align="right">96.34112</td>
-<td align="right">96.11111</td>
-<td align="right">0.8985510</td>
+<td align="right">168</td>
+<td align="right">177</td>
+<td align="right">173.4140</td>
+<td align="right">173</td>
+<td align="right">1.617392</td>
 </tr>
 <tr class="even">
 <td align="left">Landrace</td>
-<td align="right">90.00000</td>
-<td align="right">98.33333</td>
-<td align="right">95.53711</td>
-<td align="right">95.55556</td>
-<td align="right">0.9230701</td>
+<td align="right">162</td>
+<td align="right">177</td>
+<td align="right">171.9668</td>
+<td align="right">172</td>
+<td align="right">1.661526</td>
 </tr>
 <tr class="odd">
 <td align="left">Old cultivar</td>
-<td align="right">93.88889</td>
-<td align="right">97.77778</td>
-<td align="right">95.45894</td>
-<td align="right">95.55556</td>
-<td align="right">0.9019439</td>
+<td align="right">169</td>
+<td align="right">176</td>
+<td align="right">171.8261</td>
+<td align="right">172</td>
+<td align="right">1.623499</td>
 </tr>
 <tr class="even">
 <td align="left">Modern cultivar</td>
-<td align="right">93.88889</td>
-<td align="right">97.22222</td>
-<td align="right">95.44678</td>
-<td align="right">95.55556</td>
-<td align="right">0.7169931</td>
+<td align="right">169</td>
+<td align="right">175</td>
+<td align="right">171.8042</td>
+<td align="right">172</td>
+<td align="right">1.290587</td>
 </tr>
 </tbody>
 </table>
@@ -962,7 +1025,7 @@ rlp_vio</code></pre>
 <div id="plotting-together" class="section level2">
 <h2>Plotting together</h2>
 <pre class="r"><code>nbs_vio + rlk_vio + rlp_vio</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="stats---dabayes" class="section level2">
 <h2>Stats - Dabayes</h2>
@@ -972,7 +1035,7 @@ rlp_vio</code></pre>
 <p>Let’s run dabestr first:</p>
 <pre class="r"><code>nbs_multi.two.group.unpaired &lt;- 
   nbs_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
-  dabest(`Group in violin table`, percs, 
+  dabest(`Group in violin table`, presences, 
          idx = list(c(&quot;Wild-type&quot;, &quot;Landrace&quot;),
                     c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)),
          paired = FALSE)
@@ -981,21 +1044,21 @@ nbs_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good afternoon!
-The current time is 15:38 PM on Friday September 18, 2020.
+The current time is 15:40 PM on Friday September 18, 2020.
 
 Dataset    :  .
 The first five rows are:
 # A tibble: 5 x 4
-  names  percs `PI-ID`  `Group in violin table`
-  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
-1 AB-01   91.6 PI458020 Landrace               
-2 AB-02   93.4 PI603713 Landrace               
-3 DT2000  92.0 PI635999 Modern cultivar        
-4 For     92.2 PI548645 Modern cultivar        
-5 HN001   92.2 PI518664 Modern cultivar        
+  names  presences `PI-ID`  `Group in violin table`
+  &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
+1 AB-01        445 PI458020 Landrace               
+2 AB-02        454 PI603713 Landrace               
+3 DT2000       447 PI635999 Modern cultivar        
+4 For          448 PI548645 Modern cultivar        
+5 HN001        448 PI518664 Modern cultivar        
 
 X Variable :  Group in violin table
-Y Variable :  percs
+Y Variable :  presences
 
 Effect sizes(s) will be computed for:
   1. Landrace minus Wild-type
@@ -1006,30 +1069,30 @@ nbs_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good afternoon!
-The current time is 15:39 PM on Friday September 18, 2020.
+The current time is 15:40 PM on Friday September 18, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
-Y Variable :  percs
+Y Variable :  presences
 
 Unpaired mean difference of Landrace (n = 723) minus Wild-type (n = 157)
- -1.66 [95CI  -1.9; -1.41]
+ -8.06 [95CI  -9.24; -6.86]
 
 Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46)
- -0.526 [95CI  -0.875; -0.2]
+ -2.55 [95CI  -4.25; -0.97]
 
 
 5000 bootstrap resamples.
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(nbs_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlk" class="section level3">
 <h3>RLK</h3>
 <pre class="r"><code>rlk_multi.two.group.unpaired &lt;- 
   rlk_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
-  dabest(`Group in violin table`, percs, 
+  dabest(`Group in violin table`, presences, 
          idx = list(c(&quot;Wild-type&quot;, &quot;Landrace&quot;),
                     c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)),
          paired = FALSE)
@@ -1038,21 +1101,21 @@ rlk_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good afternoon!
-The current time is 15:39 PM on Friday September 18, 2020.
+The current time is 15:40 PM on Friday September 18, 2020.
 
 Dataset    :  .
 The first five rows are:
 # A tibble: 5 x 4
-  names  percs `PI-ID`  `Group in violin table`
-  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
-1 AB-01   99.5 PI458020 Landrace               
-2 AB-02   99.1 PI603713 Landrace               
-3 DT2000  99.3 PI635999 Modern cultivar        
-4 For     99.1 PI548645 Modern cultivar        
-5 HN001   99.1 PI518664 Modern cultivar        
+  names  presences `PI-ID`  `Group in violin table`
+  &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
+1 AB-01       1167 PI458020 Landrace               
+2 AB-02       1162 PI603713 Landrace               
+3 DT2000      1165 PI635999 Modern cultivar        
+4 For         1163 PI548645 Modern cultivar        
+5 HN001       1163 PI518664 Modern cultivar        
 
 X Variable :  Group in violin table
-Y Variable :  percs
+Y Variable :  presences
 
 Effect sizes(s) will be computed for:
   1. Landrace minus Wild-type
@@ -1063,31 +1126,31 @@ rlk_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good afternoon!
-The current time is 15:39 PM on Friday September 18, 2020.
+The current time is 15:40 PM on Friday September 18, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
-Y Variable :  percs
+Y Variable :  presences
 
 Unpaired mean difference of Landrace (n = 723) minus Wild-type (n = 157)
- -0.0971 [95CI  -0.132; -0.0611]
+ -1.14 [95CI  -1.55; -0.717]
 
 Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46)
- -0.00831 [95CI  -0.0479; 0.0308]
+ -0.0974 [95CI  -0.562; 0.362]
 
 
 5000 bootstrap resamples.
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(rlk_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>No difference between old and modern cultivars!</p>
 </div>
 <div id="rlp" class="section level3">
 <h3>RLP</h3>
 <pre class="r"><code>rlp_multi.two.group.unpaired &lt;- 
   rlp_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
-  dabest(`Group in violin table`, percs, 
+  dabest(`Group in violin table`, presences, 
          idx = list(c(&quot;Wild-type&quot;, &quot;Landrace&quot;),
                     c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)),
          paired = FALSE)
@@ -1096,21 +1159,21 @@ rlp_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good afternoon!
-The current time is 15:39 PM on Friday September 18, 2020.
+The current time is 15:40 PM on Friday September 18, 2020.
 
 Dataset    :  .
 The first five rows are:
 # A tibble: 5 x 4
-  names  percs `PI-ID`  `Group in violin table`
-  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
-1 AB-01   95   PI458020 Landrace               
-2 AB-02   95.6 PI603713 Landrace               
-3 DT2000  95   PI635999 Modern cultivar        
-4 For     95   PI548645 Modern cultivar        
-5 HN001   95.6 PI518664 Modern cultivar        
+  names  presences `PI-ID`  `Group in violin table`
+  &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
+1 AB-01        171 PI458020 Landrace               
+2 AB-02        172 PI603713 Landrace               
+3 DT2000       171 PI635999 Modern cultivar        
+4 For          171 PI548645 Modern cultivar        
+5 HN001        172 PI518664 Modern cultivar        
 
 X Variable :  Group in violin table
-Y Variable :  percs
+Y Variable :  presences
 
 Effect sizes(s) will be computed for:
   1. Landrace minus Wild-type
@@ -1121,24 +1184,24 @@ rlp_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good afternoon!
-The current time is 15:39 PM on Friday September 18, 2020.
+The current time is 15:40 PM on Friday September 18, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
-Y Variable :  percs
+Y Variable :  presences
 
 Unpaired mean difference of Landrace (n = 723) minus Wild-type (n = 157)
- -0.804 [95CI  -0.965; -0.651]
+ -1.45 [95CI  -1.74; -1.17]
 
 Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46)
- -0.0122 [95CI  -0.294; 0.265]
+ -0.0219 [95CI  -0.53; 0.477]
 
 
 5000 bootstrap resamples.
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(rlp_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Again, no difference between old and modern cultivars!</p>
 </div>
 </div>
@@ -1148,7 +1211,7 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
 <h3>NBS</h3>
 <pre class="r"><code>nbs_joined_groups %&gt;% 
   filter( !is.na(`PI-ID`) ) %&gt;%
-    ggplot(aes(x=`Group in violin table`, y = percs,
+    ggplot(aes(x=`Group in violin table`, y = presences,
                fill = `Group in violin table`)) + 
   geom_boxplot() +
   scale_fill_manual(values = col_list) + 
@@ -1159,13 +1222,13 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
                                  c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)), 
               map_signif_level = T) +
   guides(fill=FALSE)</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlp-1" class="section level3">
 <h3>RLP</h3>
 <pre class="r"><code>rlp_joined_groups %&gt;% 
   filter( !is.na(`PI-ID`) ) %&gt;%
-    ggplot(aes(x=`Group in violin table`, y = percs,
+    ggplot(aes(x=`Group in violin table`, y = presences,
                fill = `Group in violin table`)) + 
   geom_boxplot() +
   scale_fill_manual(values = col_list) + 
@@ -1176,13 +1239,13 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
                                  c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)), 
               map_signif_level = T) +
   guides(fill=FALSE)</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlk-1" class="section level3">
 <h3>RLK</h3>
 <pre class="r"><code>rlk_joined_groups %&gt;% 
   filter( !is.na(`PI-ID`) ) %&gt;%
-    ggplot(aes(x=`Group in violin table`, y = percs,
+    ggplot(aes(x=`Group in violin table`, y = presences,
                fill = `Group in violin table`)) + 
   geom_boxplot() +
   scale_fill_manual(values = col_list) + 
@@ -1193,7 +1256,7 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
                                  c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)), 
               map_signif_level = T) +
   guides(fill=FALSE)</code></pre>
-<p><img src="figure/first-analysis.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
