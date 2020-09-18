@@ -390,7 +390,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -399,7 +399,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -411,7 +411,7 @@ div.tocify {
 <strong>Last updated:</strong> 2020-09-18
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>R_gene_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -427,12 +427,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -499,16 +499,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong7b1cd32"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 7b1cd32 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong6f536bc"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 6f536bc </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong7b1cd32" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong6f536bc" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 7b1cd32. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 6f536bc. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -517,23 +517,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
-
-Untracked files:
-    Untracked:  analysis/eda.Rmd
-    Untracked:  analysis/first-analysis.Rmd
-    Untracked:  data/Lee.NBS.candidates.lst
-    Untracked:  data/Lee.RGA.candidates.lst
-    Untracked:  data/Lee.RLK.candidates.lst
-    Untracked:  data/Lee.RLP.candidates.lst
-    Untracked:  data/Lee.TMCC.candidates.lst
-    Untracked:  data/Lee.pan.v1.renamed.gff
-    Untracked:  data/Lee.preRGA.candidates.by.Blast.lst
-    Untracked:  data/Table_of_cultivar_groups.csv
-    Untracked:  data/soybean_pan_pav.matrix_gene.txt
-
-Unstaged changes:
-    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -546,9 +529,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/first-analysis.Rmd</code>) and HTML (<code>docs/first-analysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+6f536bc
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+wflow_git_commit(all = T)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+6f536bc
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+wflow_git_commit(all = T)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -1059,17 +1102,18 @@ loaded via a namespace (and not attached):
  [5] rprojroot_1.3-2  digest_0.6.25    utf8_1.1.4       R6_2.4.1        
  [9] cellranger_1.1.0 backports_1.1.8  reprex_0.3.0     evaluate_0.14   
 [13] httr_1.4.1       pillar_1.4.4     rlang_0.4.6      readxl_1.3.1    
-[17] rstudioapi_0.11  blob_1.2.1       rmarkdown_2.3    labeling_0.3    
-[21] munsell_0.5.0    broom_0.5.6      compiler_3.6.3   httpuv_1.5.4    
-[25] modelr_0.1.8     xfun_0.15        pkgconfig_2.0.3  htmltools_0.5.0 
-[29] tidyselect_1.1.0 fansi_0.4.1      crayon_1.3.4     dbplyr_1.4.4    
-[33] withr_2.2.0      later_1.1.0.1    grid_3.6.3       nlme_3.1-148    
-[37] jsonlite_1.7.0   gtable_0.3.0     lifecycle_0.2.0  DBI_1.1.0       
-[41] git2r_0.26.1     magrittr_1.5     scales_1.1.1     cli_2.0.2       
-[45] stringi_1.4.6    farver_2.0.3     fs_1.5.0.9000    promises_1.1.1  
-[49] xml2_1.3.2       ellipsis_0.3.1   generics_0.0.2   vctrs_0.3.1     
-[53] tools_3.6.3      glue_1.4.1       hms_0.5.3        yaml_2.2.1      
-[57] colorspace_1.4-1 rvest_0.3.5      knitr_1.29       haven_2.3.1     </code></pre>
+[17] rstudioapi_0.11  whisker_0.4      blob_1.2.1       rmarkdown_2.3   
+[21] labeling_0.3     munsell_0.5.0    broom_0.5.6      compiler_3.6.3  
+[25] httpuv_1.5.4     modelr_0.1.8     xfun_0.15        pkgconfig_2.0.3 
+[29] htmltools_0.5.0  tidyselect_1.1.0 fansi_0.4.1      crayon_1.3.4    
+[33] dbplyr_1.4.4     withr_2.2.0      later_1.1.0.1    grid_3.6.3      
+[37] nlme_3.1-148     jsonlite_1.7.0   gtable_0.3.0     lifecycle_0.2.0 
+[41] DBI_1.1.0        git2r_0.26.1     magrittr_1.5     scales_1.1.1    
+[45] cli_2.0.2        stringi_1.4.6    farver_2.0.3     fs_1.5.0.9000   
+[49] promises_1.1.1   xml2_1.3.2       ellipsis_0.3.1   generics_0.0.2  
+[53] vctrs_0.3.1      tools_3.6.3      glue_1.4.1       hms_0.5.3       
+[57] yaml_2.2.1       colorspace_1.4-1 rvest_0.3.5      knitr_1.29      
+[61] haven_2.3.1     </code></pre>
 </div>
 </div>
 
