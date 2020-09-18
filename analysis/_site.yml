@@ -1,7 +1,7 @@
-name: "R_gene_analysis"
+name: R_gene_analysis
 output_dir: ../docs
 navbar:
-  title: "R_gene_analysis"
+  title: R_gene_analysis
   left:
   - text: Home
     href: index.html
@@ -9,6 +9,10 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fa-github
+    text: Source code
+    href: https://github.com/philippbayer/R_gene_analysis
 output:
   workflowr::wflow_html:
     toc: yes
