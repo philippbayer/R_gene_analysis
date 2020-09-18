@@ -8,8 +8,13 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+Welcome to the website summarising the soybean R-gene analysis.
 
-Plotting of NBS/RLK/RLP plots: [link](first-analysis.html)
 
 EDA of PAV and different classes: [link](eda.html)
+
+
+Plotting of NBS/RLK/RLP plots based on percentage lost: [link](first-analysis.html)
+
+Plotting of NBS/RLK/RLP plots based on total numbers: [link](total_numbers.html)
+
