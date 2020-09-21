@@ -22,15 +22,23 @@ files_to_make_tables_for
 
 The following will print warnings because I assume 3 columns, but some files have only 2:
 
-```{r results='asis', echo=FALSE, warning=FALSE, message=FALSE}
+```{r results='asis',  warning=FALSE, message=FALSE}
 for(i in seq_along(files_to_make_tables_for)) {
   f <- files_to_make_tables_for[i]
   fh <- read_tsv(paste('./data/', f, sep=''), col_names = c('Name','Class','Type'))
   fh <- fh %>% unite(United, Class, Type)
   # remove NAs in files with 2 columns
   fh$United <- gsub(pattern = '_NA', replacement = '', fh$United)
+  
+  # now split into pangenome genes and reference genome genes
+  pan_fh <- fh %>% filter(str_detect(Name, 'UWA'))
+  ref_fh <- fh %>% filter(!str_detect(Name, 'UWA'))
   print(f)
   print(kable(table(fh$United), 'html'))
+  print('Reference')
+  print(kable(table(ref_fh$United), 'html'))
+  print('Pangenome')
+  print(kable(table(pan_fh$United), 'html'))
 }
 ```
 

@@ -34,7 +34,7 @@ col_list <- c(`Wild-type`=npg_col[8],
   `Old cultivar`=npg_col[2],
   `Modern cultivar`=npg_col[4])
 
-pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt')
+pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt.gz')
 ```
 
 ## NBS part
@@ -187,6 +187,7 @@ rlk_vio <- rlk_joined_groups %>% filter(`Group in violin table` != 'NA') %>%
   guides(fill = FALSE)
 rlk_vio
 ```
+
 ```{r}
 rlk_joined_groups %>% filter(!is.na(`PI-ID`)) %>% 
   group_by(`Group in violin table`) %>% 
@@ -389,7 +390,9 @@ nbs_joined_groups %>%
   geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
-  guides(fill=FALSE)
+  guides(fill=FALSE) +
+  ylab('Number of NLR genes') +
+  xlab('Accession group')
 ```
 
 ### RLP
@@ -406,7 +409,9 @@ rlp_joined_groups %>%
   geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
-  guides(fill=FALSE)
+  guides(fill=FALSE) +
+  ylab('Number of RLP genes') +
+  xlab('Accession group')
 ```
 
 ### RLK
@@ -424,5 +429,7 @@ rlk_joined_groups %>%
   geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
-  guides(fill=FALSE)
+  guides(fill=FALSE) +
+  ylab('Number of RLK genes') +
+  xlab('Accession group')
 ```

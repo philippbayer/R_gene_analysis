@@ -30,7 +30,7 @@ col_list <- c(`Wild-type`=npg_col[8],
   `Old cultivar`=npg_col[2],
   `Modern cultivar`=npg_col[4])
 
-pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt')
+pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt.gz')
 ```
 
 
