@@ -398,7 +398,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -407,7 +407,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -419,7 +419,7 @@ div.tocify {
 <strong>Last updated:</strong> 2020-09-21
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>R_gene_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -435,12 +435,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -507,16 +507,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreec1fbbf9e2d16c27769a40263cacd80a585a11a82targetblankc1fbbf9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/c1fbbf9e2d16c27769a40263cacd80a585a11a82" target="_blank">c1fbbf9</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee6e9b9b8b4c4b2978b76526319c8489dae36e44dtargetblanke6e9b9ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/e6e9b9b8b4c4b2978b76526319c8489dae36e44d" target="_blank">e6e9b9b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreec1fbbf9e2d16c27769a40263cacd80a585a11a82targetblankc1fbbf9a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee6e9b9b8b4c4b2978b76526319c8489dae36e44dtargetblanke6e9b9ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/c1fbbf9e2d16c27769a40263cacd80a585a11a82" target="_blank">c1fbbf9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/e6e9b9b8b4c4b2978b76526319c8489dae36e44d" target="_blank">e6e9b9b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -525,6 +525,14 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  data/Seed_weight_Phenotype.txt
+    Untracked:  data/oil_phenotype.txt
+    Untracked:  data/protein_phenotype.txt
+
+Unstaged changes:
+    Modified:   analysis/total_numbers.Rmd
 
 </code></pre>
 <p>
@@ -563,6 +571,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/e6e9b9b8b4c4b2978b76526319c8489dae36e44d/docs/total_numbers.html" target="_blank">e6e9b9b</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -699,6 +724,695 @@ nbs</code></pre>
 <pre class="r"><code># have to remove the .t1s 
 nbs$Name &lt;- gsub(&#39;.t1&#39;,&#39;&#39;, nbs$Name)</code></pre>
 <pre class="r"><code>nbs_pav_table &lt;- pav_table %&gt;% filter(Individual %in% nbs$Name)</code></pre>
+<div id="modern-vs-old-gene-loss" class="section level3">
+<h3>Modern vs Old gene loss</h3>
+<pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
+groups</code></pre>
+<pre><code># A tibble: 1,069 x 3
+   `Data-storage-ID` `PI-ID`   `Group in violin table`
+   &lt;chr&gt;             &lt;chr&gt;     &lt;chr&gt;                  
+ 1 SRR1533284        PI416890  landrace               
+ 2 SRR1533282        PI323576  landrace               
+ 3 SRR1533292        PI157421  landrace               
+ 4 SRR1533216        PI594615  landrace               
+ 5 SRR1533239        PI603336  landrace               
+ 6 USB-108           PI165675  landrace               
+ 7 HNEX-13           PI253665D landrace               
+ 8 USB-382           PI603549  landrace               
+ 9 SRR1533236        PI587552  landrace               
+10 SRR1533332        PI567293  landrace               
+# ... with 1,059 more rows</code></pre>
+<p>Which genes are present more or less in old / modern cultivars?</p>
+<pre class="r"><code>big_norm_count &lt;- tibble(
+  name = character(),
+  landrace = numeric(),
+  Modern_cultivar = numeric(),
+  Old_cultivar = numeric(),
+  `Wild-type` = numeric()
+)
+
+groups_list &lt;- split(groups$`Group in violin table`, groups$`Data-storage-ID`)
+
+for( i in 1:nrow(nbs_pav_table) ) {
+  this_gene &lt;- nbs_pav_table[i,]
+  groups_count &lt;- list()
+  total_groups_count &lt;- list()
+  for (x in seq_along(nbs_pav_table)){
+    if ( x == 1) next
+    thisind &lt;- colnames(nbs_pav_table)[x]
+    thisind_group &lt;- groups_list[[thisind]]
+    if( is.null(thisind_group) ) next # no group for this individual
+    pavs &lt;- this_gene[[x]] # either 1 or 0
+    
+    if ( thisind_group %in% names(groups_count)) {
+      # count the number of present genes
+      groups_count[[thisind_group]] &lt;- groups_count[[thisind_group]] + pavs
+      # count the total number of individuals for this group
+      total_groups_count[[thisind_group]] &lt;- total_groups_count[[thisind_group]] + 1
+    } else {
+      groups_count[[thisind_group]] &lt;-  pavs
+      total_groups_count[[thisind_group]] &lt;- 1
+    }
+  }
+  
+  norm_group_count &lt;- list()
+  for (m in seq_along(groups_count)) {
+    thisname &lt;- names(groups_count)[m]
+    norm_group_count[[thisname]] &lt;- groups_count[[thisname]] / total_groups_count[[thisname]] * 100
+  }
+  norm_group_count$Individual &lt;- this_gene$Individual
+  big_norm_count &lt;- rbind(big_norm_count, as_tibble(norm_group_count))
+
+}
+
+# wow, I DO write R like Python</code></pre>
+<p>Let’s pull out the genes that are variable in any group</p>
+<pre class="r"><code>var_norm_count &lt;- big_norm_count %&gt;% 
+  filter(landrace != 100 &amp; 
+           Modern_cultivar != 100 &amp; 
+           Old_cultivar != 100 &amp; 
+           `Wild-type` != 100)
+
+var_norm_count &lt;- left_join(var_norm_count, nbs, by=c(&#39;Individual&#39;=&#39;Name&#39;))
+var_norm_count$Mod_minus_Old &lt;- var_norm_count$Modern_cultivar - var_norm_count$Old_cultivar</code></pre>
+<p>The top 20 genes reduced the most in modern cultivars compared with old cultivars:</p>
+<pre class="r"><code>var_norm_count %&gt;% 
+  arrange(Mod_minus_Old) %&gt;% 
+  head(20) %&gt;% 
+  select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Mod_minus_Old, Class) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Individual</th>
+<th align="right">Wild-type</th>
+<th align="right">landrace</th>
+<th align="right">Old_cultivar</th>
+<th align="right">Modern_cultivar</th>
+<th align="right">Mod_minus_Old</th>
+<th align="left">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">UWASoyPan03261</td>
+<td align="right">74.52229</td>
+<td align="right">62.102351</td>
+<td align="right">60.86957</td>
+<td align="right">26.573427</td>
+<td align="right">-34.296139</td>
+<td align="left">TX</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00953</td>
+<td align="right">83.43949</td>
+<td align="right">33.056708</td>
+<td align="right">43.47826</td>
+<td align="right">11.188811</td>
+<td align="right">-32.289450</td>
+<td align="left">CN</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00725</td>
+<td align="right">89.17197</td>
+<td align="right">92.392808</td>
+<td align="right">82.60870</td>
+<td align="right">51.748252</td>
+<td align="right">-30.860444</td>
+<td align="left">TX</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00316</td>
+<td align="right">91.08280</td>
+<td align="right">90.594744</td>
+<td align="right">80.43478</td>
+<td align="right">50.349650</td>
+<td align="right">-30.085132</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan01530</td>
+<td align="right">80.89172</td>
+<td align="right">45.089903</td>
+<td align="right">47.82609</td>
+<td align="right">20.979021</td>
+<td align="right">-26.847066</td>
+<td align="left">NL</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00975</td>
+<td align="right">42.67516</td>
+<td align="right">19.778700</td>
+<td align="right">32.60870</td>
+<td align="right">7.692308</td>
+<td align="right">-24.916388</td>
+<td align="left">TX</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00155</td>
+<td align="right">85.35032</td>
+<td align="right">77.316736</td>
+<td align="right">63.04348</td>
+<td align="right">42.657343</td>
+<td align="right">-20.386136</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00772</td>
+<td align="right">54.77707</td>
+<td align="right">18.948824</td>
+<td align="right">30.43478</td>
+<td align="right">11.888112</td>
+<td align="right">-18.546671</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan03402</td>
+<td align="right">62.42038</td>
+<td align="right">42.738589</td>
+<td align="right">36.95652</td>
+<td align="right">18.881119</td>
+<td align="right">-18.075403</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan01320</td>
+<td align="right">45.85987</td>
+<td align="right">30.152144</td>
+<td align="right">23.91304</td>
+<td align="right">6.993007</td>
+<td align="right">-16.920036</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan02799</td>
+<td align="right">65.60510</td>
+<td align="right">30.843707</td>
+<td align="right">19.56522</td>
+<td align="right">2.797203</td>
+<td align="right">-16.768015</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.03G045500.1.p</td>
+<td align="right">82.16561</td>
+<td align="right">58.921162</td>
+<td align="right">67.39130</td>
+<td align="right">51.748252</td>
+<td align="right">-15.643053</td>
+<td align="left">OTHER</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan01253</td>
+<td align="right">73.24841</td>
+<td align="right">24.481328</td>
+<td align="right">17.39130</td>
+<td align="right">3.496504</td>
+<td align="right">-13.894801</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan03340</td>
+<td align="right">18.47134</td>
+<td align="right">26.279391</td>
+<td align="right">19.56522</td>
+<td align="right">6.293706</td>
+<td align="right">-13.271511</td>
+<td align="left">TX</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.06G230600.1.p</td>
+<td align="right">78.34395</td>
+<td align="right">57.399723</td>
+<td align="right">56.52174</td>
+<td align="right">44.055944</td>
+<td align="right">-12.465795</td>
+<td align="left">TX</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.06G228900.1.p</td>
+<td align="right">96.17834</td>
+<td align="right">74.688797</td>
+<td align="right">91.30435</td>
+<td align="right">80.419580</td>
+<td align="right">-10.884767</td>
+<td align="left">TX</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00251</td>
+<td align="right">60.50955</td>
+<td align="right">20.470263</td>
+<td align="right">21.73913</td>
+<td align="right">11.188811</td>
+<td align="right">-10.550319</td>
+<td align="left">NL</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.03G045700.1.p</td>
+<td align="right">75.79618</td>
+<td align="right">67.496542</td>
+<td align="right">65.21739</td>
+<td align="right">55.244755</td>
+<td align="right">-9.972636</td>
+<td align="left">OTHER</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.06G228600.1.p</td>
+<td align="right">90.44586</td>
+<td align="right">79.391425</td>
+<td align="right">82.60870</td>
+<td align="right">72.727273</td>
+<td align="right">-9.881423</td>
+<td align="left">TX</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00670</td>
+<td align="right">30.57325</td>
+<td align="right">6.915629</td>
+<td align="right">10.86957</td>
+<td align="right">2.097902</td>
+<td align="right">-8.771663</td>
+<td align="left">TX</td>
+</tr>
+</tbody>
+</table>
+<p>So these are the NLR genes selected against during soybean breeding.</p>
+<p>Let’s look at those without the TX ones:</p>
+<pre class="r"><code>var_norm_count %&gt;% 
+  arrange(Mod_minus_Old) %&gt;% 
+  select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Mod_minus_Old, Class) %&gt;% 
+  filter(Class != &#39;TX&#39;) %&gt;% 
+  head(20) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="24%" />
+<col width="10%" />
+<col width="11%" />
+<col width="13%" />
+<col width="17%" />
+<col width="15%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Individual</th>
+<th align="right">Wild-type</th>
+<th align="right">landrace</th>
+<th align="right">Old_cultivar</th>
+<th align="right">Modern_cultivar</th>
+<th align="right">Mod_minus_Old</th>
+<th align="left">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">UWASoyPan00953</td>
+<td align="right">83.439490</td>
+<td align="right">33.0567082</td>
+<td align="right">43.478261</td>
+<td align="right">11.188811</td>
+<td align="right">-32.289450</td>
+<td align="left">CN</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00316</td>
+<td align="right">91.082802</td>
+<td align="right">90.5947441</td>
+<td align="right">80.434783</td>
+<td align="right">50.349650</td>
+<td align="right">-30.085132</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan01530</td>
+<td align="right">80.891720</td>
+<td align="right">45.0899032</td>
+<td align="right">47.826087</td>
+<td align="right">20.979021</td>
+<td align="right">-26.847066</td>
+<td align="left">NL</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00155</td>
+<td align="right">85.350319</td>
+<td align="right">77.3167358</td>
+<td align="right">63.043478</td>
+<td align="right">42.657343</td>
+<td align="right">-20.386136</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00772</td>
+<td align="right">54.777070</td>
+<td align="right">18.9488243</td>
+<td align="right">30.434783</td>
+<td align="right">11.888112</td>
+<td align="right">-18.546671</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan03402</td>
+<td align="right">62.420382</td>
+<td align="right">42.7385892</td>
+<td align="right">36.956522</td>
+<td align="right">18.881119</td>
+<td align="right">-18.075403</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan01320</td>
+<td align="right">45.859873</td>
+<td align="right">30.1521438</td>
+<td align="right">23.913044</td>
+<td align="right">6.993007</td>
+<td align="right">-16.920036</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan02799</td>
+<td align="right">65.605096</td>
+<td align="right">30.8437068</td>
+<td align="right">19.565217</td>
+<td align="right">2.797203</td>
+<td align="right">-16.768015</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.03G045500.1.p</td>
+<td align="right">82.165605</td>
+<td align="right">58.9211618</td>
+<td align="right">67.391304</td>
+<td align="right">51.748252</td>
+<td align="right">-15.643053</td>
+<td align="left">OTHER</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan01253</td>
+<td align="right">73.248408</td>
+<td align="right">24.4813278</td>
+<td align="right">17.391304</td>
+<td align="right">3.496504</td>
+<td align="right">-13.894801</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00251</td>
+<td align="right">60.509554</td>
+<td align="right">20.4702628</td>
+<td align="right">21.739130</td>
+<td align="right">11.188811</td>
+<td align="right">-10.550319</td>
+<td align="left">NL</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.03G045700.1.p</td>
+<td align="right">75.796178</td>
+<td align="right">67.4965422</td>
+<td align="right">65.217391</td>
+<td align="right">55.244755</td>
+<td align="right">-9.972636</td>
+<td align="left">OTHER</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan03194</td>
+<td align="right">45.222930</td>
+<td align="right">10.7883817</td>
+<td align="right">10.869565</td>
+<td align="right">2.097902</td>
+<td align="right">-8.771663</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.03G045900.1.p</td>
+<td align="right">74.522293</td>
+<td align="right">65.5601660</td>
+<td align="right">63.043478</td>
+<td align="right">54.545454</td>
+<td align="right">-8.498024</td>
+<td align="left">OTHER</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00326</td>
+<td align="right">40.764331</td>
+<td align="right">19.0871369</td>
+<td align="right">17.391304</td>
+<td align="right">9.790210</td>
+<td align="right">-7.601095</td>
+<td align="left">CN</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan02496</td>
+<td align="right">26.114650</td>
+<td align="right">14.6611342</td>
+<td align="right">13.043478</td>
+<td align="right">6.993007</td>
+<td align="right">-6.050471</td>
+<td align="left">CN</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan01217</td>
+<td align="right">57.961783</td>
+<td align="right">14.3845090</td>
+<td align="right">10.869565</td>
+<td align="right">5.594406</td>
+<td align="right">-5.275160</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.06G229300.1.p</td>
+<td align="right">86.624204</td>
+<td align="right">50.3457815</td>
+<td align="right">65.217391</td>
+<td align="right">60.839161</td>
+<td align="right">-4.378230</td>
+<td align="left">TN</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan04757</td>
+<td align="right">6.369427</td>
+<td align="right">0.9681881</td>
+<td align="right">4.347826</td>
+<td align="right">0.000000</td>
+<td align="right">-4.347826</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.03G042000.1.p</td>
+<td align="right">99.363057</td>
+<td align="right">88.3817427</td>
+<td align="right">91.304348</td>
+<td align="right">88.111888</td>
+<td align="right">-3.192460</td>
+<td align="left">CNL</td>
+</tr>
+</tbody>
+</table>
+<p>The top 20 genes increased the most in modern cultivars:</p>
+<pre class="r"><code>var_norm_count %&gt;% 
+  arrange(desc(Mod_minus_Old)) %&gt;% 
+  head(20) %&gt;% 
+  select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Mod_minus_Old, Class) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Individual</th>
+<th align="right">Wild-type</th>
+<th align="right">landrace</th>
+<th align="right">Old_cultivar</th>
+<th align="right">Modern_cultivar</th>
+<th align="right">Mod_minus_Old</th>
+<th align="left">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="right">81.52866</td>
+<td align="right">50.345782</td>
+<td align="right">34.782609</td>
+<td align="right">71.328671</td>
+<td align="right">36.546063</td>
+<td align="left">NL</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.15G199500.1.p</td>
+<td align="right">85.98726</td>
+<td align="right">73.582296</td>
+<td align="right">69.565217</td>
+<td align="right">86.713287</td>
+<td align="right">17.148069</td>
+<td align="left">CN</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.15G199200.1.p</td>
+<td align="right">92.99363</td>
+<td align="right">74.827109</td>
+<td align="right">73.913044</td>
+<td align="right">90.909091</td>
+<td align="right">16.996047</td>
+<td align="left">CNL</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.06G232800.1.p</td>
+<td align="right">40.12739</td>
+<td align="right">47.579530</td>
+<td align="right">56.521739</td>
+<td align="right">73.426573</td>
+<td align="right">16.904834</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.01G088400.1.p</td>
+<td align="right">49.68153</td>
+<td align="right">89.488243</td>
+<td align="right">82.608696</td>
+<td align="right">97.202797</td>
+<td align="right">14.594102</td>
+<td align="left">TNL</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan05312</td>
+<td align="right">30.57325</td>
+<td align="right">8.575380</td>
+<td align="right">10.869565</td>
+<td align="right">23.776224</td>
+<td align="right">12.906659</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00005</td>
+<td align="right">36.94268</td>
+<td align="right">13.831259</td>
+<td align="right">8.695652</td>
+<td align="right">20.279720</td>
+<td align="right">11.584068</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan01876</td>
+<td align="right">43.31210</td>
+<td align="right">15.629322</td>
+<td align="right">8.695652</td>
+<td align="right">20.279720</td>
+<td align="right">11.584068</td>
+<td align="left">CN</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.10G034600.1.p</td>
+<td align="right">91.08280</td>
+<td align="right">91.839557</td>
+<td align="right">84.782609</td>
+<td align="right">95.104895</td>
+<td align="right">10.322286</td>
+<td align="left">NL</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan01330</td>
+<td align="right">29.29936</td>
+<td align="right">25.172891</td>
+<td align="right">15.217391</td>
+<td align="right">23.776224</td>
+<td align="right">8.558832</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00202</td>
+<td align="right">50.31847</td>
+<td align="right">35.408022</td>
+<td align="right">26.086956</td>
+<td align="right">32.167832</td>
+<td align="right">6.080876</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00427</td>
+<td align="right">97.45223</td>
+<td align="right">84.232365</td>
+<td align="right">73.913044</td>
+<td align="right">79.720280</td>
+<td align="right">5.807236</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.15G199300.1.p</td>
+<td align="right">96.17834</td>
+<td align="right">88.243430</td>
+<td align="right">93.478261</td>
+<td align="right">98.601399</td>
+<td align="right">5.123138</td>
+<td align="left">NL</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.03G070700.1.p</td>
+<td align="right">65.60510</td>
+<td align="right">89.903181</td>
+<td align="right">89.130435</td>
+<td align="right">93.706294</td>
+<td align="right">4.575859</td>
+<td align="left">TNL</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.06G229100.1.p</td>
+<td align="right">85.98726</td>
+<td align="right">38.174274</td>
+<td align="right">50.000000</td>
+<td align="right">53.146853</td>
+<td align="right">3.146853</td>
+<td align="left">TX</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.07G070200.1.p</td>
+<td align="right">78.98089</td>
+<td align="right">91.286307</td>
+<td align="right">91.304348</td>
+<td align="right">94.405594</td>
+<td align="right">3.101247</td>
+<td align="left">NBS</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan01418</td>
+<td align="right">68.78981</td>
+<td align="right">66.251729</td>
+<td align="right">71.739130</td>
+<td align="right">74.825175</td>
+<td align="right">3.086044</td>
+<td align="left">TX</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.03G070600.1.p</td>
+<td align="right">66.87898</td>
+<td align="right">90.179806</td>
+<td align="right">91.304348</td>
+<td align="right">93.706294</td>
+<td align="right">2.401946</td>
+<td align="left">TNL</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.16G175200.1.p</td>
+<td align="right">95.54140</td>
+<td align="right">96.127248</td>
+<td align="right">95.652174</td>
+<td align="right">97.902098</td>
+<td align="right">2.249924</td>
+<td align="left">TNL</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan04967</td>
+<td align="right">35.03185</td>
+<td align="right">6.224066</td>
+<td align="right">2.173913</td>
+<td align="right">4.195804</td>
+<td align="right">2.021891</td>
+<td align="left">TX</td>
+</tr>
+</tbody>
+</table>
+<p>As these genes have relatively high percentages in WT they must have been re-introduced by using WT in the breeding process.</p>
+</div>
+<div id="presence-plotting-per-individual" class="section level3">
+<h3>Presence plotting per individual</h3>
 <pre class="r"><code>names &lt;- c()
 presences &lt;- c()
 
@@ -713,11 +1427,10 @@ for (i in seq_along(nbs_pav_table)){
 nbs_res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
 <p>OK what do these presence percentages look like?</p>
 <pre class="r"><code>ggplot(data=nbs_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>On average, 446.0027027 of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
-<pre class="r"><code>nbs_groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
-nbs_joined_groups &lt;- left_join(nbs_res_tibb, nbs_groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
+<pre class="r"><code>nbs_joined_groups &lt;- left_join(nbs_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
 <pre class="r"><code>nbs_joined_groups$`Group in violin table` &lt;- gsub(&#39;landrace&#39;, &#39;Landrace&#39;, nbs_joined_groups$`Group in violin table`)
 nbs_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;, nbs_joined_groups$`Group in violin table`)
 nbs_joined_groups$`Group in violin table` &lt;- gsub(&#39;Old_cultivar&#39;, &#39;Old cultivar&#39;, nbs_joined_groups$`Group in violin table`)
@@ -732,14 +1445,14 @@ nbs_joined_groups$`Group in violin table` &lt;- factor(nbs_joined_groups$`Group 
   guides(fill = FALSE)
 
 nbs_vio</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>nbs_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
   ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_smooth(aes(group=1), method=&#39;lm&#39;, se = FALSE) +
   geom_jitter() +
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>nbs_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
   summarise(min_present = min(presences),
@@ -802,6 +1515,7 @@ nbs_vio</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="rlk-part" class="section level2">
 <h2>RLK part</h2>
@@ -889,25 +1603,9 @@ rlk_res_tibb</code></pre>
 # ... with 1,100 more rows</code></pre>
 <p>OK what do these presence percentages look like?</p>
 <pre class="r"><code>ggplot(data=rlk_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>On average, 1163.5036036% of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
-<pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
-groups</code></pre>
-<pre><code># A tibble: 1,069 x 3
-   `Data-storage-ID` `PI-ID`   `Group in violin table`
-   &lt;chr&gt;             &lt;chr&gt;     &lt;chr&gt;                  
- 1 SRR1533284        PI416890  landrace               
- 2 SRR1533282        PI323576  landrace               
- 3 SRR1533292        PI157421  landrace               
- 4 SRR1533216        PI594615  landrace               
- 5 SRR1533239        PI603336  landrace               
- 6 USB-108           PI165675  landrace               
- 7 HNEX-13           PI253665D landrace               
- 8 USB-382           PI603549  landrace               
- 9 SRR1533236        PI587552  landrace               
-10 SRR1533332        PI567293  landrace               
-# ... with 1,059 more rows</code></pre>
 <pre class="r"><code>rlk_joined_groups &lt;- left_join(rlk_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
 <pre class="r"><code>rlk_joined_groups$`Group in violin table` &lt;- gsub(&#39;landrace&#39;, &#39;Landrace&#39;, rlk_joined_groups$`Group in violin table`)
 rlk_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;, rlk_joined_groups$`Group in violin table`)
@@ -922,7 +1620,7 @@ rlk_joined_groups$`Group in violin table` &lt;- factor(rlk_joined_groups$`Group 
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE)
 rlk_vio</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlk_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
   summarise(min_present = min(presences),
@@ -1007,12 +1705,10 @@ for (i in seq_along(rlp_pav_table)){
 rlp_res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
 <p>OK what do these presence percentages look like?</p>
 <pre class="r"><code>ggplot(data=rlp_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>On average, 172.1693694% of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
-<pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
-
-rlp_joined_groups &lt;- left_join(rlp_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
+<pre class="r"><code>rlp_joined_groups &lt;- left_join(rlp_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
 <pre class="r"><code>rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;landrace&#39;, &#39;Landrace&#39;, rlp_joined_groups$`Group in violin table`)
 rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;, rlp_joined_groups$`Group in violin table`)
 rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;Old_cultivar&#39;, &#39;Old cultivar&#39;, rlp_joined_groups$`Group in violin table`)
@@ -1026,7 +1722,7 @@ rlp_joined_groups$`Group in violin table` &lt;- factor(rlp_joined_groups$`Group 
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE)
 rlp_vio</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlp_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
   ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_jitter() +
@@ -1034,7 +1730,7 @@ rlp_vio</code></pre>
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE) +
   ylim(c(87, 100))</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlp_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
   summarise(min_present = min(presences),
@@ -1101,7 +1797,7 @@ rlp_vio</code></pre>
 <div id="plotting-together" class="section level2">
 <h2>Plotting together</h2>
 <pre class="r"><code>nbs_vio + rlk_vio + rlp_vio</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="stats---dabayes" class="section level2">
 <h2>Stats - Dabayes</h2>
@@ -1119,8 +1815,8 @@ nbs_multi.two.group.unpaired</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:56 PM on Monday September 21, 2020.
+Good afternoon!
+The current time is 16:15 PM on Monday September 21, 2020.
 
 Dataset    :  .
 The first five rows are:
@@ -1144,8 +1840,8 @@ nbs_multi.two.group.unpaired.meandiff</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:56 PM on Monday September 21, 2020.
+Good afternoon!
+The current time is 16:15 PM on Monday September 21, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -1162,7 +1858,7 @@ Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(nbs_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlk" class="section level3">
 <h3>RLK</h3>
@@ -1176,8 +1872,8 @@ rlk_multi.two.group.unpaired</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:56 PM on Monday September 21, 2020.
+Good afternoon!
+The current time is 16:15 PM on Monday September 21, 2020.
 
 Dataset    :  .
 The first five rows are:
@@ -1201,8 +1897,8 @@ rlk_multi.two.group.unpaired.meandiff</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:56 PM on Monday September 21, 2020.
+Good afternoon!
+The current time is 16:15 PM on Monday September 21, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -1219,7 +1915,7 @@ Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(rlk_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>No difference between old and modern cultivars!</p>
 </div>
 <div id="rlp" class="section level3">
@@ -1234,8 +1930,8 @@ rlp_multi.two.group.unpaired</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:57 PM on Monday September 21, 2020.
+Good afternoon!
+The current time is 16:15 PM on Monday September 21, 2020.
 
 Dataset    :  .
 The first five rows are:
@@ -1259,8 +1955,8 @@ rlp_multi.two.group.unpaired.meandiff</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:57 PM on Monday September 21, 2020.
+Good afternoon!
+The current time is 16:15 PM on Monday September 21, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -1277,7 +1973,7 @@ Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(rlp_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Again, no difference between old and modern cultivars!</p>
 </div>
 </div>
@@ -1300,7 +1996,7 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
   guides(fill=FALSE) +
   ylab(&#39;Number of NLR genes&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlp-1" class="section level3">
 <h3>RLP</h3>
@@ -1319,7 +2015,7 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
   guides(fill=FALSE) +
   ylab(&#39;Number of RLP genes&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlk-1" class="section level3">
 <h3>RLK</h3>
@@ -1338,7 +2034,29 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
   guides(fill=FALSE) +
   ylab(&#39;Number of RLK genes&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="linking-with-yield" class="section level2">
+<h2>Linking with yield</h2>
+<p>Can we link the trajectory of NLR genes with the trajectory of yield across the history of soybean breeding? let’s make a simple regression for now</p>
+<pre class="r"><code>protein &lt;- read_tsv(&#39;./data/protein_phenotype.txt&#39;)
+protein_join &lt;- left_join(nbs_res_tibb, protein, by=c(&#39;names&#39;=&#39;Line&#39;)) %&gt;% filter(!is.na(Protein))</code></pre>
+<pre class="r"><code>protein_join %&gt;% ggplot(aes(x=presences, y=Protein)) + geom_hex() + geom_smooth() +
+  xlab(&#39;NLR gene count&#39;)</code></pre>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>seed_weight &lt;- read_tsv(&#39;./data/Seed_weight_Phenotype.txt&#39;, col_names = c(&#39;names&#39;, &#39;wt&#39;))
+seed_join &lt;- left_join(nbs_res_tibb, seed_weight) %&gt;% filter(!is.na(wt))</code></pre>
+<pre class="r"><code>seed_join %&gt;% filter(wt &gt; 5) %&gt;%  ggplot(aes(x=presences, y=wt)) + geom_hex() + geom_smooth() +
+  ylab(&#39;Seed weight&#39;) +
+  xlab(&#39;NLR gene count&#39;)</code></pre>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>oil &lt;- read_tsv(&#39;./data/oil_phenotype.txt&#39;)
+oil_join &lt;- left_join(nbs_res_tibb, oil, by=c(&#39;names&#39;=&#39;Line&#39;)) %&gt;% filter(!is.na(Oil))</code></pre>
+<pre class="r"><code>oil_join %&gt;%  ggplot(aes(x=presences, y=Oil)) + geom_hex() + geom_smooth() +
+  xlab(&#39;NLR gene count&#39;)</code></pre>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>OK there are many, many outliers here. Clearly I’ll have to do something fancier - for example, using the first two PCs as covariates might get rid of some of those outliers.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1376,21 +2094,20 @@ loaded via a namespace (and not attached):
 [13] mgcv_1.8-31        colorspace_1.4-1   withr_2.2.0        tidyselect_1.1.0  
 [17] processx_3.4.4     compiler_3.6.3     git2r_0.27.1       cli_2.0.2         
 [21] rvest_0.3.5        xml2_1.3.2         labeling_0.3       scales_1.1.1      
-[25] callr_3.4.4        digest_0.6.25      rmarkdown_2.3      pkgconfig_2.0.3   
-[29] htmltools_0.5.0    dbplyr_1.4.4       highr_0.8          rlang_0.4.7       
-[33] readxl_1.3.1       rstudioapi_0.11    farver_2.0.3       generics_0.0.2    
-[37] jsonlite_1.7.1     Matrix_1.2-18      Rcpp_1.0.5         ggbeeswarm_0.6.0  
-[41] munsell_0.5.0      fansi_0.4.1        lifecycle_0.2.0    stringi_1.5.3     
-[45] whisker_0.4        yaml_2.2.1         MASS_7.3-51.6      plyr_1.8.6        
-[49] grid_3.6.3         blob_1.2.1         promises_1.1.1     crayon_1.3.4      
-[53] lattice_0.20-41    haven_2.3.1        splines_3.6.3      hms_0.5.3         
-[57] knitr_1.29         ps_1.3.4           pillar_1.4.4       boot_1.3-25       
-[61] reprex_0.3.0       glue_1.4.2         evaluate_0.14      getPass_0.2-2     
-[65] modelr_0.1.8       vctrs_0.3.1        tweenr_1.0.1       httpuv_1.5.4      
-[69] cellranger_1.1.0   gtable_0.3.0       polyclip_1.10-0    assertthat_0.2.1  
-[73] xfun_0.17          broom_0.5.6        later_1.1.0.1      beeswarm_0.2.3    
-[77] ellipsis_0.3.1    </code></pre>
-</div>
+[25] hexbin_1.28.1      callr_3.4.4        digest_0.6.25      rmarkdown_2.3     
+[29] pkgconfig_2.0.3    htmltools_0.5.0    dbplyr_1.4.4       highr_0.8         
+[33] rlang_0.4.7        readxl_1.3.1       rstudioapi_0.11    farver_2.0.3      
+[37] generics_0.0.2     jsonlite_1.7.1     Matrix_1.2-18      ggbeeswarm_0.6.0  
+[41] Rcpp_1.0.5         munsell_0.5.0      fansi_0.4.1        lifecycle_0.2.0   
+[45] stringi_1.5.3      whisker_0.4        yaml_2.2.1         MASS_7.3-51.6     
+[49] plyr_1.8.6         grid_3.6.3         blob_1.2.1         promises_1.1.1    
+[53] crayon_1.3.4       lattice_0.20-41    haven_2.3.1        splines_3.6.3     
+[57] hms_0.5.3          knitr_1.29         ps_1.3.4           pillar_1.4.4      
+[61] boot_1.3-25        reprex_0.3.0       glue_1.4.2         evaluate_0.14     
+[65] getPass_0.2-2      modelr_0.1.8       vctrs_0.3.1        tweenr_1.0.1      
+[69] httpuv_1.5.4       cellranger_1.1.0   gtable_0.3.0       polyclip_1.10-0   
+[73] assertthat_0.2.1   xfun_0.17          broom_0.5.6        later_1.1.0.1     
+[77] beeswarm_0.2.3     ellipsis_0.3.1    </code></pre>
 </div>
 </div>
 

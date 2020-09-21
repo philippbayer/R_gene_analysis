@@ -51,6 +51,111 @@ nbs$Name <- gsub('.t1','', nbs$Name)
 ```{r}
 nbs_pav_table <- pav_table %>% filter(Individual %in% nbs$Name)
 ```
+### Modern vs Old gene loss
+
+```{r}
+groups <- read_csv('./data/Table_of_cultivar_groups.csv')
+groups
+```
+
+Which genes are present more or less in old / modern cultivars?
+
+```{r big_norm_count}
+big_norm_count <- tibble(
+  name = character(),
+  landrace = numeric(),
+  Modern_cultivar = numeric(),
+  Old_cultivar = numeric(),
+  `Wild-type` = numeric()
+)
+
+groups_list <- split(groups$`Group in violin table`, groups$`Data-storage-ID`)
+
+for( i in 1:nrow(nbs_pav_table) ) {
+  this_gene <- nbs_pav_table[i,]
+  groups_count <- list()
+  total_groups_count <- list()
+  for (x in seq_along(nbs_pav_table)){
+    if ( x == 1) next
+    thisind <- colnames(nbs_pav_table)[x]
+    thisind_group <- groups_list[[thisind]]
+    if( is.null(thisind_group) ) next # no group for this individual
+    pavs <- this_gene[[x]] # either 1 or 0
+    
+    if ( thisind_group %in% names(groups_count)) {
+      # count the number of present genes
+      groups_count[[thisind_group]] <- groups_count[[thisind_group]] + pavs
+      # count the total number of individuals for this group
+      total_groups_count[[thisind_group]] <- total_groups_count[[thisind_group]] + 1
+    } else {
+      groups_count[[thisind_group]] <-  pavs
+      total_groups_count[[thisind_group]] <- 1
+    }
+  }
+  
+  norm_group_count <- list()
+  for (m in seq_along(groups_count)) {
+    thisname <- names(groups_count)[m]
+    norm_group_count[[thisname]] <- groups_count[[thisname]] / total_groups_count[[thisname]] * 100
+  }
+  norm_group_count$Individual <- this_gene$Individual
+  big_norm_count <- rbind(big_norm_count, as_tibble(norm_group_count))
+
+}
+
+# wow, I DO write R like Python
+```
+
+Let's pull out the genes that are variable in any group
+
+```{r}
+
+var_norm_count <- big_norm_count %>% 
+  filter(landrace != 100 & 
+           Modern_cultivar != 100 & 
+           Old_cultivar != 100 & 
+           `Wild-type` != 100)
+
+var_norm_count <- left_join(var_norm_count, nbs, by=c('Individual'='Name'))
+var_norm_count$Mod_minus_Old <- var_norm_count$Modern_cultivar - var_norm_count$Old_cultivar
+```
+
+The top 20 genes reduced the most in modern cultivars compared with old cultivars:
+
+```{r}
+var_norm_count %>% 
+  arrange(Mod_minus_Old) %>% 
+  head(20) %>% 
+  select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Mod_minus_Old, Class) %>% 
+  knitr::kable()
+```
+
+So these are the NLR genes selected against during soybean breeding.
+
+Let's look at those without the TX ones:
+```{r}
+var_norm_count %>% 
+  arrange(Mod_minus_Old) %>% 
+  select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Mod_minus_Old, Class) %>% 
+  filter(Class != 'TX') %>% 
+  head(20) %>% 
+  knitr::kable()
+```
+
+
+The top 20 genes increased the most in modern cultivars:
+```{r}
+var_norm_count %>% 
+  arrange(desc(Mod_minus_Old)) %>% 
+  head(20) %>% 
+  select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Mod_minus_Old, Class) %>% 
+  knitr::kable()
+```
+
+As these genes have relatively high percentages in WT they must have been re-introduced by using WT in the breeding process.
+
+
+### Presence plotting per individual
 
 ```{r}
 names <- c()
@@ -77,8 +182,7 @@ On average, `r mean(nbs_res_tibb$presences)` of NBS genes are present in each in
 Now let's join the table of presences to the four different types so we can group these numbers.
 
 ```{r}
-nbs_groups <- read_csv('./data/Table_of_cultivar_groups.csv')
-nbs_joined_groups <- left_join(nbs_res_tibb, nbs_groups, by = c('names'='Data-storage-ID'))
+nbs_joined_groups <- left_join(nbs_res_tibb, groups, by = c('names'='Data-storage-ID'))
 ```
 
 ```{r}
@@ -164,8 +268,6 @@ On average, `r mean(rlk_res_tibb$presences)`% of NBS genes are present in each i
 Now let's join the table of presences to the four different types so we can group these numbers.
 
 ```{r}
-groups <- read_csv('./data/Table_of_cultivar_groups.csv')
-groups
 rlk_joined_groups <- left_join(rlk_res_tibb, groups, by = c('names'='Data-storage-ID'))
 ```
 
@@ -240,8 +342,6 @@ On average, `r mean(rlp_res_tibb$presences)`% of NBS genes are present in each i
 Now let's join the table of presences to the four different types so we can group these numbers.
 
 ```{r}
-groups <- read_csv('./data/Table_of_cultivar_groups.csv')
-
 rlp_joined_groups <- left_join(rlp_res_tibb, groups, by = c('names'='Data-storage-ID'))
 ```
 
@@ -433,3 +533,46 @@ rlk_joined_groups %>%
   ylab('Number of RLK genes') +
   xlab('Accession group')
 ```
+
+
+
+## Linking with yield
+
+Can we link the trajectory of NLR genes with the trajectory of yield across the history of soybean breeding? let's make a simple regression for now
+
+```{r protein_join}
+protein <- read_tsv('./data/protein_phenotype.txt')
+protein_join <- left_join(nbs_res_tibb, protein, by=c('names'='Line')) %>% filter(!is.na(Protein))
+```
+
+```{r}
+protein_join %>% ggplot(aes(x=presences, y=Protein)) + geom_hex() + geom_smooth() +
+  xlab('NLR gene count')
+```
+
+
+```{r seed_join}
+seed_weight <- read_tsv('./data/Seed_weight_Phenotype.txt', col_names = c('names', 'wt'))
+seed_join <- left_join(nbs_res_tibb, seed_weight) %>% filter(!is.na(wt))
+```
+
+```{r}
+seed_join %>% filter(wt > 5) %>%  ggplot(aes(x=presences, y=wt)) + geom_hex() + geom_smooth() +
+  ylab('Seed weight') +
+  xlab('NLR gene count')
+```
+
+
+```{r oil_join}
+oil <- read_tsv('./data/oil_phenotype.txt')
+oil_join <- left_join(nbs_res_tibb, oil, by=c('names'='Line')) %>% filter(!is.na(Oil))
+```
+
+
+```{r}
+oil_join %>%  ggplot(aes(x=presences, y=Oil)) + geom_hex() + geom_smooth() +
+  xlab('NLR gene count')
+```
+
+
+OK there are many, many outliers here. Clearly I'll have to do something fancier - for example, using the first two PCs as covariates might get rid of some of those outliers. 
