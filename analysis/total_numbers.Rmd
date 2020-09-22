@@ -539,6 +539,7 @@ rlk_joined_groups %>%
 ## Linking with yield
 
 Can we link the trajectory of NLR genes with the trajectory of yield across the history of soybean breeding? let's make a simple regression for now
+### Protein
 
 ```{r protein_join}
 protein <- read_tsv('./data/protein_phenotype.txt')
@@ -550,6 +551,14 @@ protein_join %>% ggplot(aes(x=presences, y=Protein)) + geom_hex() + geom_smooth(
   xlab('NLR gene count')
 ```
 
+
+```{r}
+summary(lm(Protein ~ presences, data = protein_join))
+```
+
+### Seed weight
+
+Let's look at seed weight:
 
 ```{r seed_join}
 seed_weight <- read_tsv('./data/Seed_weight_Phenotype.txt', col_names = c('names', 'wt'))
@@ -563,6 +572,13 @@ seed_join %>% filter(wt > 5) %>%  ggplot(aes(x=presences, y=wt)) + geom_hex() + 
 ```
 
 
+```{r}
+summary(lm(wt ~ presences, data = seed_join))
+```
+
+### Oil content
+And now let's look at the oil phenotype:
+
 ```{r oil_join}
 oil <- read_tsv('./data/oil_phenotype.txt')
 oil_join <- left_join(nbs_res_tibb, oil, by=c('names'='Line')) %>% filter(!is.na(Oil))
@@ -574,5 +590,156 @@ oil_join %>%  ggplot(aes(x=presences, y=Oil)) + geom_hex() + geom_smooth() +
   xlab('NLR gene count')
 ```
 
+```{r}
+summary(lm(Oil ~ presences, data = oil_join))
+```
 
 OK there are many, many outliers here. Clearly I'll have to do something fancier - for example, using the first two PCs as covariates might get rid of some of those outliers. 
+
+
+## Boxplots per group
+
+
+#### Protein
+
+First, protein vs. the four groups:
+
+```{r}
+nbs_joined_groups %>% 
+  filter(!is.na(`Group in violin table`)) %>% 
+  inner_join(protein, by=c('names'='Line')) %>% 
+  ggplot(aes(x=`Group in violin table`, y=Protein, fill = `Group in violin table`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+                                 c('Old cultivar', 'Modern cultivar')), 
+              map_signif_level = T) +
+  guides(fill=FALSE) +
+  ylab('Protein') +
+  xlab('Accession group')
+```
+
+#### Seed weight
+And seed weight:
+
+```{r}
+nbs_joined_groups %>% 
+  filter(!is.na(`Group in violin table`)) %>% 
+  inner_join(seed_join) %>% 
+  ggplot(aes(x=`Group in violin table`, y=wt, fill = `Group in violin table`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+                                 c('Old cultivar', 'Modern cultivar')), 
+              map_signif_level = T) +
+  guides(fill=FALSE) +
+  ylab('Seed weight') +
+  xlab('Accession group')
+```
+
+Wow, that's breeding!
+
+#### Oil content
+
+And finally, Oil content:
+
+```{r}
+nbs_joined_groups %>% 
+  filter(!is.na(`Group in violin table`)) %>% 
+  inner_join(oil_join, by = 'names') %>% 
+  ggplot(aes(x=`Group in violin table`, y=Oil, fill = `Group in violin table`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+                                 c('Old cultivar', 'Modern cultivar')), 
+              map_signif_level = T) +
+  guides(fill=FALSE) +
+  ylab('Oil content') +
+  xlab('Accession group')
+```
+
+Oha, a single star. That's p < 0.05!
+
+Let's redo the above hexplot, but also color the dots by group.
+
+```{r}
+nbs_joined_groups %>% 
+  filter(!is.na(`Group in violin table`)) %>% 
+  inner_join(oil_join, by = 'names') %>% 
+  ggplot(aes(x=presences.x, y=Oil, color=`Group in violin table`)) +
+  geom_point() + 
+  scale_color_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +  
+  xlab('NLR gene count')
+```
+
+Oha, so it's the wild-types that drag this out a lot.
+
+Let's remove them and see what it looks like:
+
+```{r}
+nbs_joined_groups %>% 
+  filter(!is.na(`Group in violin table`)) %>% 
+  inner_join(oil_join, by = 'names') %>% 
+  filter(`Group in violin table` %in% c('Old cultivar', 'Modern cultivar')) %>% 
+  ggplot(aes(x=presences.x, y=Oil, color=`Group in violin table`)) +
+  geom_point() + 
+  scale_color_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +  
+  xlab('NLR gene count') +
+  geom_smooth()
+```
+
+Let's remove that one outlier:
+```{r}
+nbs_joined_groups %>% 
+  filter(!is.na(`Group in violin table`)) %>% 
+  inner_join(oil_join, by = 'names') %>% 
+  filter(`Group in violin table` %in% c('Old cultivar', 'Modern cultivar')) %>% 
+  filter(Oil > 13) %>% 
+  ggplot(aes(x=presences.x, y=Oil, color=`Group in violin table`)) +
+  geom_point() + 
+  scale_color_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +  
+  xlab('NLR gene count') +
+  geom_smooth()
+```
+
+Does the above oil content boxplot become different if we exclude the one outlier? I'd bet so
+
+
+```{r}
+nbs_joined_groups %>% 
+  filter(!is.na(`Group in violin table`)) %>% 
+  inner_join(oil_join, by = 'names') %>% 
+  filter(names != 'USB-393') %>% 
+  ggplot(aes(x=`Group in violin table`, y=Oil, fill = `Group in violin table`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+                                 c('Old cultivar', 'Modern cultivar')), 
+              map_signif_level = T) +
+  guides(fill=FALSE) +
+  ylab('Oil content') +
+  xlab('Accession group')
+```
+
+Nope, still significantly higher in modern cultivars!

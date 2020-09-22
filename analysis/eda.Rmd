@@ -1,5 +1,5 @@
 ---
-title: "eda"
+title: "Explorative data analysis - let's play around a bit"
 author: "Philipp Bayer"
 date: "2020-09-18"
 output: workflowr::wflow_html
@@ -20,7 +20,7 @@ files_to_make_tables_for <- list.files(path = './data', pattern = '*lst')
 files_to_make_tables_for
 ```
 
-The following will print warnings because I assume 3 columns, but some files have only 2:
+Let's print the counts of R-gene classes for each type, that will be table 1:
 
 ```{r results='asis',  warning=FALSE, message=FALSE}
 for(i in seq_along(files_to_make_tables_for)) {
