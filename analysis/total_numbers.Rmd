@@ -1,5 +1,5 @@
 ---
-title: "total_numbers"
+title: "R-gene count comparisons"
 author: "Philipp Bayer"
 date: "2020-09-18"
 output: workflowr::wflow_html
@@ -24,7 +24,7 @@ library(ggforce)
 theme_set(theme_cowplot())
 ```
 
-## Introduction
+# Introduction
 
 
 ```{r}
@@ -37,7 +37,7 @@ col_list <- c(`Wild-type`=npg_col[8],
 pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt.gz')
 ```
 
-## NBS part
+# NBS part
 
 Let's pull the NBS genes from the table
 ```{r}
@@ -51,7 +51,7 @@ nbs$Name <- gsub('.t1','', nbs$Name)
 ```{r}
 nbs_pav_table <- pav_table %>% filter(Individual %in% nbs$Name)
 ```
-### Modern vs Old gene loss
+## Modern vs Old gene loss
 
 ```{r}
 groups <- read_csv('./data/Table_of_cultivar_groups.csv')
@@ -142,6 +142,24 @@ var_norm_count %>%
   knitr::kable()
 ```
 
+Let's plot:
+
+```{r}
+var_norm_count %>% 
+  arrange(Mod_minus_Old) %>% 
+  head(20) %>% 
+  select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Class) %>% 
+  pivot_longer(!c(Individual, Class)) %>% 
+  mutate(name = str_replace_all(name, 'landrace', 'Landrace')) %>% 
+  mutate(name = str_replace_all(name, 'Old_cultivar', 'Old cultivar')) %>% 
+  mutate(name = str_replace_all(name, 'Modern_cultivar', 'Modern cultivar')) %>%  
+  ggplot(aes(x=factor(name, levels=c('Wild-type', 'Landrace', 'Old cultivar', 'Modern cultivar')), y=value, group=Individual, color=Class)) + 
+  geom_line(size=1.5) +
+  xlab('Group') +
+  ylab('Percentage presence of gene in group') +
+  scale_color_brewer(palette = 'Dark2')
+```
+
 
 The top 20 genes increased the most in modern cultivars:
 ```{r}
@@ -154,8 +172,24 @@ var_norm_count %>%
 
 As these genes have relatively high percentages in WT they must have been re-introduced by using WT in the breeding process.
 
+Let's plot those too:
+```{r}
+var_norm_count %>% 
+  arrange(desc(Mod_minus_Old)) %>% 
+  head(20) %>% 
+  select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Class) %>% 
+  pivot_longer(!c(Individual, Class)) %>% 
+  mutate(name = str_replace_all(name, 'landrace', 'Landrace')) %>% 
+  mutate(name = str_replace_all(name, 'Old_cultivar', 'Old cultivar')) %>% 
+  mutate(name = str_replace_all(name, 'Modern_cultivar', 'Modern cultivar')) %>%  
+  ggplot(aes(x=factor(name, levels=c('Wild-type', 'Landrace', 'Old cultivar', 'Modern cultivar')), y=value, group=Individual, color=Class)) + 
+  geom_line(size=1.5) +
+  xlab('Group') +
+  ylab('Percentage presence of gene in group') +
+  scale_color_brewer(palette = 'Dark2')
+```
 
-### Presence plotting per individual
+## Presence plotting per individual
 
 ```{r}
 names <- c()
@@ -225,7 +259,7 @@ nbs_joined_groups %>% filter(!is.na(`PI-ID`)) %>%
             std_present = sd(presences)) %>% 
   knitr::kable()
 ```
-## RLK part
+# RLK part
 
 Let's do the  same plot with RLKs
 
@@ -300,7 +334,7 @@ rlk_joined_groups %>% filter(!is.na(`PI-ID`)) %>%
             std_present = sd(presences)) %>% 
   knitr::kable()
 ```
-## RLP part
+# RLP part
 
 And now with RLPs
 
@@ -384,18 +418,18 @@ rlp_joined_groups %>% filter(!is.na(`PI-ID`)) %>%
             std_present = sd(presences)) %>% 
   knitr::kable()
 ```
-## Plotting together
+# Plotting together
 
 ```{r}
 nbs_vio + rlk_vio + rlp_vio
 ```
 
-## Stats - Dabayes
+# Stats - Dabayes
 
 I want to know whether the groups are statistically significantly different. First let's use dabestr
 
 
-### NBS
+## NBS
 
 Let's run dabestr first:
 
@@ -420,7 +454,7 @@ plot(nbs_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`
      rawplot.ylabel = 'Presence (%)', show.legend=FALSE)
 ```
 
-### RLK
+## RLK
 
 ```{r}
 rlk_multi.two.group.unpaired <- 
@@ -446,7 +480,7 @@ plot(rlk_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`
 No difference between old and modern cultivars!
 
 
-### RLP
+## RLP
 
 ```{r}
 rlp_multi.two.group.unpaired <- 
@@ -473,9 +507,9 @@ Again, no difference between old and modern cultivars!
 
 
 
-## Stats - classic t-test
+# Stats - classic t-test
 
-### NBS
+## NBS
 
 ```{r}
 nbs_joined_groups %>% 
@@ -495,7 +529,7 @@ nbs_joined_groups %>%
   xlab('Accession group')
 ```
 
-### RLP
+## RLP
 ```{r}
 rlp_joined_groups %>% 
   filter( !is.na(`PI-ID`) ) %>%
@@ -514,7 +548,7 @@ rlp_joined_groups %>%
   xlab('Accession group')
 ```
 
-### RLK
+## RLK
 
 ```{r}
 rlk_joined_groups %>% 
@@ -536,10 +570,10 @@ rlk_joined_groups %>%
 
 
 
-## Linking with yield
+# Linking with yield
 
 Can we link the trajectory of NLR genes with the trajectory of yield across the history of soybean breeding? let's make a simple regression for now
-### Protein
+## Protein
 
 ```{r protein_join}
 protein <- read_tsv('./data/protein_phenotype.txt')
@@ -556,7 +590,7 @@ protein_join %>% ggplot(aes(x=presences, y=Protein)) + geom_hex() + geom_smooth(
 summary(lm(Protein ~ presences, data = protein_join))
 ```
 
-### Seed weight
+## Seed weight
 
 Let's look at seed weight:
 
@@ -576,7 +610,7 @@ seed_join %>% filter(wt > 5) %>%  ggplot(aes(x=presences, y=wt)) + geom_hex() + 
 summary(lm(wt ~ presences, data = seed_join))
 ```
 
-### Oil content
+## Oil content
 And now let's look at the oil phenotype:
 
 ```{r oil_join}
@@ -597,10 +631,10 @@ summary(lm(Oil ~ presences, data = oil_join))
 OK there are many, many outliers here. Clearly I'll have to do something fancier - for example, using the first two PCs as covariates might get rid of some of those outliers. 
 
 
-## Boxplots per group
+# Boxplots per group
 
 
-#### Protein
+## Protein
 
 First, protein vs. the four groups:
 
@@ -622,7 +656,7 @@ nbs_joined_groups %>%
   xlab('Accession group')
 ```
 
-#### Seed weight
+## Seed weight
 And seed weight:
 
 ```{r}
@@ -645,7 +679,7 @@ nbs_joined_groups %>%
 
 Wow, that's breeding!
 
-#### Oil content
+## Oil content
 
 And finally, Oil content:
 

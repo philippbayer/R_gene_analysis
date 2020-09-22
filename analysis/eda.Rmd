@@ -12,7 +12,7 @@ library(tidyverse)
 library(knitr)
 ```
 
-## Introduction
+# Introduction
 Here i make some of the tables for the manuscript.
 
 ```{r}

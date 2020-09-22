@@ -398,7 +398,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -407,7 +407,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -419,7 +419,7 @@ div.tocify {
 <strong>Last updated:</strong> 2020-09-22
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>R_gene_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -435,12 +435,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -507,16 +507,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree258337979c739fede97cb8717be00ac97f49f019targetblank2583379a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/258337979c739fede97cb8717be00ac97f49f019" target="_blank">2583379</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree0777e1d8fe1be73aaaaa3f64b0be25c7213a7acdtargetblank0777e1da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/0777e1d8fe1be73aaaaa3f64b0be25c7213a7acd" target="_blank">0777e1d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree258337979c739fede97cb8717be00ac97f49f019targetblank2583379a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree0777e1d8fe1be73aaaaa3f64b0be25c7213a7acdtargetblank0777e1da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/258337979c739fede97cb8717be00ac97f49f019" target="_blank">2583379</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/0777e1d8fe1be73aaaaa3f64b0be25c7213a7acd" target="_blank">0777e1d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -525,6 +525,13 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+
+Unstaged changes:
+    Modified:   analysis/about.Rmd
+    Modified:   analysis/eda.Rmd
+    Modified:   analysis/first-analysis.Rmd
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/total_numbers.Rmd
 
 </code></pre>
 <p>
@@ -563,6 +570,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/0777e1d8fe1be73aaaaa3f64b0be25c7213a7acd/docs/first-analysis.html" target="_blank">0777e1d</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-22
+</td>
+<td>
+update
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -733,8 +757,8 @@ library(cowplot)
 library(ggsignif)
 
 theme_set(theme_cowplot())</code></pre>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
 <pre class="r"><code>npg_col = pal_npg(&quot;nrc&quot;)(9)
 col_list &lt;- c(`Wild-type`=npg_col[8],
    Landrace = npg_col[3],
@@ -743,8 +767,8 @@ col_list &lt;- c(`Wild-type`=npg_col[8],
 
 pav_table &lt;- read_tsv(&#39;./data/soybean_pan_pav.matrix_gene.txt.gz&#39;)</code></pre>
 </div>
-<div id="nbs-part" class="section level2">
-<h2>NBS part</h2>
+<div id="nbs-part" class="section level1">
+<h1>NBS part</h1>
 <p>Let’s pull the NBS genes from the table</p>
 <pre class="r"><code>nbs &lt;- read_tsv(&#39;./data/Lee.NBS.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;))
 # have to remove the .t1s 
@@ -849,8 +873,8 @@ nbs_vio</code></pre>
 </tbody>
 </table>
 </div>
-<div id="rlk-part" class="section level2">
-<h2>RLK part</h2>
+<div id="rlk-part" class="section level1">
+<h1>RLK part</h1>
 <p>Let’s do the same plot with RLKs</p>
 <pre class="r"><code>rlk &lt;- read_tsv(&#39;./data/Lee.RLK.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;, &#39;Subtype&#39;))
 
@@ -947,8 +971,8 @@ rlk_vio</code></pre>
 </tbody>
 </table>
 </div>
-<div id="rlp-part" class="section level2">
-<h2>RLP part</h2>
+<div id="rlp-part" class="section level1">
+<h1>RLP part</h1>
 <p>And now with RLPs</p>
 <pre class="r"><code>rlp &lt;- read_tsv(&#39;./data/Lee.RLP.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;, &#39;Subtype&#39;))
 
@@ -1052,16 +1076,16 @@ rlp_vio</code></pre>
 </tbody>
 </table>
 </div>
-<div id="plotting-together" class="section level2">
-<h2>Plotting together</h2>
+<div id="plotting-together" class="section level1">
+<h1>Plotting together</h1>
 <pre class="r"><code>nbs_vio + rlk_vio + rlp_vio</code></pre>
 <p><img src="figure/first-analysis.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="stats---dabayes" class="section level2">
-<h2>Stats - Dabayes</h2>
+<div id="stats---dabayes" class="section level1">
+<h1>Stats - Dabayes</h1>
 <p>I want to know whether the groups are statistically significantly different. First let’s use dabestr</p>
-<div id="nbs" class="section level3">
-<h3>NBS</h3>
+<div id="nbs" class="section level2">
+<h2>NBS</h2>
 <p>Let’s run dabestr first:</p>
 <pre class="r"><code>nbs_multi.two.group.unpaired &lt;- 
   nbs_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
@@ -1073,8 +1097,8 @@ nbs_multi.two.group.unpaired</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:02 PM on Tuesday September 22, 2020.
+Good afternoon!
+The current time is 14:10 PM on Tuesday September 22, 2020.
 
 Dataset    :  .
 The first five rows are:
@@ -1098,8 +1122,8 @@ nbs_multi.two.group.unpaired.meandiff</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:02 PM on Tuesday September 22, 2020.
+Good afternoon!
+The current time is 14:10 PM on Tuesday September 22, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -1118,8 +1142,8 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
 <p><img src="figure/first-analysis.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="rlk" class="section level3">
-<h3>RLK</h3>
+<div id="rlk" class="section level2">
+<h2>RLK</h2>
 <pre class="r"><code>rlk_multi.two.group.unpaired &lt;- 
   rlk_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   dabest(`Group in violin table`, percs, 
@@ -1130,8 +1154,8 @@ rlk_multi.two.group.unpaired</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:02 PM on Tuesday September 22, 2020.
+Good afternoon!
+The current time is 14:11 PM on Tuesday September 22, 2020.
 
 Dataset    :  .
 The first five rows are:
@@ -1155,8 +1179,8 @@ rlk_multi.two.group.unpaired.meandiff</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:02 PM on Tuesday September 22, 2020.
+Good afternoon!
+The current time is 14:11 PM on Tuesday September 22, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -1176,8 +1200,8 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
 <p><img src="figure/first-analysis.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>No difference between old and modern cultivars!</p>
 </div>
-<div id="rlp" class="section level3">
-<h3>RLP</h3>
+<div id="rlp" class="section level2">
+<h2>RLP</h2>
 <pre class="r"><code>rlp_multi.two.group.unpaired &lt;- 
   rlp_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   dabest(`Group in violin table`, percs, 
@@ -1188,8 +1212,8 @@ rlp_multi.two.group.unpaired</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:02 PM on Tuesday September 22, 2020.
+Good afternoon!
+The current time is 14:11 PM on Tuesday September 22, 2020.
 
 Dataset    :  .
 The first five rows are:
@@ -1213,8 +1237,8 @@ rlp_multi.two.group.unpaired.meandiff</code></pre>
 <pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
 =============================================================
 
-Good evening!
-The current time is 12:02 PM on Tuesday September 22, 2020.
+Good afternoon!
+The current time is 14:11 PM on Tuesday September 22, 2020.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -1235,10 +1259,10 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
 <p>Again, no difference between old and modern cultivars!</p>
 </div>
 </div>
-<div id="stats---classic-t-test" class="section level2">
-<h2>Stats - classic t-test</h2>
-<div id="nbs-1" class="section level3">
-<h3>NBS</h3>
+<div id="stats---classic-t-test" class="section level1">
+<h1>Stats - classic t-test</h1>
+<div id="nbs-1" class="section level2">
+<h2>NBS</h2>
 <pre class="r"><code>nbs_joined_groups %&gt;% 
   filter( !is.na(`PI-ID`) ) %&gt;%
     ggplot(aes(x=`Group in violin table`, y = percs,
@@ -1254,8 +1278,8 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
   guides(fill=FALSE)</code></pre>
 <p><img src="figure/first-analysis.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="rlp-1" class="section level3">
-<h3>RLP</h3>
+<div id="rlp-1" class="section level2">
+<h2>RLP</h2>
 <pre class="r"><code>rlp_joined_groups %&gt;% 
   filter( !is.na(`PI-ID`) ) %&gt;%
     ggplot(aes(x=`Group in violin table`, y = percs,
@@ -1271,8 +1295,8 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
   guides(fill=FALSE)</code></pre>
 <p><img src="figure/first-analysis.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="rlk-1" class="section level3">
-<h3>RLK</h3>
+<div id="rlk-1" class="section level2">
+<h2>RLK</h2>
 <pre class="r"><code>rlk_joined_groups %&gt;% 
   filter( !is.na(`PI-ID`) ) %&gt;%
     ggplot(aes(x=`Group in violin table`, y = percs,

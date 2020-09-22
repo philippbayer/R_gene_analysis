@@ -20,7 +20,7 @@ library(ggsignif)
 theme_set(theme_cowplot())
 ```
 
-## Introduction
+# Introduction
 
 
 ```{r}
@@ -34,7 +34,7 @@ pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt.gz')
 ```
 
 
-## NBS part
+# NBS part
 
 Let's pull the NBS genes from the table
 ```{r}
@@ -119,7 +119,7 @@ nbs_joined_groups %>% filter(!is.na(`PI-ID`)) %>%
   knitr::kable()
 ```
 
-## RLK part
+# RLK part
 
 Let's do the  same plot with RLKs
 
@@ -197,7 +197,7 @@ rlk_joined_groups %>% filter(!is.na(`PI-ID`)) %>%
   knitr::kable()
 ```
 
-## RLP part
+# RLP part
 
 And now with RLPs
 
@@ -283,18 +283,18 @@ rlp_joined_groups %>% filter(!is.na(`PI-ID`)) %>%
             std_perc = sd(percs)) %>% 
   knitr::kable()
 ```
-## Plotting together
+# Plotting together
 
 ```{r}
 nbs_vio + rlk_vio + rlp_vio
 ```
 
-## Stats - Dabayes
+# Stats - Dabayes
 
 I want to know whether the groups are statistically significantly different. First let's use dabestr
 
 
-### NBS
+## NBS
 
 Let's run dabestr first:
 
@@ -319,7 +319,7 @@ plot(nbs_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`
      rawplot.ylabel = 'Presence (%)', show.legend=FALSE)
 ```
 
-### RLK
+## RLK
 
 ```{r}
 rlk_multi.two.group.unpaired <- 
@@ -345,7 +345,7 @@ plot(rlk_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`
 No difference between old and modern cultivars!
 
 
-### RLP
+## RLP
 
 ```{r}
 rlp_multi.two.group.unpaired <- 
@@ -372,9 +372,9 @@ Again, no difference between old and modern cultivars!
 
 
 
-## Stats - classic t-test
+# Stats - classic t-test
 
-### NBS
+## NBS
 
 ```{r}
 nbs_joined_groups %>% 
@@ -392,7 +392,7 @@ nbs_joined_groups %>%
   guides(fill=FALSE)
 ```
 
-### RLP
+## RLP
 ```{r}
 rlp_joined_groups %>% 
   filter( !is.na(`PI-ID`) ) %>%
@@ -409,7 +409,7 @@ rlp_joined_groups %>%
   guides(fill=FALSE)
 ```
 
-### RLK
+## RLK
 
 ```{r}
 rlk_joined_groups %>% 
