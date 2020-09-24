@@ -1,0 +1,91 @@
+---
+title: "GWAS"
+author: "Philipp Bayer"
+date: "2020-09-23"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+Here I run GAPIT's methods with all phenotypes and the NLR gene matrix.
+
+```{r setup}
+
+#devtools::install_github("jiabowang/GAPIT3", dependencies=TRUE)
+# warning: GAPIT3 depends on LDheatmap, which was removed from CRAN. Install using devtools::install_github("cran/LDheatmap")
+
+library(GAPIT3)
+```
+
+Get all phenotypes:
+```{r}
+phenos <- list.files('./data/', pattern = '*txt')
+# remove larger data
+phenos <- phenos[!grepl('txt.gz', phenos)]
+```
+
+Got `r length(phenos)` phenotype files.
+Annoyingly, some files have several columns, some have only two (ID + Phenotype).
+
+I've written a Python script which transforms the NLR gene PAV matrix into the format GAPIT wants (check code/transformToGAPIT.py).
+
+OK let's run GAPIT with the Python output.
+
+```{r}
+myGD <- read.table('./data/NLR_PAV_GD.txt', head=TRUE)
+myGM <- read.table('./data/NLR_PAV_GM.txt', head=TRUE)
+#myKI <- read.table('./data/SNP_KI.txt', head=FALSE) # this was calculated using SNPs from 
+# https://research-repository.uwa.edu.au/files/89232545/SNPs_lee.id.biallic_maf_0.05_geno_0.1.vcf.gz
+```
+
+I used MVP for that on Pawsey's Zeus, the following code was run before remotely:
+
+```{r eval=FALSE}
+
+library(rMVP)
+MVP.Data(fileVCF="SNPs_lee.id.biallic_maf_0.05_geno_0.1.vcf",
+       fileKin=FALSE,
+         filePC=FALSE,
+         out="mvp.vcf")
+MVP.Data.Kin(TRUE, mvp_prefix='mvp.vcf', out='mvp')
+MVP.Data.PC(TRUE, mvp_prefix='mvp.vcf', out='mvp', perc=1, pcs.keep=5)
+```
+
+Then I need to fix the kinship matrix because the GAPIT format is a bit different, and the order needs to be identical.
+
+Let's run GAPIT then, this might take a few minutes:
+```{r eval=FALSE}
+for( i in seq_along(phenos)){
+  thisy <- phenos[i]
+  myY <- read.table(paste('data/', thisy, sep=''), head=TRUE)
+
+  # for now, let's skip those multicolumn phenotypes, I'm not sure what they are
+  if(ncol(myY) != 2) {
+    next
+  }
+
+  GAPIT(Y=myY[,c(1,2)],
+        GD=myGD,
+        GM=myGM,
+        model=c('GLM','MLM','FarmCPU'),
+        KI=myKI,
+        PCA.total = 0) # avoid calculating PCs based on PAV data
+  break
+}
+
+# gapit always seems to write to the current working directory. That annoys me.
+# setwd() probably breaks something in workflowr,
+# so let's just move the files all over
+
+gapit_out <- list.files('.', pattern='GAPIT*')
+for (i in seq_along(gapit_out)) {
+  thisf <- gapit_out[i]
+  # there's no file.move for some reason?!?
+  file.copy(from = thisf,
+            to = paste('output/GAPIT/', thisf, sep=''))
+  file.remove(thisf)
+}
+```
+

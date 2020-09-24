@@ -19,4 +19,7 @@ Welcome to the website summarising the soybean R-gene analysis.
 
 3. Comparing TEs with variable R-genes: TOCOME
 
+4. Running GWAS with NLR PAV: [link](gwas.html)
+
+5. Comparing SNP-based phylogenies with NLR PAV: [link](phylo.html)
 

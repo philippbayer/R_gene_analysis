@@ -1,0 +1,18 @@
+---
+title: "phylo"
+author: "Philipp Bayer"
+date: "2020-09-23"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+Here I compare PAV of the most 'different' NLR genes with the SNP-based phylogeny to plot them on top of each other.
+```{r setup}
+library(ggtree)
+```
+
+I made the SNP-based phylogeny using vcftoolkit v0.2.8 on Pawsey's Zeus using 'vk phylo tree nj SNPs_lee.id.biallic_maf_0.05_geno_0.1.vcf > tree.nwk'
+
