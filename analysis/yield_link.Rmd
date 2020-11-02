@@ -470,7 +470,6 @@ mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Countr
 summary(mixed.lmer)
 ```
 
-
 Nice! Yield is negatively correlated with the number of NLR genes when accounting for breeding group AND country
 
 ```{r}
@@ -484,6 +483,17 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour =
       xlab('Scaled and centered NLR gene count') +
       ylab('Scaled and centered yield')
 ```
+
+Some diagnostics:
+```{r}
+plot(mixed.lmer)
+```
+```{r}
+qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))
+```
+
+Hm, the qqplot looks slightly worse than when I use maturity group alone, interesting!
 
 BIG DISCLAIMER: Currently, I treat country and group not as nested variables, they're independent. I think that is the way it should be in this case but I'm thinking.
 
@@ -510,7 +520,13 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour =
       xlab('Raw NLR gene count') +
       ylab('Raw yield')
 ```
-
+```{r}
+plot(mixed.lmer)
+```
+```{r}
+qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))
+```
 
 #### More complex models
 
