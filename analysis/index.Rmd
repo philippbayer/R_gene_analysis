@@ -13,13 +13,14 @@ Welcome to the website summarising the soybean R-gene analysis.
 
 0. EDA of PAV and different classes: [link](eda.html)
 
-1. Plotting of NBS/RLK/RLP plots based on percentage lost: [link](first-analysis.html). These results are mostly not in the paper.
+1. Plotting of NBS/RLK/RLP plots based on percentage lost: [link](first-analysis.html). These results are mostly not in the paper. Finished.
 
-2. Plotting of NBS/RLK/RLP plots based on total numbers: [link](total_numbers.html). These results are the main part of the paper.
+2. Plotting of NBS/RLK/RLP plots based on total numbers: [link](total_numbers.html). These results are the main part of the paper. Finished.
 
 3. Comparing TEs with variable R-genes: TOCOME
 
-4. Running GWAS with NLR PAV: [link](gwas.html)
+4. Running GWAS with NLR PAV: [link](gwas.html) Under construction.
 
-5. Comparing SNP-based phylogenies with NLR PAV: [link](phylo.html)
+5. Comparing SNP-based phylogenies with NLR PAV: [link](phylo.html) Under construction.
 
+6. Linking yield with NLR gene counts: [link](yield_link.Rmd). Finished.
