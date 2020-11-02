@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree5166687d86d2b92adbd28ca61bc5b41a957ff40btargetblank5166687a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/5166687d86d2b92adbd28ca61bc5b41a957ff40b" target="_blank">5166687</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebe2f299c9104413593c977fd19f3be4790bf97cdtargetblankbe2f299a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/be2f299c9104413593c977fd19f3be4790bf97cd" target="_blank">be2f299</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree5166687d86d2b92adbd28ca61bc5b41a957ff40btargetblank5166687a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebe2f299c9104413593c977fd19f3be4790bf97cdtargetblankbe2f299a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/5166687d86d2b92adbd28ca61bc5b41a957ff40b" target="_blank">5166687</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/be2f299c9104413593c977fd19f3be4790bf97cd" target="_blank">be2f299</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -604,6 +604,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/be2f299c9104413593c977fd19f3be4790bf97cd/analysis/yield_link.Rmd" target="_blank">be2f299</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-02
+</td>
+<td>
+wflow_publish(“analysis/yield_link.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/58f8610c303d6077b3f0d52ed5ee501777bcdf74/docs/yield_link.html" target="_blank">58f8610</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1209,6 +1243,13 @@ presences2 0.051 </code></pre>
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;)</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Some diagnostics:</p>
+<pre class="r"><code>plot(mixed.lmer)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Hm, the qqplot looks slightly worse than when I use maturity group alone, interesting!</p>
 <p>BIG DISCLAIMER: Currently, I treat country and group not as nested variables, they’re independent. I think that is the way it should be in this case but I’m thinking.</p>
 <div id="non-normalised-yield" class="section level4">
 <h4>Non-normalised yield</h4>
@@ -1253,7 +1294,12 @@ presences.x -0.991</code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Raw NLR gene count&#39;) +
       ylab(&#39;Raw yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(mixed.lmer)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="more-complex-models" class="section level4">
 <h4>More complex models</h4>
@@ -1333,7 +1379,7 @@ boundary (singular) fit: see ?isSingular</code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Raw NLR gene count&#39;) +
       ylab(&#39;Raw yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
 <p>And now both random slopes:</p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
