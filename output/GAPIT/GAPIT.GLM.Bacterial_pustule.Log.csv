@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("75", "2")
+group.by ,20
+Trait name ,GLM.Bacterial_pustule
+Kinship,1110:1111
+Z Matrix,c(76, 76)
+Covariate,c(75, 2)
+SNP.P3D,TRUE
+Clustering algorithms,average
+Group kinship,Mean
+group.from ,1
+group.to ,1
