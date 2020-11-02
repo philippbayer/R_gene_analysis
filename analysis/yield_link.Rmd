@@ -17,7 +17,8 @@ library(dabestr)
 library(cowplot)
 library(ggsignif)
 library(ggforce)
-
+library(lme4)
+library(lmerTest)
 theme_set(theme_cowplot())
 ```
 
@@ -141,6 +142,7 @@ And now let's look at the oil phenotype:
 ```{r oil_join}
 oil <- read_tsv('./data/oil_phenotype.txt')
 oil_join <- left_join(nbs_res_tibb, oil, by=c('names'='Line')) %>% filter(!is.na(Oil))
+oil_join
 ```
 
 
@@ -352,3 +354,231 @@ nbs_joined_groups %>%
 
 Nope, still significantly higher in modern cultivars!
 
+# Mixed modeling
+
+Alright here's my hypothesis: There's a link between cultivar status (Old, Wild, Landrace, Modern), r-gene count, and yield, but it's 'hidden' by country differences. 
+
+Great tutorial here: https://ourcodingclub.github.io/tutorials/mixed-models
+
+So we'll have to build some lme4 models! 
+
+## Oil
+
+
+```{r}
+nbs_joined_groups$presences2 <- scale(nbs_joined_groups$presences, center=T, scale=T)
+hist(nbs_joined_groups$presences2)
+```
+```{r}
+oil_nbs_joined_groups <- nbs_joined_groups %>% inner_join(oil_join, by = 'names') 
+oil_nbs_joined_groups$Oil2 <- scale(oil_nbs_joined_groups$Oil, center=T, scale=T)
+
+```
+
+```{r}
+basic.lm <- lm(Oil2 ~ presences2, data=oil_nbs_joined_groups)
+```
+
+```{r}
+ggplot(oil_nbs_joined_groups, aes(x = presences2, y = Oil2)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+Hm looks messy, you can see two groups
+
+```{r}
+plot(basic.lm, which = 1)
+```
+
+which is confirmed by the messy line
+
+```{r}
+plot(basic.lm, which = 2)
+```
+
+and this garbage qqplot.
+
+So let's build an lmer model!
+
+
+```{r}
+mixed.lmer <- lmer(Oil2 ~ presences2 + (1|`Group in violin table`), data=oil_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+So the Variance for `Group in violin table` is 1.3349, that means it's 1.3349/(1.3349+0.4075) *100 = 76% of the variance is explained by the four groups!
+
+```{r}
+plot(mixed.lmer)
+```
+
+```{r}
+qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))
+```
+
+These still look fairly bad - better than before, but the QQ plot still isn't on the line.
+
+Let's quickly check yield too
+
+## Yield
+
+```{r}
+
+yield_nbs_joined_groups <- nbs_joined_groups %>% inner_join(yield_join, by = 'names') 
+yield_nbs_joined_groups$Yield2 <-scale(yield_nbs_joined_groups$Yield, center=T, scale=T)
+
+```
+
+```{r}
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`), data=yield_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+Percentage explained by breeding group: 0.6466 / (0.6466+0.8600)*100 = 42%
+
+```{r}
+plot(mixed.lmer)
+```
+
+```{r}
+qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))
+```
+
+:O
+
+p-value of 0.000247 for the normalised presences while accounting for the breeding group, that's beautiful.
+
+## Adding country
+
+We should also add the country the plant is from as a random effect, that definitely has an influence too (perhaps a stronger one???)
+
+### Yield
+
+```{r}
+country <- read_csv('./data/Cultivar_vs_country.csv')
+
+names(country) <- c('names', 'PI-ID', 'Country')
+
+yield_country_nbs_joined_groups <- yield_nbs_joined_groups %>% inner_join(country)
+```
+
+```{r}
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+
+Nice! Yield is negatively correlated with the number of NLR genes when accounting for breeding group AND country
+
+```{r}
+ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Scaled and centered NLR gene count') +
+      ylab('Scaled and centered yield')
+```
+
+BIG DISCLAIMER: Currently, I treat country and group not as nested variables, they're independent. I think that is the way it should be in this case but I'm thinking.
+
+
+#### Non-normalised yield
+
+Let's see whether the 'raw' values perform the same.
+
+
+```{r}
+mixed.lmer <- lmer(Yield ~ presences.x + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+Oh, lower p-values for the intercept
+
+```{r}
+ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Raw NLR gene count') +
+      ylab('Raw yield')
+```
+
+
+#### More complex models
+
+If I add random slopes to either groups not much changes, I do get warnings indicating that there's not much in the data:
+```{r}
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+
+```{r}
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+Oh, a significant p-value, let's plot plot that and compare with he previous plot:
+
+```{r}
+ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Raw NLR gene count') +
+      ylab('Raw yield')
+```
+Quite similar, mostly downwards trajectories for each country.
+
+And now both random slopes:
+
+```{r}
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+Yeah, nah
+
+### Oil
+```{r}
+oil_country_nbs_joined_groups <- oil_nbs_joined_groups %>% inner_join(country)
+
+mixed.lmer <- lmer(Oil2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=oil_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+No significance here.
+
+### Protein
+
+```{r}
+protein_nbs_joined_groups <- nbs_joined_groups %>% inner_join(protein_join, by = 'names') 
+protein_nbs_joined_groups$Protein2 <- scale(protein_nbs_joined_groups$Protein, center=T, scale=T)
+protein_country_nbs_joined_groups <- protein_nbs_joined_groups %>% inner_join(country)
+
+mixed.lmer <- lmer(Protein2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=protein_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+No significance here.
+
+### Seed weight
+```{r}
+seed_nbs_joined_groups <- nbs_joined_groups %>% inner_join(seed_join, by = 'names') 
+seed_nbs_joined_groups$wt2 <- scale(seed_nbs_joined_groups$wt, center=T, scale=T)
+seed_country_nbs_joined_groups <- seed_nbs_joined_groups %>% inner_join(country)
+mixed.lmer <- lmer(wt2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=seed_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+Again, no significance here.
