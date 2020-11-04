@@ -551,8 +551,8 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour =
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
-      xlab('Raw NLR gene count') +
-      ylab('Raw yield')
+      xlab('Scaled and centered NLR gene count') +
+      ylab('Scaled and centered yield')
 ```
 Quite similar, mostly downwards trajectories for each country.
 
@@ -563,6 +563,17 @@ mixed.lmer <- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`
 summary(mixed.lmer)
 ```
 
+```{r}
+ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Scaled and centered NLR gene count') +
+      ylab('Scaled and centered yield')
+```
 Yeah, nah
 
 ### Oil
