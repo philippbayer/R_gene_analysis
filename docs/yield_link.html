@@ -413,7 +413,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-11-02
+<strong>Last updated:</strong> 2020-11-04
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebe2f299c9104413593c977fd19f3be4790bf97cdtargetblankbe2f299a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/be2f299c9104413593c977fd19f3be4790bf97cd" target="_blank">be2f299</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2d9c3db82be5910c240bb90a3f36de6d7e5813a5targetblank2d9c3dba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/2d9c3db82be5910c240bb90a3f36de6d7e5813a5" target="_blank">2d9c3db</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebe2f299c9104413593c977fd19f3be4790bf97cdtargetblankbe2f299a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2d9c3db82be5910c240bb90a3f36de6d7e5813a5targetblank2d9c3dba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/be2f299c9104413593c977fd19f3be4790bf97cd" target="_blank">be2f299</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/2d9c3db82be5910c240bb90a3f36de6d7e5813a5" target="_blank">2d9c3db</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -530,8 +530,6 @@ Untracked files:
     Untracked:  data/CR15_R2.txt
     Untracked:  data/CR_14_R1.txt
     Untracked:  data/CR_14_R2.txt
-    Untracked:  data/Cultivar_vs_country.csv
-    Untracked:  data/Cultivar_vs_maturity_group.csv
     Untracked:  data/KS_R1.txt
     Untracked:  data/KS_R2.txt
     Untracked:  data/NBS_PAV.txt.gz
@@ -565,7 +563,6 @@ Untracked files:
     Untracked:  data/sudden.txt
     Untracked:  data/virus.txt
     Untracked:  data/yield.txt
-    Untracked:  output/GAPIT/
 
 </code></pre>
 <p>
@@ -604,6 +601,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/2d9c3db82be5910c240bb90a3f36de6d7e5813a5/analysis/yield_link.Rmd" target="_blank">2d9c3db</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-04
+</td>
+<td>
+wflow_publish(c(“analysis/index.Rmd”, “analysis/yield_link.Rmd”))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/f34dd483942b9554f0f122cc75a9bfd7c4a17b9d/docs/yield_link.html" target="_blank">f34dd48</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1377,8 +1408,8 @@ boundary (singular) fit: see ?isSingular</code></pre>
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = &quot;none&quot;) +
-      xlab(&#39;Raw NLR gene count&#39;) +
-      ylab(&#39;Raw yield&#39;)</code></pre>
+      xlab(&#39;Scaled and centered NLR gene count&#39;) +
+      ylab(&#39;Scaled and centered yield&#39;)</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
 <p>And now both random slopes:</p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
@@ -1412,7 +1443,16 @@ presences2  -0.23848    0.14300  1.96304  -1.668    0.240
 Correlation of Fixed Effects:
            (Intr)
 presences2 0.231 </code></pre>
-<p>Yeah, nah</p>
+<pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = &quot;none&quot;) +
+      xlab(&#39;Scaled and centered NLR gene count&#39;) +
+      ylab(&#39;Scaled and centered yield&#39;)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /> Yeah, nah</p>
 </div>
 </div>
 <div id="oil-1" class="section level3">
