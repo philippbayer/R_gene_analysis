@@ -1,7 +1,7 @@
-name: R gene analysis
+name: R_gene_analysis
 output_dir: ../docs
 navbar:
-  title: R_gene_analysis
+  title: R gene analysis
   left:
   - text: Home
     href: index.html
