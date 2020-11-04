@@ -1,4 +1,4 @@
-name: R_gene_analysis
+name: R gene analysis
 output_dir: ../docs
 navbar:
   title: R_gene_analysis

@@ -1,4 +1,4 @@
-# R_gene_analysis
+# R gene analysis
 
 A [workflowr][] project.
 
