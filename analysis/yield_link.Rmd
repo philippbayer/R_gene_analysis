@@ -19,6 +19,8 @@ library(ggsignif)
 library(ggforce)
 library(lme4)
 library(lmerTest)
+library(sjPlot)
+library(dotwhisker)
 theme_set(theme_cowplot())
 ```
 
@@ -451,6 +453,18 @@ qqline(resid(mixed.lmer))
 
 p-value of 0.000247 for the normalised presences while accounting for the breeding group, that's beautiful.
 
+
+```{r}
+ggplot(yield_nbs_joined_groups, aes(x = presences2, y = Yield2)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Scaled and centered NLR gene count') +
+      ylab('Scaled and centered yield')
+```
 ## Adding country
 
 We should also add the country the plant is from as a random effect, that definitely has an influence too (perhaps a stronger one???)
@@ -528,6 +542,36 @@ qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))
 ```
 
+
+##### Plotting effect of each covariate
+
+
+```{r}
+re.effects <- plot_model(mixed.lmer, type = "re", show.values = TRUE)
+```
+
+```{r}
+#lmerTest breaks these other packages so I better unload it and reload only lme4
+detach("package:lmerTest", unload=TRUE)
+detach("package:lme4", unload=TRUE)
+library(lme4)
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+
+dwplot(mixed.lmer,
+       vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2))
+```
+
+```{r}
+library(stargazer)
+stargazer(mixed.lmer, type = "text",
+          digits = 3,
+          star.cutoffs = c(0.05, 0.01, 0.001),
+          digit.separator = "")
+# alright back to regular programming
+library(lmerTest)
+```
+
+
 #### More complex models
 
 If I add random slopes to either groups not much changes, I do get warnings indicating that there's not much in the data:
@@ -553,6 +597,26 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour =
       theme(legend.position = "none") +
       xlab('Scaled and centered NLR gene count') +
       ylab('Scaled and centered yield')
+```
+Quite similar, mostly downwards trajectories for each country.
+
+Let's do that non-normalised:
+```{r}
+mixed.lmer <- lmer(Yield ~ presences.x + (1|`Group in violin table`) + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+
+```{r}
+ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Raw NLR gene count') +
+      ylab('Raw yield')
 ```
 Quite similar, mostly downwards trajectories for each country.
 
