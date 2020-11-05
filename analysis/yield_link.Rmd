@@ -534,28 +534,31 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour =
       xlab('Raw NLR gene count') +
       ylab('Raw yield')
 ```
+
 ```{r}
 plot(mixed.lmer)
 ```
+
 ```{r}
 qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))
 ```
 
 
-##### Plotting effect of each covariate
-
+#### Plotting effect of each covariate
 
 ```{r}
-re.effects <- plot_model(mixed.lmer, type = "re", show.values = TRUE)
+(re.effects <- plot_model(mixed.lmer, type = "re", show.values = TRUE))
 ```
+
 
 ```{r}
 #lmerTest breaks these other packages so I better unload it and reload only lme4
 detach("package:lmerTest", unload=TRUE)
-detach("package:lme4", unload=TRUE)
-library(lme4)
-mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+
+yield_country_nbs_joined_groups_renamed <- yield_country_nbs_joined_groups
+names(yield_country_nbs_joined_groups_renamed) <- c('names', 'presences.x', 'PI-ID', 'Group', 'presences2', 'presences.y', 'Yield', 'Yield2', 'Country')
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
 
 dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2))
@@ -567,8 +570,31 @@ stargazer(mixed.lmer, type = "text",
           digits = 3,
           star.cutoffs = c(0.05, 0.01, 0.001),
           digit.separator = "")
+```
+
+```{r}
+library(ggeffects)
+ggpredict(mixed.lmer, terms = c("presences2",  'Group'), type = "re") %>% 
+   plot() +
+   theme_minimal()
+```
+Let's also plot that for non-normalised data
+
+```{r}
+mixed.lmer <- lmer(Yield ~ presences.x + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
+ggpredict(mixed.lmer, terms = c("presences.x",  'Group'), type = "re") %>% 
+   plot() +
+   theme_minimal_hgrid() +
+  xlab('Raw NLR count') +
+  ylab('Raw yield')
+```
+
+
+```{r}
 # alright back to regular programming
 library(lmerTest)
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+
 ```
 
 
