@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree25f0f54625162de190d178f4c2496921c8fe8bf5targetblank25f0f54a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/25f0f54625162de190d178f4c2496921c8fe8bf5" target="_blank">25f0f54</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree69e9c2938f188f9140d621f44f7e0206c3e7a0ectargetblank69e9c29a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/69e9c2938f188f9140d621f44f7e0206c3e7a0ec" target="_blank">69e9c29</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree25f0f54625162de190d178f4c2496921c8fe8bf5targetblank25f0f54a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree69e9c2938f188f9140d621f44f7e0206c3e7a0ectargetblank69e9c29a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/25f0f54625162de190d178f4c2496921c8fe8bf5" target="_blank">25f0f54</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/69e9c2938f188f9140d621f44f7e0206c3e7a0ec" target="_blank">69e9c29</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -522,6 +522,7 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/Brec_R1.txt
@@ -601,6 +602,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/69e9c2938f188f9140d621f44f7e0206c3e7a0ec/analysis/yield_link.Rmd" target="_blank">69e9c29</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-05
+</td>
+<td>
+wflow_publish(“analysis/yield_link.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/5ddfe2bc7eddd83a8fb3144636a7840f7ce4270f/docs/yield_link.html" target="_blank">5ddfe2b</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1380,14 +1415,21 @@ presences.x -0.991</code></pre>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div id="plotting-effect-of-each-covariate" class="section level5">
-<h5>Plotting effect of each covariate</h5>
-<pre class="r"><code>re.effects &lt;- plot_model(mixed.lmer, type = &quot;re&quot;, show.values = TRUE)</code></pre>
+</div>
+<div id="plotting-effect-of-each-covariate" class="section level4">
+<h4>Plotting effect of each covariate</h4>
+<pre class="r"><code>(re.effects &lt;- plot_model(mixed.lmer, type = &quot;re&quot;, show.values = TRUE))</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-45-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#lmerTest breaks these other packages so I better unload it and reload only lme4
 detach(&quot;package:lmerTest&quot;, unload=TRUE)
-detach(&quot;package:lme4&quot;, unload=TRUE)
-library(lme4)
-mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+
+yield_country_nbs_joined_groups_renamed &lt;- yield_country_nbs_joined_groups
+names(yield_country_nbs_joined_groups_renamed) &lt;- c(&#39;names&#39;, &#39;presences.x&#39;, &#39;PI-ID&#39;, &#39;Group&#39;, &#39;presences2&#39;, &#39;presences.y&#39;, &#39;Yield&#39;, &#39;Yield2&#39;, &#39;Country&#39;)
+mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
 
 dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = &quot;grey60&quot;, linetype = 2))</code></pre>
@@ -1416,9 +1458,21 @@ Akaike Inf. Crit.             1967.003
 Bayesian Inf. Crit.           1990.043           
 =================================================
 Note:               *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</code></pre>
+<pre class="r"><code>library(ggeffects)
+ggpredict(mixed.lmer, terms = c(&quot;presences2&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
+   plot() +
+   theme_minimal()</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /> Let’s also plot that for non-normalised data</p>
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
+ggpredict(mixed.lmer, terms = c(&quot;presences.x&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
+   plot() +
+   theme_minimal_hgrid() +
+  xlab(&#39;Raw NLR count&#39;) +
+  ylab(&#39;Raw yield&#39;)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># alright back to regular programming
-library(lmerTest)</code></pre>
-</div>
+library(lmerTest)
+mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)</code></pre>
 </div>
 <div id="more-complex-models" class="section level4">
 <h4>More complex models</h4>
@@ -1498,7 +1552,7 @@ boundary (singular) fit: see ?isSingular</code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
 <p>Let’s do that non-normalised:</p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + (1|`Group in violin table`) + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
@@ -1545,7 +1599,7 @@ Model failed to converge: degenerate  Hessian with 1 negative eigenvalues</code>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Raw NLR gene count&#39;) +
       ylab(&#39;Raw yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
 <p>And now both random slopes:</p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
@@ -1587,7 +1641,7 @@ presences2 0.231 </code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /> Yeah, nah</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-57-1.png" width="672" style="display: block; margin: auto;" /> Yeah, nah</p>
 </div>
 </div>
 <div id="oil-1" class="section level3">
@@ -1718,14 +1772,14 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] lmerTest_3.1-2       stargazer_5.2.2      lme4_1.1-21         
- [4] dotwhisker_0.5.0     sjPlot_2.8.6         Matrix_1.2-18       
- [7] ggforce_0.3.1        ggsignif_0.6.0       cowplot_1.0.0       
-[10] dabestr_0.3.0        magrittr_1.5         ggsci_2.9           
-[13] patchwork_1.0.0      forcats_0.5.0        stringr_1.4.0       
-[16] dplyr_1.0.0          purrr_0.3.4          readr_1.3.1         
-[19] tidyr_1.1.0          tibble_3.0.2         ggplot2_3.3.2       
-[22] tidyverse_1.3.0      workflowr_1.6.2.9000
+ [1] lmerTest_3.1-2       ggeffects_0.16.0     stargazer_5.2.2     
+ [4] dotwhisker_0.5.0     sjPlot_2.8.6         lme4_1.1-21         
+ [7] Matrix_1.2-18        ggforce_0.3.1        ggsignif_0.6.0      
+[10] cowplot_1.0.0        dabestr_0.3.0        magrittr_1.5        
+[13] ggsci_2.9            patchwork_1.0.0      forcats_0.5.0       
+[16] stringr_1.4.0        dplyr_1.0.0          purrr_0.3.4         
+[19] readr_1.3.1          tidyr_1.1.0          tibble_3.0.2        
+[22] ggplot2_3.3.2        tidyverse_1.3.0      workflowr_1.6.2.9000
 
 loaded via a namespace (and not attached):
  [1] TH.data_1.0-10      minqa_1.2.4         colorspace_1.4-1   
@@ -1736,31 +1790,31 @@ loaded via a namespace (and not attached):
 [16] mvtnorm_1.1-1       lubridate_1.7.9     xml2_1.3.2         
 [19] codetools_0.2-16    splines_3.6.3       knitr_1.29         
 [22] sjmisc_2.8.5        polyclip_1.10-0     jsonlite_1.7.1     
-[25] nloptr_1.2.1        ggeffects_0.16.0    broom_0.5.6        
-[28] dbplyr_1.4.4        effectsize_0.3.0    compiler_3.6.3     
-[31] httr_1.4.2          sjstats_0.18.0      emmeans_1.4.5      
-[34] backports_1.1.10    assertthat_0.2.1    cli_2.0.2          
-[37] later_1.1.0.1       tweenr_1.0.1        htmltools_0.5.0    
-[40] tools_3.6.3         coda_0.19-3         gtable_0.3.0       
-[43] glue_1.4.2          Rcpp_1.0.5          cellranger_1.1.0   
-[46] vctrs_0.3.1         nlme_3.1-148        insight_0.10.0     
-[49] xfun_0.17           ps_1.3.4            rvest_0.3.5        
-[52] lifecycle_0.2.0     getPass_0.2-2       MASS_7.3-51.6      
-[55] zoo_1.8-8           scales_1.1.1        hms_0.5.3          
-[58] promises_1.1.1      sandwich_2.5-1      RColorBrewer_1.1-2 
-[61] TMB_1.7.16          yaml_2.2.1          stringi_1.5.3      
-[64] bayestestR_0.7.5    boot_1.3-25         rlang_0.4.7        
-[67] pkgconfig_2.0.3     evaluate_0.14       lattice_0.20-41    
-[70] labeling_0.3        processx_3.4.4      tidyselect_1.1.0   
-[73] plyr_1.8.6          R6_2.4.1            generics_0.0.2     
-[76] multcomp_1.4-13     DBI_1.1.0           mgcv_1.8-31        
-[79] pillar_1.4.4        haven_2.3.1         whisker_0.4        
-[82] withr_2.2.0         survival_3.2-3      performance_0.5.1  
-[85] modelr_0.1.8        crayon_1.3.4        utf8_1.1.4         
-[88] rmarkdown_2.3       grid_3.6.3          readxl_1.3.1       
-[91] blob_1.2.1          callr_3.4.4         git2r_0.27.1       
-[94] reprex_0.3.0        digest_0.6.25       xtable_1.8-4       
-[97] httpuv_1.5.4        numDeriv_2016.8-1.1 munsell_0.5.0      </code></pre>
+[25] nloptr_1.2.1        broom_0.5.6         dbplyr_1.4.4       
+[28] effectsize_0.3.0    compiler_3.6.3      httr_1.4.2         
+[31] sjstats_0.18.0      emmeans_1.4.5       backports_1.1.10   
+[34] assertthat_0.2.1    cli_2.0.2           later_1.1.0.1      
+[37] tweenr_1.0.1        htmltools_0.5.0     tools_3.6.3        
+[40] coda_0.19-3         gtable_0.3.0        glue_1.4.2         
+[43] Rcpp_1.0.5          cellranger_1.1.0    vctrs_0.3.1        
+[46] nlme_3.1-148        insight_0.10.0      xfun_0.17          
+[49] ps_1.3.4            rvest_0.3.5         lifecycle_0.2.0    
+[52] getPass_0.2-2       MASS_7.3-51.6       zoo_1.8-8          
+[55] scales_1.1.1        hms_0.5.3           promises_1.1.1     
+[58] sandwich_2.5-1      RColorBrewer_1.1-2  TMB_1.7.16         
+[61] yaml_2.2.1          stringi_1.5.3       bayestestR_0.7.5   
+[64] boot_1.3-25         rlang_0.4.7         pkgconfig_2.0.3    
+[67] evaluate_0.14       lattice_0.20-41     labeling_0.3       
+[70] processx_3.4.4      tidyselect_1.1.0    plyr_1.8.6         
+[73] R6_2.4.1            generics_0.0.2      multcomp_1.4-13    
+[76] DBI_1.1.0           mgcv_1.8-31         pillar_1.4.4       
+[79] haven_2.3.1         whisker_0.4         withr_2.2.0        
+[82] survival_3.2-3      performance_0.5.1   modelr_0.1.8       
+[85] crayon_1.3.4        utf8_1.1.4          rmarkdown_2.3      
+[88] grid_3.6.3          readxl_1.3.1        blob_1.2.1         
+[91] callr_3.4.4         git2r_0.27.1        reprex_0.3.0       
+[94] digest_0.6.25       xtable_1.8-4        httpuv_1.5.4       
+[97] numDeriv_2016.8-1.1 munsell_0.5.0      </code></pre>
 </div>
 </div>
 </div>
