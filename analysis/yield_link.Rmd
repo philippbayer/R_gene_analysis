@@ -846,6 +846,12 @@ plot_model(mixed.lmer, type = "pred", terms = c("Count", "Group")) +
 ```
 
 ```{r}
-tab_model(mixed.lmer)
+tab_model(mixed.lmer, p.val='kr')
 ```
+
+σ measures the random effect variance I think, 0.52 is pretty good (this can easily be >1), but more useful to compare models with each other which I don't do here. 
+
+intraclass-correlation coefficient (ICC) measures how the proportion of variance explained by the grouping structure, in this case, country
+
+
 
