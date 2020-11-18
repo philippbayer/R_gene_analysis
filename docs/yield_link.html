@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreef0a5bdbe656458a75b326fc0e9ed465edf1c0d73targetblankf0a5bdba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/f0a5bdbe656458a75b326fc0e9ed465edf1c0d73" target="_blank">f0a5bdb</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb8b60b1c21cd45444b2d0876b5ceecb692608199targetblankb8b60b1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/b8b60b1c21cd45444b2d0876b5ceecb692608199" target="_blank">b8b60b1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreef0a5bdbe656458a75b326fc0e9ed465edf1c0d73targetblankf0a5bdba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb8b60b1c21cd45444b2d0876b5ceecb692608199targetblankb8b60b1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/f0a5bdbe656458a75b326fc0e9ed465edf1c0d73" target="_blank">f0a5bdb</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/b8b60b1c21cd45444b2d0876b5ceecb692608199" target="_blank">b8b60b1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,6 +601,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/b8b60b1c21cd45444b2d0876b5ceecb692608199/analysis/yield_link.Rmd" target="_blank">b8b60b1</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+Add StrengeJacke plots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/fb8bbfb6325075e2652df0b9c34e26d3654f8348/docs/yield_link.html" target="_blank">fb8bbfb</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2134,10 +2168,24 @@ qqline(resid(mixed.lmer))</code></pre>
 <pre class="r"><code>detach(&quot;package:lmerTest&quot;, unload=TRUE)
 
 yield_country_nbs_joined_groups_renamed &lt;- yield_country_nbs_joined_groups
-names(yield_country_nbs_joined_groups_renamed) &lt;- c(&#39;names&#39;, &#39;presences.x&#39;, &#39;PI-ID&#39;, &#39;Group&#39;, &#39;presences2&#39;, &#39;presences.y&#39;, &#39;Yield&#39;, &#39;Yield2&#39;, &#39;Country&#39;)
-mixed.lmer &lt;- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
-
-dwplot(mixed.lmer,
+names(yield_country_nbs_joined_groups_renamed) &lt;- c(&#39;names&#39;, &#39;Count&#39;, &#39;PI-ID&#39;, &#39;Group&#39;, &#39;presences2.x&#39;, &#39;presences.y&#39;, &#39;Yield&#39;, &#39;Yield2.x&#39;, &#39;Country&#39;)
+mixed.lmer &lt;- lmer(Yield ~ `Count` + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
+yield_country_nbs_joined_groups_renamed</code></pre>
+<pre><code># A tibble: 741 x 9
+   names Count `PI-ID` Group presences2.x[,1] presences.y Yield Yield2.x[,1]
+   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;fct&gt;            &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;
+ 1 AB-01   445 PI4580~ Land~           -0.119         445  1.54      -0.774 
+ 2 AB-02   454 PI6037~ Land~            1.35          454  1.3       -1.06  
+ 3 For     448 PI5486~ Mode~            0.371         448  3.34       1.40  
+ 4 HN001   448 PI5186~ Mode~            0.371         448  3.54       1.64  
+ 5 HN005   440 PI4041~ Land~           -0.935         440  2.15      -0.0366
+ 6 HN006   448 PI4077~ Land~            0.371         448  2.06      -0.145 
+ 7 HN007   442 PI4242~ Land~           -0.609         442  1.64      -0.653 
+ 8 HN008   439 PI4376~ Land~           -1.10          439  2.51       0.399 
+ 9 HN009   445 PI4950~ Land~           -0.119         445  1.85      -0.399 
+10 HN010   447 PI4689~ Land~            0.207         447  2.8        0.749 
+# ... with 731 more rows, and 1 more variable: Country &lt;chr&gt;</code></pre>
+<pre class="r"><code>dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = &quot;grey60&quot;, linetype = 2))</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(stargazer)
@@ -2151,7 +2199,7 @@ stargazer(mixed.lmer, type = &quot;text&quot;,
                      -----------------------------
                                  Yield            
 --------------------------------------------------
-presences.x                    -0.015**           
+Count                          -0.015**           
                                 (0.006)           
                                                   
 GroupOld cultivar               -0.245            
@@ -2171,46 +2219,151 @@ Bayesian Inf. Crit.            1714.779
 ==================================================
 Note:                *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</code></pre>
 <pre class="r"><code>library(ggeffects)
-ggpredict(mixed.lmer, terms = c(&quot;presences.x&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
+ggpredict(mixed.lmer, terms = c(&quot;Count&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
    plot() +
    theme_minimal_hgrid() +
-  xlab(&#39;NLR count&#39;) +  theme(plot.title=element_blank())</code></pre>
+   xlab(&#39;NLR count&#39;) +  
+   theme(plot.title=element_blank())</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + (presences.x|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
-summary(mixed.lmer)</code></pre>
-<pre><code>Linear mixed model fit by REML [&#39;lmerMod&#39;]
-Formula: Yield ~ presences.x + (presences.x | Group) + (1 | Country)
-   Data: yield_country_nbs_joined_groups_renamed
-
-REML criterion at convergence: 1679.5
-
-Scaled residuals: 
-     Min       1Q   Median       3Q      Max 
--3.08887 -0.56698  0.03087  0.65972  2.89927 
-
-Random effects:
- Groups   Name        Variance  Std.Dev.  Corr 
- Country  (Intercept) 2.590e-01 0.5089558      
- Group    (Intercept) 6.794e-01 0.8242671      
-          presences.x 4.472e-07 0.0006687 -1.00
- Residual             5.206e-01 0.7215562      
-Number of obs: 741, groups:  Country, 40; Group, 3
-
-Fixed effects:
-             Estimate Std. Error t value
-(Intercept)  9.088288   2.507413   3.625
-presences.x -0.015366   0.005566  -2.761
-
-Correlation of Fixed Effects:
-            (Intr)
-presences.x -0.991
-convergence code: 0
-boundary (singular) fit: see ?isSingular</code></pre>
-<pre class="r"><code>ggpredict(mixed.lmer, terms = c(&quot;presences.x&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
-   plot() +
-   theme_minimal_hgrid() +
-  xlab(&#39;NLR count&#39;) +  theme(plot.title=element_blank())</code></pre>
+<pre class="r"><code>library(sjPlot)
+plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
+  theme_minimal_hgrid()</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_model(mixed.lmer, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;)) +
+  theme_minimal_hgrid() +
+  xlab(&#39;NLR count&#39;) + 
+  theme(plot.title=element_blank())</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>tab_model(mixed.lmer)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Yield
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+8.76
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+3.93 – 13.59
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Count
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.03 – -0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.007</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Old cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.24
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.51 – 0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.067
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Modern cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.83
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.47 – 1.19
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+</tr>
+<tr>
+<td colspan="4" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.52
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub> <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.26
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ICC
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.33
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+40
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+741
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.070 / 0.378
+</td>
+</tr>
+</table>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2253,7 +2406,7 @@ loaded via a namespace (and not attached):
  [19] xml2_1.3.2          codetools_0.2-16    splines_3.6.3      
  [22] knitr_1.29          sjmisc_2.8.5        polyclip_1.10-0    
  [25] jsonlite_1.7.1      nloptr_1.2.1        broom_0.5.6        
- [28] dbplyr_1.4.4        effectsize_0.3.0    mapproj_1.2.7      
+ [28] dbplyr_1.4.4        effectsize_0.4.0    mapproj_1.2.7      
  [31] compiler_3.6.3      httr_1.4.2          sjstats_0.18.0     
  [34] emmeans_1.4.5       backports_1.1.10    assertthat_0.2.1   
  [37] cli_2.0.2           later_1.1.0.1       tweenr_1.0.1       
