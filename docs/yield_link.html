@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0targetblank0e810dba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0" target="_blank">0e810db</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree5b31dccfdb51d85b6effdc8fe6a0c15cea1260a0targetblank5b31dcca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/5b31dccfdb51d85b6effdc8fe6a0c15cea1260a0" target="_blank">5b31dcc</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0targetblank0e810dba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree5b31dccfdb51d85b6effdc8fe6a0c15cea1260a0targetblank5b31dcca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0" target="_blank">0e810db</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/5b31dccfdb51d85b6effdc8fe6a0c15cea1260a0" target="_blank">5b31dcc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,6 +601,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/5b31dccfdb51d85b6effdc8fe6a0c15cea1260a0/analysis/yield_link.Rmd" target="_blank">5b31dcc</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+wflow_publish(“analysis/yield_link.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/7fda2ed98971398ad1bf078dca538868ea0906b8/docs/yield_link.html" target="_blank">7fda2ed</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1619,6 +1653,17 @@ qqline(resid(mixed.lmer))</code></pre>
 names(country) &lt;- c(&#39;names&#39;, &#39;PI-ID&#39;, &#39;Country&#39;)
 
 yield_country_nbs_joined_groups &lt;- yield_nbs_joined_groups %&gt;% inner_join(country)</code></pre>
+<p>I need a summary table of sample sizes:</p>
+<pre class="r"><code>table(yield_country_nbs_joined_groups$Group)</code></pre>
+<pre><code>
+           Wild        Landrace    Old cultivar Modern cultivar 
+              0             656              33              52 </code></pre>
+<p>And a summary histogram:</p>
+<pre class="r"><code>yield_country_nbs_joined_groups %&gt;% ggplot(aes(x=presences.x, fill=Group)) + 
+  geom_histogram(bins=25) +
+  xlab(&#39;Yield&#39;) +
+  ylab(&#39;Count&#39;)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
@@ -1660,13 +1705,13 @@ presences2 0.051 </code></pre>
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;) +
       scale_color_manual(values=as.vector(isol(40)))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Some diagnostics:</p>
 <pre class="r"><code>plot(mixed.lmer)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Hm, the qqplot looks slightly worse than when I use maturity group alone, interesting!</p>
 <p>BIG DISCLAIMER: Currently, I treat country and group not as nested variables, they’re independent. I think that is the way it should be in this case but I’m thinking.</p>
 <div id="making-the-breeding-group-fixed-1" class="section level4">
@@ -1750,12 +1795,12 @@ presences.x -0.991</code></pre>
       xlab(&#39;NLR gene count&#39;) +
       ylab(&#39;Yield&#39;) +
       scale_color_manual(values=as.vector(isol(40)))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(mixed.lmer)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="making-the-breeding-group-fixed-2" class="section level4">
 <h4>Making the breeding group fixed</h4>
@@ -1803,20 +1848,20 @@ GrpMdrncltv -0.074  0.065  0.156</code></pre>
       xlab(&#39;NLR gene count&#39;) +
       ylab(&#39;Yield&#39;) +
       scale_color_manual(values=as.vector(isol(40)))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(mixed.lmer)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>These are the final numbers for the paper.</p>
 </div>
 <div id="plotting-effect-of-each-covariate" class="section level4">
 <h4>Plotting effect of each covariate</h4>
 <pre class="r"><code>(re.effects &lt;- plot_model(mixed.lmer, type = &quot;re&quot;, show.values = TRUE))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#lmerTest breaks these other packages so I better unload it and reload only lme4
 detach(&quot;package:lmerTest&quot;, unload=TRUE)
 
@@ -1826,7 +1871,7 @@ mixed.lmer &lt;- lmer(Yield2 ~ presences2 + Group + (1|Country), data=yield_coun
 
 dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = &quot;grey60&quot;, linetype = 2))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(stargazer)
 stargazer(mixed.lmer, type = &quot;text&quot;,
           digits = 3,
@@ -1861,14 +1906,14 @@ Note:                *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</code></pre>
 ggpredict(mixed.lmer, terms = c(&quot;presences2&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
    plot() +
    theme_minimal()</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /> Let’s also plot that for non-normalised data</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-57-1.png" width="672" style="display: block; margin: auto;" /> Let’s also plot that for non-normalised data</p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
 ggpredict(mixed.lmer, terms = c(&quot;presences.x&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
    plot() +
    theme_minimal_hgrid() +
   xlab(&#39;NLR count&#39;) +
   ylab(&#39;Yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-58-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># alright back to regular programming
 library(lmerTest)
 mixed.lmer &lt;- lmer(Yield2 ~ presences2 + Group + (1|Country), data=yield_country_nbs_joined_groups)</code></pre>
@@ -1952,7 +1997,7 @@ boundary (singular) fit: see ?isSingular</code></pre>
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;) +
       scale_color_manual(values=as.vector(isol(40)))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
 <p>Let’s do that non-normalised:</p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + Group + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)</code></pre>
 <pre><code>Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl = control$checkConv, :
@@ -2006,7 +2051,7 @@ Model failed to converge: degenerate  Hessian with 2 negative eigenvalues</code>
       xlab(&#39;NLR gene count&#39;) +
       ylab(&#39;Yield&#39;) +
       scale_color_manual(values=as.vector(isol(40)))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-64-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
 <p>And now both random slopes:</p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (presences2|Group) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
@@ -2049,7 +2094,7 @@ presences2 0.231 </code></pre>
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;) +
       scale_color_manual(values=as.vector(isol(40)))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-64-1.png" width="672" style="display: block; margin: auto;" /> Yeah, nah</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-66-1.png" width="672" style="display: block; margin: auto;" /> Yeah, nah</p>
 </div>
 </div>
 <div id="oil-1" class="section level3">
@@ -2224,14 +2269,14 @@ GrpMdrncltv -0.074  0.065  0.156</code></pre>
       xlab(&#39;NLR gene count&#39;) +
       ylab(&#39;Yield&#39;) +
       scale_color_manual(values=as.vector(isol(40)))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-69-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-71-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(mixed.lmer)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-70-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-71-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-74-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>detach(&quot;package:lmerTest&quot;, unload=TRUE)
 
 yield_country_nbs_joined_groups_renamed &lt;- yield_country_nbs_joined_groups
@@ -2254,7 +2299,7 @@ yield_country_nbs_joined_groups_renamed</code></pre>
 # ... with 731 more rows, and 1 more variable: Country &lt;chr&gt;</code></pre>
 <pre class="r"><code>dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = &quot;grey60&quot;, linetype = 2))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(stargazer)
 stargazer(mixed.lmer, type = &quot;text&quot;,
           digits = 3,
@@ -2291,16 +2336,16 @@ ggpredict(mixed.lmer, terms = c(&quot;Count&quot;,  &#39;Group&#39;), type = &qu
    theme_minimal_hgrid() +
    xlab(&#39;NLR count&#39;) +  
    theme(plot.title=element_blank())</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(sjPlot)
 plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
   theme_minimal_hgrid()</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-78-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_model(mixed.lmer, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;)) +
   theme_minimal_hgrid() +
   xlab(&#39;NLR count&#39;) + 
   theme(plot.title=element_blank())</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-79-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>tab_model(mixed.lmer, p.val=&#39;kr&#39;)</code></pre>
 <table style="border-collapse:collapse; border:none;">
 <tr>
