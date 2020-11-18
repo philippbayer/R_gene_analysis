@@ -8,7 +8,7 @@ editor_options:
 ---
 
 ```{r setup}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+knitr::opts_chunk$set(message = FALSE) 
 library(tidyverse)
 library(patchwork)
 library(ggsci)
