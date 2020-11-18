@@ -28,7 +28,7 @@ theme_set(theme_cowplot())
 
 ```{r}
 npg_col = pal_npg("nrc")(9)
-col_list <- c(`Wild-type`=npg_col[8],
+col_list <- c(`Wild`=npg_col[8],
    Landrace = npg_col[3],
   `Old cultivar`=npg_col[2],
   `Modern cultivar`=npg_col[4])
@@ -66,7 +66,7 @@ big_norm_count <- tibble(
   landrace = numeric(),
   Modern_cultivar = numeric(),
   Old_cultivar = numeric(),
-  `Wild-type` = numeric()
+  `Wild` = numeric()
 )
 
 groups_list <- split(groups$`Group in violin table`, groups$`Data-storage-ID`)
@@ -150,10 +150,11 @@ var_norm_count %>%
   head(20) %>% 
   select(Individual, `Wild-type`, landrace, Old_cultivar, Modern_cultivar, Class) %>% 
   pivot_longer(!c(Individual, Class)) %>% 
-  mutate(name = str_replace_all(name, 'landrace', 'Landrace')) %>% 
+  mutate(name = str_replace_all(name, 'landrace', 'Landrace')) %>%
+  mutate(name = str_replace_all(name, 'Wild-type', 'Wild')) %>% 
   mutate(name = str_replace_all(name, 'Old_cultivar', 'Old cultivar')) %>% 
   mutate(name = str_replace_all(name, 'Modern_cultivar', 'Modern cultivar')) %>%  
-  ggplot(aes(x=factor(name, levels=c('Wild-type', 'Landrace', 'Old cultivar', 'Modern cultivar')), y=value, group=Individual, color=Class)) + 
+  ggplot(aes(x=factor(name, levels=c('Wild', 'Landrace', 'Old cultivar', 'Modern cultivar')), y=value, group=Individual, color=Class)) + 
   geom_line(size=1.5) +
   xlab('Group') +
   ylab('Percentage presence of gene in group') +
@@ -182,7 +183,8 @@ var_norm_count %>%
   mutate(name = str_replace_all(name, 'landrace', 'Landrace')) %>% 
   mutate(name = str_replace_all(name, 'Old_cultivar', 'Old cultivar')) %>% 
   mutate(name = str_replace_all(name, 'Modern_cultivar', 'Modern cultivar')) %>%  
-  ggplot(aes(x=factor(name, levels=c('Wild-type', 'Landrace', 'Old cultivar', 'Modern cultivar')), y=value, group=Individual, color=Class)) + 
+  mutate(name = str_replace_all(name, 'Wild-type', 'Wild')) %>% 
+  ggplot(aes(x=factor(name, levels=c('Wild', 'Landrace', 'Old cultivar', 'Modern cultivar')), y=value, group=Individual, color=Class)) + 
   geom_line(size=1.5) +
   xlab('Group') +
   ylab('Percentage presence of gene in group') +
@@ -223,8 +225,9 @@ nbs_joined_groups <- left_join(nbs_res_tibb, groups, by = c('names'='Data-storag
 nbs_joined_groups$`Group in violin table` <- gsub('landrace', 'Landrace', nbs_joined_groups$`Group in violin table`)
 nbs_joined_groups$`Group in violin table` <- gsub('Modern_cultivar', 'Modern cultivar', nbs_joined_groups$`Group in violin table`)
 nbs_joined_groups$`Group in violin table` <- gsub('Old_cultivar', 'Old cultivar', nbs_joined_groups$`Group in violin table`)
+nbs_joined_groups$`Group in violin table` <- gsub('Wild-type', 'Wild', nbs_joined_groups$`Group in violin table`)
 
-nbs_joined_groups$`Group in violin table` <- factor(nbs_joined_groups$`Group in violin table`, levels=c(NA, 'Wild-type', 'Landrace', 'Old cultivar', 'Modern cultivar'))
+nbs_joined_groups$`Group in violin table` <- factor(nbs_joined_groups$`Group in violin table`, levels=c(NA, 'Wild', 'Landrace', 'Old cultivar', 'Modern cultivar'))
 ```
 
 ```{r}
@@ -309,8 +312,10 @@ rlk_joined_groups <- left_join(rlk_res_tibb, groups, by = c('names'='Data-storag
 rlk_joined_groups$`Group in violin table` <- gsub('landrace', 'Landrace', rlk_joined_groups$`Group in violin table`)
 rlk_joined_groups$`Group in violin table` <- gsub('Modern_cultivar', 'Modern cultivar', rlk_joined_groups$`Group in violin table`)
 rlk_joined_groups$`Group in violin table` <- gsub('Old_cultivar', 'Old cultivar', rlk_joined_groups$`Group in violin table`)
+rlk_joined_groups$`Group in violin table` <- gsub('Wild-type', 'Wild', rlk_joined_groups$`Group in violin table`)
 
-rlk_joined_groups$`Group in violin table` <- factor(rlk_joined_groups$`Group in violin table`, levels=c(NA, 'Wild-type', 'Landrace', 'Old cultivar', 'Modern cultivar'))
+
+rlk_joined_groups$`Group in violin table` <- factor(rlk_joined_groups$`Group in violin table`, levels=c(NA, 'Wild', 'Landrace', 'Old cultivar', 'Modern cultivar'))
 ```
 
 ```{r}
@@ -383,8 +388,9 @@ rlp_joined_groups <- left_join(rlp_res_tibb, groups, by = c('names'='Data-storag
 rlp_joined_groups$`Group in violin table` <- gsub('landrace', 'Landrace', rlp_joined_groups$`Group in violin table`)
 rlp_joined_groups$`Group in violin table` <- gsub('Modern_cultivar', 'Modern cultivar', rlp_joined_groups$`Group in violin table`)
 rlp_joined_groups$`Group in violin table` <- gsub('Old_cultivar', 'Old cultivar', rlp_joined_groups$`Group in violin table`)
+rlp_joined_groups$`Group in violin table` <- gsub('Wild-type', 'Wild', rlp_joined_groups$`Group in violin table`)
 
-rlp_joined_groups$`Group in violin table` <- factor(rlp_joined_groups$`Group in violin table`, levels=c(NA, 'Wild-type', 'Landrace', 'Old cultivar', 'Modern cultivar'))
+rlp_joined_groups$`Group in violin table` <- factor(rlp_joined_groups$`Group in violin table`, levels=c(NA, 'Wild', 'Landrace', 'Old cultivar', 'Modern cultivar'))
 ```
 
 ```{r}
@@ -397,6 +403,7 @@ rlp_vio <- rlp_joined_groups %>% filter(`Group in violin table` != 'NA') %>%
   guides(fill = FALSE)
 rlp_vio
 ```
+
 
 ```{r}
 rlp_joined_groups %>% filter(`Group in violin table` != 'NA') %>% 
@@ -437,7 +444,7 @@ Let's run dabestr first:
 nbs_multi.two.group.unpaired <- 
   nbs_joined_groups %>% filter(!is.na(`PI-ID`)) %>% 
   dabest(`Group in violin table`, presences, 
-         idx = list(c("Wild-type", "Landrace"),
+         idx = list(c("Wild", "Landrace"),
                     c('Old cultivar', 'Modern cultivar')),
          paired = FALSE)
 nbs_multi.two.group.unpaired
@@ -460,7 +467,7 @@ plot(nbs_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`
 rlk_multi.two.group.unpaired <- 
   rlk_joined_groups %>% filter(!is.na(`PI-ID`)) %>% 
   dabest(`Group in violin table`, presences, 
-         idx = list(c("Wild-type", "Landrace"),
+         idx = list(c("Wild", "Landrace"),
                     c('Old cultivar', 'Modern cultivar')),
          paired = FALSE)
 rlk_multi.two.group.unpaired
@@ -486,7 +493,7 @@ No difference between old and modern cultivars!
 rlp_multi.two.group.unpaired <- 
   rlp_joined_groups %>% filter(!is.na(`PI-ID`)) %>% 
   dabest(`Group in violin table`, presences, 
-         idx = list(c("Wild-type", "Landrace"),
+         idx = list(c("Wild", "Landrace"),
                     c('Old cultivar', 'Modern cultivar')),
          paired = FALSE)
 rlp_multi.two.group.unpaired
@@ -521,7 +528,7 @@ nbs_joined_groups %>%
   theme_minimal_hgrid() +
   theme(axis.text.x = element_text(size=12),
         axis.text.y = element_text(size=12)) +
-  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
   guides(fill=FALSE) +
@@ -540,7 +547,7 @@ rlp_joined_groups %>%
   theme_minimal_hgrid() +
   theme(axis.text.x = element_text(size=12),
         axis.text.y = element_text(size=12)) +
-  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
   guides(fill=FALSE) +
@@ -560,7 +567,7 @@ rlk_joined_groups %>%
   theme_minimal_hgrid() +
   theme(axis.text.x = element_text(size=12),
         axis.text.y = element_text(size=12)) +
-  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
   guides(fill=FALSE) +
