@@ -494,6 +494,21 @@ names(country) <- c('names', 'PI-ID', 'Country')
 yield_country_nbs_joined_groups <- yield_nbs_joined_groups %>% inner_join(country)
 ```
 
+I need a summary table of sample sizes:
+
+```{r}
+table(yield_country_nbs_joined_groups$Group)
+```
+
+And a summary histogram:
+
+```{r}
+yield_country_nbs_joined_groups %>% ggplot(aes(x=presences.x, fill=Group)) + 
+  geom_histogram(bins=25) +
+  xlab('Yield') +
+  ylab('Count')
+```
+
 ```{r}
 mixed.lmer <- lmer(Yield2 ~ presences2 + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
