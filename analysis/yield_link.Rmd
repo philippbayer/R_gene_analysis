@@ -506,7 +506,11 @@ And a summary histogram:
 yield_country_nbs_joined_groups %>% ggplot(aes(x=presences.x, fill=Group)) + 
   geom_histogram(bins=25) +
   xlab('Yield') +
-  ylab('Count')
+  ylab('Count') +
+  facet_wrap(~Group) +
+  scale_fill_manual(values = col_list) +
+  theme(legend.position = "none")
+
 ```
 
 ```{r}
