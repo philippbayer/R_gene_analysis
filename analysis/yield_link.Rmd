@@ -468,6 +468,7 @@ ggplot(yield_nbs_joined_groups, aes(x = presences2, y = Yield2)) +
 ```
 
 #### Making the breeding group fixed
+
 We have < 10 possible factors in the group, so making that fixed instead of random 
 ```{r}
 # this doesn't work because you need at least one random effect
@@ -523,6 +524,9 @@ BIG DISCLAIMER: Currently, I treat country and group not as nested variables, th
 
 
 #### Making the breeding group fixed
+
+Since we have too few factors in the breeding groups we have to make that fixed, not random
+
 ```{r}
 mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
@@ -559,6 +563,7 @@ plot(mixed.lmer)
 qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))
 ```
+
 #### Making the breeding group fixed
 
 ```{r}
@@ -591,6 +596,8 @@ qqline(resid(mixed.lmer))
 ```{r}
 plot(resid(mixed.lmer))
 ```
+
+These are the final numbers for the paper.
 
 #### Plotting effect of each covariate
 
@@ -746,3 +753,41 @@ summary(mixed.lmer)
 ```
 
 Again, no significance here.
+
+
+
+## The final yield model
+
+This is the final yield model for the paper
+
+```{r}
+mixed.lmer <- lmer(Yield ~ presences.x + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
+
+```{r}
+ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Raw NLR gene count') +
+      ylab('Raw yield')
+```
+
+```{r}
+plot(mixed.lmer)
+```
+
+```{r}
+qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))
+```
+
+```{r}
+plot(resid(mixed.lmer))
+```
+
