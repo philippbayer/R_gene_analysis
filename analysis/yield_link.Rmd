@@ -460,7 +460,7 @@ p-value of 0.000247 for the normalised presences while accounting for the breedi
 
 ```{r}
 ggplot(yield_nbs_joined_groups, aes(x = presences2, y = Yield2)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -504,7 +504,7 @@ Nice! Yield is negatively correlated with the number of NLR genes when accountin
 ```{r}
 
 ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -551,7 +551,7 @@ Oh, lower p-values for the intercept
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -582,7 +582,7 @@ Oh, lower p-values for the intercept
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -679,7 +679,7 @@ Oh, a significant p-value, let's plot plot that and compare with he previous plo
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -700,7 +700,7 @@ summary(mixed.lmer)
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -721,7 +721,7 @@ summary(mixed.lmer)
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -781,9 +781,8 @@ summary(mixed.lmer)
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
-      theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
