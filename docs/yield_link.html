@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree92e258030bc40d87a82ba524929193e601ad78aftargetblank92e2580a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/92e258030bc40d87a82ba524929193e601ad78af" target="_blank">92e2580</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2009819524257f926a0bef8a0256e341dc6de936targetblank2009819a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/2009819524257f926a0bef8a0256e341dc6de936" target="_blank">2009819</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree92e258030bc40d87a82ba524929193e601ad78aftargetblank92e2580a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2009819524257f926a0bef8a0256e341dc6de936targetblank2009819a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/92e258030bc40d87a82ba524929193e601ad78af" target="_blank">92e2580</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/2009819524257f926a0bef8a0256e341dc6de936" target="_blank">2009819</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,6 +601,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/2009819524257f926a0bef8a0256e341dc6de936/analysis/yield_link.Rmd" target="_blank">2009819</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+fixed lme4 syntax
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/22a48ac1fc4583aeaafb092c7c23167dd0dee4f9/docs/yield_link.html" target="_blank">22a48ac</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1410,6 +1444,7 @@ qqline(resid(mixed.lmer))</code></pre>
 <p>BIG DISCLAIMER: Currently, I treat country and group not as nested variables, they’re independent. I think that is the way it should be in this case but I’m thinking.</p>
 <div id="making-the-breeding-group-fixed-1" class="section level4">
 <h4>Making the breeding group fixed</h4>
+<p>Since we have too few factors in the breeding groups we have to make that fixed, not random</p>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
@@ -1497,7 +1532,10 @@ presences.x -0.991</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /> #### Making the breeding group fixed</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="making-the-breeding-group-fixed-2" class="section level4">
+<h4>Making the breeding group fixed</h4>
 <pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
@@ -1554,6 +1592,7 @@ qqline(resid(mixed.lmer))</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(resid(mixed.lmer))</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>These are the final numbers for the paper.</p>
 </div>
 <div id="plotting-effect-of-each-covariate" class="section level4">
 <h4>Plotting effect of each covariate</h4>
@@ -1942,6 +1981,66 @@ presences2  -0.267
 `Grivtbl`Oc -0.666  0.274  0.710         
 `Grivtbl`Mc -0.663  0.298  0.648  0.539  </code></pre>
 <p>Again, no significance here.</p>
+</div>
+</div>
+<div id="the-final-yield-model" class="section level2">
+<h2>The final yield model</h2>
+<p>This is the final yield model for the paper</p>
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)</code></pre>
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+lmerModLmerTest]
+Formula: Yield ~ presences.x + `Group in violin table` + (1 | Country)
+   Data: yield_country_nbs_joined_groups
+
+REML criterion at convergence: 1675.1
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.1864 -0.5700  0.0305  0.6525  2.8982 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Country  (Intercept) 0.2581   0.5081  
+ Residual             0.5206   0.7216  
+Number of obs: 741, groups:  Country, 40
+
+Fixed effects:
+                                         Estimate Std. Error         df t value
+(Intercept)                              8.760056   2.465570 726.660933   3.553
+presences.x                             -0.015045   0.005556 726.459065  -2.708
+`Group in violin table`Old cultivar     -0.244554   0.133648 734.951816  -1.830
+`Group in violin table`Modern cultivar   0.830604   0.184672 360.407255   4.498
+                                       Pr(&gt;|t|)    
+(Intercept)                            0.000406 ***
+presences.x                            0.006929 ** 
+`Group in violin table`Old cultivar    0.067680 .  
+`Group in violin table`Modern cultivar 9.28e-06 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Correlation of Fixed Effects:
+            (Intr) prsnc. `Givt`Oc
+presences.x -0.999                
+`Grivtbl`Oc  0.003 -0.008         
+`Grivtbl`Mc -0.074  0.065  0.156  </code></pre>
+<pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = &quot;none&quot;) +
+      xlab(&#39;Raw NLR gene count&#39;) +
+      ylab(&#39;Raw yield&#39;)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-69-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(mixed.lmer)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-70-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-71-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(resid(mixed.lmer))</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2008,7 +2107,6 @@ loaded via a namespace (and not attached):
 [91] callr_3.4.4         git2r_0.27.1        reprex_0.3.0       
 [94] digest_0.6.25       xtable_1.8-4        httpuv_1.5.4       
 [97] numDeriv_2016.8-1.1 munsell_0.5.0      </code></pre>
-</div>
 </div>
 </div>
 </div>
