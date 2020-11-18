@@ -413,7 +413,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-11-05
+<strong>Last updated:</strong> 2020-11-18
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree69e9c2938f188f9140d621f44f7e0206c3e7a0ectargetblank69e9c29a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/69e9c2938f188f9140d621f44f7e0206c3e7a0ec" target="_blank">69e9c29</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree92e258030bc40d87a82ba524929193e601ad78aftargetblank92e2580a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/92e258030bc40d87a82ba524929193e601ad78af" target="_blank">92e2580</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree69e9c2938f188f9140d621f44f7e0206c3e7a0ectargetblank69e9c29a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree92e258030bc40d87a82ba524929193e601ad78aftargetblank92e2580a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/69e9c2938f188f9140d621f44f7e0206c3e7a0ec" target="_blank">69e9c29</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/92e258030bc40d87a82ba524929193e601ad78af" target="_blank">92e2580</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -522,7 +522,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/Brec_R1.txt
@@ -602,6 +601,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/92e258030bc40d87a82ba524929193e601ad78af/analysis/yield_link.Rmd" target="_blank">92e2580</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+fixed lme4 syntax
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/262a76f3f31929a20954378a201af03251caf8c4/docs/yield_link.html" target="_blank">262a76f</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-05
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1308,7 +1341,16 @@ qqline(resid(mixed.lmer))</code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /> ## Adding country</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="making-the-breeding-group-fixed" class="section level4">
+<h4>Making the breeding group fixed</h4>
+<p>We have &lt; 10 possible factors in the group, so making that fixed instead of random</p>
+<pre class="r"><code># this doesn&#39;t work because you need at least one random effect
+# mixed.lmer &lt;- lmer(Yield2 ~ presences2 + `Group in violin table`, data=yield_nbs_joined_groups)</code></pre>
+</div>
+</div>
+<div id="adding-country" class="section level2">
+<h2>Adding country</h2>
 <p>We should also add the country the plant is from as a random effect, that definitely has an influence too (perhaps a stronger one???)</p>
 <div id="yield-3" class="section level3">
 <h3>Yield</h3>
@@ -1357,15 +1399,56 @@ presences2 0.051 </code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Some diagnostics:</p>
 <pre class="r"><code>plot(mixed.lmer)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Hm, the qqplot looks slightly worse than when I use maturity group alone, interesting!</p>
 <p>BIG DISCLAIMER: Currently, I treat country and group not as nested variables, they’re independent. I think that is the way it should be in this case but I’m thinking.</p>
+<div id="making-the-breeding-group-fixed-1" class="section level4">
+<h4>Making the breeding group fixed</h4>
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)</code></pre>
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+lmerModLmerTest]
+Formula: Yield2 ~ presences2 + `Group in violin table` + (1 | Country)
+   Data: yield_country_nbs_joined_groups
+
+REML criterion at convergence: 1951.8
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.1864 -0.5700  0.0305  0.6525  2.8982 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Country  (Intercept) 0.3776   0.6145  
+ Residual             0.7616   0.8727  
+Number of obs: 741, groups:  Country, 40
+
+Fixed effects:
+                                        Estimate Std. Error        df t value
+(Intercept)                             -0.15265    0.13488  33.06645  -1.132
+presences2                              -0.11149    0.04117 726.45969  -2.708
+`Group in violin table`Old cultivar     -0.29578    0.16164 734.95182  -1.830
+`Group in violin table`Modern cultivar   1.00458    0.22335 360.40725   4.498
+                                       Pr(&gt;|t|)    
+(Intercept)                             0.26588    
+presences2                              0.00693 ** 
+`Group in violin table`Old cultivar     0.06768 .  
+`Group in violin table`Modern cultivar 9.28e-06 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Correlation of Fixed Effects:
+            (Intr) prsnc2 `Givt`Oc
+presences2   0.119                
+`Grivtbl`Oc -0.112 -0.008         
+`Grivtbl`Mc -0.194  0.065  0.156  </code></pre>
+</div>
 <div id="non-normalised-yield" class="section level4">
 <h4>Non-normalised yield</h4>
 <p>Let’s see whether the ‘raw’ values perform the same.</p>
@@ -1409,79 +1492,137 @@ presences.x -0.991</code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Raw NLR gene count&#39;) +
       ylab(&#39;Raw yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(mixed.lmer)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /> #### Making the breeding group fixed</p>
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)</code></pre>
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+lmerModLmerTest]
+Formula: Yield ~ presences.x + `Group in violin table` + (1 | Country)
+   Data: yield_country_nbs_joined_groups
+
+REML criterion at convergence: 1675.1
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.1864 -0.5700  0.0305  0.6525  2.8982 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Country  (Intercept) 0.2581   0.5081  
+ Residual             0.5206   0.7216  
+Number of obs: 741, groups:  Country, 40
+
+Fixed effects:
+                                         Estimate Std. Error         df t value
+(Intercept)                              8.760056   2.465570 726.660933   3.553
+presences.x                             -0.015045   0.005556 726.459065  -2.708
+`Group in violin table`Old cultivar     -0.244554   0.133648 734.951816  -1.830
+`Group in violin table`Modern cultivar   0.830604   0.184672 360.407255   4.498
+                                       Pr(&gt;|t|)    
+(Intercept)                            0.000406 ***
+presences.x                            0.006929 ** 
+`Group in violin table`Old cultivar    0.067680 .  
+`Group in violin table`Modern cultivar 9.28e-06 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Correlation of Fixed Effects:
+            (Intr) prsnc. `Givt`Oc
+presences.x -0.999                
+`Grivtbl`Oc  0.003 -0.008         
+`Grivtbl`Mc -0.074  0.065  0.156  </code></pre>
+<p>Oh, lower p-values for the intercept</p>
+<pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = &quot;none&quot;) +
+      xlab(&#39;Raw NLR gene count&#39;) +
+      ylab(&#39;Raw yield&#39;)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(mixed.lmer)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(resid(mixed.lmer))</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="plotting-effect-of-each-covariate" class="section level4">
 <h4>Plotting effect of each covariate</h4>
 <pre class="r"><code>(re.effects &lt;- plot_model(mixed.lmer, type = &quot;re&quot;, show.values = TRUE))</code></pre>
-<pre><code>[[1]]</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre><code>
-[[2]]</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-45-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#lmerTest breaks these other packages so I better unload it and reload only lme4
 detach(&quot;package:lmerTest&quot;, unload=TRUE)
 
 yield_country_nbs_joined_groups_renamed &lt;- yield_country_nbs_joined_groups
 names(yield_country_nbs_joined_groups_renamed) &lt;- c(&#39;names&#39;, &#39;presences.x&#39;, &#39;PI-ID&#39;, &#39;Group&#39;, &#39;presences2&#39;, &#39;presences.y&#39;, &#39;Yield&#39;, &#39;Yield2&#39;, &#39;Country&#39;)
-mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
+mixed.lmer &lt;- lmer(Yield2 ~ presences2 + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
 
 dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = &quot;grey60&quot;, linetype = 2))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(stargazer)
 stargazer(mixed.lmer, type = &quot;text&quot;,
           digits = 3,
           star.cutoffs = c(0.05, 0.01, 0.001),
           digit.separator = &quot;&quot;)</code></pre>
 <pre><code>
-=================================================
-                         Dependent variable:     
-                    -----------------------------
-                               Yield2            
--------------------------------------------------
-presences2                    -0.113**           
-                               (0.041)           
-                                                 
-Constant                        0.071            
-                               (0.402)           
-                                                 
--------------------------------------------------
-Observations                     741             
-Log Likelihood                -978.501           
-Akaike Inf. Crit.             1967.003           
-Bayesian Inf. Crit.           1990.043           
-=================================================
-Note:               *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</code></pre>
+==================================================
+                          Dependent variable:     
+                     -----------------------------
+                                Yield2            
+--------------------------------------------------
+presences2                     -0.111**           
+                                (0.041)           
+                                                  
+GroupOld cultivar               -0.296            
+                                (0.162)           
+                                                  
+GroupModern cultivar           1.005***           
+                                (0.223)           
+                                                  
+Constant                        -0.153            
+                                (0.135)           
+                                                  
+--------------------------------------------------
+Observations                      741             
+Log Likelihood                 -975.906           
+Akaike Inf. Crit.              1963.812           
+Bayesian Inf. Crit.            1991.460           
+==================================================
+Note:                *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</code></pre>
 <pre class="r"><code>library(ggeffects)
 ggpredict(mixed.lmer, terms = c(&quot;presences2&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
    plot() +
    theme_minimal()</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /> Let’s also plot that for non-normalised data</p>
-<pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /> Let’s also plot that for non-normalised data</p>
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
 ggpredict(mixed.lmer, terms = c(&quot;presences.x&quot;,  &#39;Group&#39;), type = &quot;re&quot;) %&gt;% 
    plot() +
    theme_minimal_hgrid() +
   xlab(&#39;Raw NLR count&#39;) +
   ylab(&#39;Raw yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># alright back to regular programming
 library(lmerTest)
-mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)</code></pre>
+mixed.lmer &lt;- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)</code></pre>
 </div>
 <div id="more-complex-models" class="section level4">
 <h4>More complex models</h4>
 <p>If I add random slopes to either groups not much changes, I do get warnings indicating that there’s not much in the data:</p>
-<pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (presences2|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: Yield2 ~ presences2 + (1 + presences2 | `Group in violin table`) +  
+Formula: Yield2 ~ presences2 + (presences2 | `Group in violin table`) +  
     (1 | Country)
    Data: yield_country_nbs_joined_groups
 
@@ -1507,39 +1648,46 @@ presences2  -0.22515    0.12370  1.66243  -1.820    0.235
 Correlation of Fixed Effects:
            (Intr)
 presences2 0.269 </code></pre>
-<pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + `Group in violin table` + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: 
-Yield2 ~ presences2 + (1 | `Group in violin table`) + (1 + presences2 |  
+Formula: Yield2 ~ presences2 + `Group in violin table` + (1 + presences2 |  
     Country)
    Data: yield_country_nbs_joined_groups
 
-REML criterion at convergence: 1956.7
+REML criterion at convergence: 1951.5
 
 Scaled residuals: 
-     Min       1Q   Median       3Q      Max 
--3.10144 -0.57197  0.03398  0.65448  2.90193 
+    Min      1Q  Median      3Q     Max 
+-3.1904 -0.5715  0.0314  0.6551  2.9003 
 
 Random effects:
- Groups                Name        Variance Std.Dev. Corr
- Country               (Intercept) 0.399336 0.6319       
-                       presences2  0.001875 0.0433   1.00
- Group in violin table (Intercept) 0.425089 0.6520       
- Residual                          0.761354 0.8726       
-Number of obs: 741, groups:  Country, 40; Group in violin table, 3
+ Groups   Name        Variance Std.Dev. Corr
+ Country  (Intercept) 0.397511 0.63048      
+          presences2  0.002137 0.04623  1.00
+ Residual             0.761491 0.87263      
+Number of obs: 741, groups:  Country, 40
 
 Fixed effects:
-            Estimate Std. Error       df t value Pr(&gt;|t|)   
-(Intercept)  0.07736    0.40600  2.31158   0.191  0.86434   
-presences2  -0.11679    0.04281 34.37826  -2.728  0.00997 **
+                                       Estimate Std. Error       df t value
+(Intercept)                             -0.1470     0.1387  28.1820  -1.060
+presences2                              -0.1162     0.0430  30.8335  -2.702
+`Group in violin table`Old cultivar     -0.3010     0.1615 733.1173  -1.863
+`Group in violin table`Modern cultivar   1.0093     0.2192 166.8461   4.605
+                                       Pr(&gt;|t|)    
+(Intercept)                              0.2982    
+presences2                               0.0111 *  
+`Group in violin table`Old cultivar      0.0628 .  
+`Group in violin table`Modern cultivar 8.15e-06 ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
-           (Intr)
-presences2 0.116 
+            (Intr) prsnc2 `Givt`Oc
+presences2   0.334                
+`Grivtbl`Oc -0.109 -0.017         
+`Grivtbl`Mc -0.188  0.044  0.158  
 convergence code: 0
 boundary (singular) fit: see ?isSingular</code></pre>
 <p>Oh, a significant p-value, let’s plot plot that and compare with he previous plot:</p>
@@ -1552,44 +1700,51 @@ boundary (singular) fit: see ?isSingular</code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
 <p>Let’s do that non-normalised:</p>
-<pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + (1|`Group in violin table`) + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield ~ presences.x + `Group in violin table` + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: 
-Yield ~ presences.x + (1 | `Group in violin table`) + (1 + presences.x |  
+Formula: Yield ~ presences.x + `Group in violin table` + (1 + presences.x |  
     Country)
    Data: yield_country_nbs_joined_groups
 
-REML criterion at convergence: 1679.4
+REML criterion at convergence: 1675.2
 
 Scaled residuals: 
-     Min       1Q   Median       3Q      Max 
--3.12182 -0.57169  0.03687  0.65370  2.90146 
+    Min      1Q  Median      3Q     Max 
+-3.1863 -0.5679  0.0294  0.6532  2.8982 
 
 Random effects:
- Groups                Name        Variance  Std.Dev. Corr 
- Country               (Intercept) 5.125e-01 0.715912      
-                       presences.x 7.534e-06 0.002745 -1.00
- Group in violin table (Intercept) 3.980e-01 0.630855      
- Residual                          5.201e-01 0.721202      
-Number of obs: 741, groups:  Country, 40; Group in violin table, 3
+ Groups   Name        Variance  Std.Dev.  Corr 
+ Country  (Intercept) 5.191e-01 0.7204930      
+          presences.x 2.402e-07 0.0004901 -0.98
+ Residual             5.206e-01 0.7215284      
+Number of obs: 741, groups:  Country, 40
 
 Fixed effects:
-             Estimate Std. Error        df t value Pr(&gt;|t|)    
-(Intercept)  9.117398   2.510712 97.377475   3.631 0.000452 ***
-presences.x -0.015421   0.005628 66.559720  -2.740 0.007876 ** 
+                                        Estimate Std. Error        df t value
+(Intercept)                              8.73673    2.46492 709.51652   3.544
+presences.x                             -0.01499    0.00555 412.58876  -2.702
+`Group in violin table`Old cultivar     -0.24420    0.13365 733.16976  -1.827
+`Group in violin table`Modern cultivar   0.83046    0.18493 218.59478   4.491
+                                       Pr(&gt;|t|)    
+(Intercept)                            0.000419 ***
+presences.x                            0.007186 ** 
+`Group in violin table`Old cultivar    0.068096 .  
+`Group in violin table`Modern cultivar 1.15e-05 ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
-            (Intr)
-presences.x -0.988
+            (Intr) prsnc. `Givt`Oc
+presences.x -0.999                
+`Grivtbl`Oc  0.002 -0.007         
+`Grivtbl`Mc -0.076  0.067  0.156  
 convergence code: 0
 unable to evaluate scaled gradient
-Model failed to converge: degenerate  Hessian with 1 negative eigenvalues</code></pre>
+Model failed to converge: degenerate  Hessian with 2 negative eigenvalues</code></pre>
 <pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
       facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
@@ -1599,13 +1754,13 @@ Model failed to converge: degenerate  Hessian with 1 negative eigenvalues</code>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Raw NLR gene count&#39;) +
       ylab(&#39;Raw yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /> Quite similar, mostly downwards trajectories for each country.</p>
 <p>And now both random slopes:</p>
-<pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
+<pre class="r"><code>mixed.lmer &lt;- lmer(Yield2 ~ presences2 + (presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: Yield2 ~ presences2 + (1 + presences2 | `Group in violin table`) +  
+Formula: Yield2 ~ presences2 + (presences2 | `Group in violin table`) +  
     (1 + presences2 | Country)
    Data: yield_country_nbs_joined_groups
 
@@ -1641,41 +1796,54 @@ presences2 0.231 </code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;Scaled and centered NLR gene count&#39;) +
       ylab(&#39;Scaled and centered yield&#39;)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-57-1.png" width="672" style="display: block; margin: auto;" /> Yeah, nah</p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-64-1.png" width="672" style="display: block; margin: auto;" /> Yeah, nah</p>
 </div>
 </div>
 <div id="oil-1" class="section level3">
 <h3>Oil</h3>
 <pre class="r"><code>oil_country_nbs_joined_groups &lt;- oil_nbs_joined_groups %&gt;% inner_join(country)
 
-mixed.lmer &lt;- lmer(Oil2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=oil_country_nbs_joined_groups)
+mixed.lmer &lt;- lmer(Oil2 ~ presences2 + `Group in violin table` + (1|Country), data=oil_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: Oil2 ~ presences2 + (1 | `Group in violin table`) + (1 | Country)
+Formula: Oil2 ~ presences2 + `Group in violin table` + (1 | Country)
    Data: oil_country_nbs_joined_groups
 
-REML criterion at convergence: 1819
+REML criterion at convergence: 1808.3
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--4.5279 -0.5602  0.1003  0.6459  3.2213 
+-4.5285 -0.5605  0.0983  0.6472  3.2209 
 
 Random effects:
- Groups                Name        Variance Std.Dev.
- Country               (Intercept) 0.07768  0.2787  
- Group in violin table (Intercept) 1.27074  1.1273  
- Residual                          0.39123  0.6255  
-Number of obs: 929, groups:  Country, 41; Group in violin table, 4
+ Groups   Name        Variance Std.Dev.
+ Country  (Intercept) 0.07703  0.2775  
+ Residual             0.39128  0.6255  
+Number of obs: 929, groups:  Country, 41
 
 Fixed effects:
-              Estimate Std. Error         df t value Pr(&gt;|t|)
-(Intercept)  -0.003163   0.568721   3.072981  -0.006    0.996
-presences2   -0.036823   0.024149 918.755975  -1.525    0.128
+                                        Estimate Std. Error        df t value
+(Intercept)                             -1.66466    0.09388  57.11719 -17.732
+presences2                              -0.03579    0.02416 917.65081  -1.481
+`Group in violin table`Landrace          1.93042    0.06953 911.95172  27.763
+`Group in violin table`Old cultivar      2.25628    0.11897 922.58914  18.965
+`Group in violin table`Modern cultivar   2.46605    0.14998 209.92967  16.443
+                                       Pr(&gt;|t|)    
+(Intercept)                              &lt;2e-16 ***
+presences2                                0.139    
+`Group in violin table`Landrace          &lt;2e-16 ***
+`Group in violin table`Old cultivar      &lt;2e-16 ***
+`Group in violin table`Modern cultivar   &lt;2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
-           (Intr)
-presences2 0.004 </code></pre>
+            (Intr) prsnc2 `Givt` `Givt`Oc
+presences2  -0.232                       
+`Grpivtbl`L -0.644  0.434                
+`Grivtbl`Oc -0.405  0.249  0.509         
+`Grivtbl`Mc -0.447  0.246  0.432  0.338  </code></pre>
 <p>No significance here.</p>
 </div>
 <div id="protein-1" class="section level3">
@@ -1684,35 +1852,47 @@ presences2 0.004 </code></pre>
 protein_nbs_joined_groups$Protein2 &lt;- scale(protein_nbs_joined_groups$Protein, center=T, scale=T)
 protein_country_nbs_joined_groups &lt;- protein_nbs_joined_groups %&gt;% inner_join(country)
 
-mixed.lmer &lt;- lmer(Protein2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=protein_country_nbs_joined_groups)
+mixed.lmer &lt;- lmer(Protein2 ~ presences2 + `Group in violin table` + (1|Country), data=protein_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: Protein2 ~ presences2 + (1 | `Group in violin table`) + (1 |  
-    Country)
+Formula: Protein2 ~ presences2 + `Group in violin table` + (1 | Country)
    Data: protein_country_nbs_joined_groups
 
-REML criterion at convergence: 2478.9
+REML criterion at convergence: 2472.7
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--3.5808 -0.6773 -0.0416  0.6268  3.5102 
+-3.6001 -0.6747 -0.0423  0.6274  3.5103 
 
 Random effects:
- Groups                Name        Variance Std.Dev.
- Country               (Intercept) 0.07188  0.2681  
- Group in violin table (Intercept) 0.28151  0.5306  
- Residual                          0.81194  0.9011  
-Number of obs: 929, groups:  Country, 41; Group in violin table, 4
+ Groups   Name        Variance Std.Dev.
+ Country  (Intercept) 0.07042  0.2654  
+ Residual             0.81212  0.9012  
+Number of obs: 929, groups:  Country, 41
 
 Fixed effects:
-             Estimate Std. Error        df t value Pr(&gt;|t|)
-(Intercept)  -0.22283    0.28021   3.35396  -0.795    0.479
-presences2    0.04764    0.03456 924.68350   1.378    0.168
+                                        Estimate Std. Error        df t value
+(Intercept)                              0.52736    0.11992  77.94050   4.397
+presences2                               0.04347    0.03466 923.71757   1.254
+`Group in violin table`Landrace         -0.72486    0.09980 923.95960  -7.263
+`Group in violin table`Old cultivar     -1.20226    0.17045 923.25626  -7.053
+`Group in violin table`Modern cultivar  -1.10372    0.20076 140.80066  -5.498
+                                       Pr(&gt;|t|)    
+(Intercept)                            3.43e-05 ***
+presences2                                 0.21    
+`Group in violin table`Landrace        8.04e-13 ***
+`Group in violin table`Old cultivar    3.42e-12 ***
+`Group in violin table`Modern cultivar 1.76e-07 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
-           (Intr)
-presences2 0.007 </code></pre>
+            (Intr) prsnc2 `Givt` `Givt`Oc
+presences2  -0.277                       
+`Grpivtbl`L -0.712  0.438                
+`Grivtbl`Oc -0.445  0.253  0.511         
+`Grivtbl`Mc -0.507  0.270  0.463  0.340  </code></pre>
 <p>No significance here.</p>
 </div>
 <div id="seed-weight-2" class="section level3">
@@ -1720,34 +1900,47 @@ presences2 0.007 </code></pre>
 <pre class="r"><code>seed_nbs_joined_groups &lt;- nbs_joined_groups %&gt;% inner_join(seed_join, by = &#39;names&#39;) 
 seed_nbs_joined_groups$wt2 &lt;- scale(seed_nbs_joined_groups$wt, center=T, scale=T)
 seed_country_nbs_joined_groups &lt;- seed_nbs_joined_groups %&gt;% inner_join(country)
-mixed.lmer &lt;- lmer(wt2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=seed_country_nbs_joined_groups)
+mixed.lmer &lt;- lmer(wt2 ~ presences2 + `Group in violin table` + (1|Country), data=seed_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: wt2 ~ presences2 + (1 | `Group in violin table`) + (1 | Country)
+Formula: wt2 ~ presences2 + `Group in violin table` + (1 | Country)
    Data: seed_country_nbs_joined_groups
 
-REML criterion at convergence: 1687.6
+REML criterion at convergence: 1676
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--2.9631 -0.6170  0.0050  0.5862  4.8133 
+-2.9614 -0.6215  0.0110  0.5831  4.8138 
 
 Random effects:
- Groups                Name        Variance Std.Dev.
- Country               (Intercept) 0.08584  0.2930  
- Group in violin table (Intercept) 1.73537  1.3173  
- Residual                          0.70080  0.8371  
-Number of obs: 664, groups:  Country, 38; Group in violin table, 4
+ Groups   Name        Variance Std.Dev.
+ Country  (Intercept) 0.08566  0.2927  
+ Residual             0.70082  0.8371  
+Number of obs: 664, groups:  Country, 38
 
 Fixed effects:
-             Estimate Std. Error        df t value Pr(&gt;|t|)
-(Intercept)  -0.36704    0.66678   3.04810  -0.550    0.620
-presences2   -0.01035    0.04049 658.64308  -0.256    0.798
+                                         Estimate Std. Error         df t value
+(Intercept)                             -2.348857   0.183189  90.849260 -12.822
+presences2                              -0.007261   0.040531 656.652662  -0.179
+`Group in violin table`Landrace          2.412123   0.166724 600.989922  14.468
+`Group in violin table`Old cultivar      2.727120   0.224422 656.159635  12.152
+`Group in violin table`Modern cultivar   2.782167   0.259555  67.478942  10.719
+                                       Pr(&gt;|t|)    
+(Intercept)                             &lt; 2e-16 ***
+presences2                                0.858    
+`Group in violin table`Landrace         &lt; 2e-16 ***
+`Group in violin table`Old cultivar     &lt; 2e-16 ***
+`Group in violin table`Modern cultivar 3.26e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
-           (Intr)
-presences2 0.001 </code></pre>
+            (Intr) prsnc2 `Givt` `Givt`Oc
+presences2  -0.267                       
+`Grpivtbl`L -0.864  0.364                
+`Grivtbl`Oc -0.666  0.274  0.710         
+`Grivtbl`Mc -0.663  0.298  0.648  0.539  </code></pre>
 <p>Again, no significance here.</p>
 <br>
 <p>
