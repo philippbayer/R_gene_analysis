@@ -454,6 +454,7 @@ qqline(resid(mixed.lmer))
 p-value of 0.000247 for the normalised presences while accounting for the breeding group, that's beautiful.
 
 
+
 ```{r}
 ggplot(yield_nbs_joined_groups, aes(x = presences2, y = Yield2)) +
       facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
@@ -465,6 +466,15 @@ ggplot(yield_nbs_joined_groups, aes(x = presences2, y = Yield2)) +
       xlab('Scaled and centered NLR gene count') +
       ylab('Scaled and centered yield')
 ```
+
+#### Making the breeding group fixed
+We have < 10 possible factors in the group, so making that fixed instead of random 
+```{r}
+# this doesn't work because you need at least one random effect
+# mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table`, data=yield_nbs_joined_groups)
+```
+
+
 ## Adding country
 
 We should also add the country the plant is from as a random effect, that definitely has an influence too (perhaps a stronger one???)
@@ -512,6 +522,12 @@ Hm, the qqplot looks slightly worse than when I use maturity group alone, intere
 BIG DISCLAIMER: Currently, I treat country and group not as nested variables, they're independent. I think that is the way it should be in this case but I'm thinking.
 
 
+#### Making the breeding group fixed
+```{r}
+mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+
 #### Non-normalised yield
 
 Let's see whether the 'raw' values perform the same.
@@ -543,7 +559,38 @@ plot(mixed.lmer)
 qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))
 ```
+#### Making the breeding group fixed
 
+```{r}
+mixed.lmer <- lmer(Yield ~ presences.x + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+summary(mixed.lmer)
+```
+Oh, lower p-values for the intercept
+
+```{r}
+ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
+      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      geom_point(alpha = 0.5) +
+      theme_classic() +
+      geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Raw NLR gene count') +
+      ylab('Raw yield')
+```
+
+```{r}
+plot(mixed.lmer)
+```
+
+```{r}
+qqnorm(resid(mixed.lmer))
+qqline(resid(mixed.lmer))
+```
+
+```{r}
+plot(resid(mixed.lmer))
+```
 
 #### Plotting effect of each covariate
 
@@ -558,7 +605,7 @@ detach("package:lmerTest", unload=TRUE)
 
 yield_country_nbs_joined_groups_renamed <- yield_country_nbs_joined_groups
 names(yield_country_nbs_joined_groups_renamed) <- c('names', 'presences.x', 'PI-ID', 'Group', 'presences2', 'presences.y', 'Yield', 'Yield2', 'Country')
-mixed.lmer <- lmer(Yield2 ~ presences2 + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
+mixed.lmer <- lmer(Yield2 ~ presences2 + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
 
 dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2))
@@ -581,7 +628,7 @@ ggpredict(mixed.lmer, terms = c("presences2",  'Group'), type = "re") %>%
 Let's also plot that for non-normalised data
 
 ```{r}
-mixed.lmer <- lmer(Yield ~ presences.x + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
+mixed.lmer <- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
 ggpredict(mixed.lmer, terms = c("presences.x",  'Group'), type = "re") %>% 
    plot() +
    theme_minimal_hgrid() +
@@ -593,7 +640,7 @@ ggpredict(mixed.lmer, terms = c("presences.x",  'Group'), type = "re") %>%
 ```{r}
 # alright back to regular programming
 library(lmerTest)
-mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
 
 ```
 
@@ -602,13 +649,13 @@ mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Countr
 
 If I add random slopes to either groups not much changes, I do get warnings indicating that there's not much in the data:
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + (presences2|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
 
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table` + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 Oh, a significant p-value, let's plot plot that and compare with he previous plot:
@@ -628,7 +675,7 @@ Quite similar, mostly downwards trajectories for each country.
 
 Let's do that non-normalised:
 ```{r}
-mixed.lmer <- lmer(Yield ~ presences.x + (1|`Group in violin table`) + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield ~ presences.x + `Group in violin table` + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -649,7 +696,7 @@ Quite similar, mostly downwards trajectories for each country.
 And now both random slopes:
 
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + (1 + presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + (presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -670,7 +717,7 @@ Yeah, nah
 ```{r}
 oil_country_nbs_joined_groups <- oil_nbs_joined_groups %>% inner_join(country)
 
-mixed.lmer <- lmer(Oil2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=oil_country_nbs_joined_groups)
+mixed.lmer <- lmer(Oil2 ~ presences2 + `Group in violin table` + (1|Country), data=oil_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -683,7 +730,7 @@ protein_nbs_joined_groups <- nbs_joined_groups %>% inner_join(protein_join, by =
 protein_nbs_joined_groups$Protein2 <- scale(protein_nbs_joined_groups$Protein, center=T, scale=T)
 protein_country_nbs_joined_groups <- protein_nbs_joined_groups %>% inner_join(country)
 
-mixed.lmer <- lmer(Protein2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=protein_country_nbs_joined_groups)
+mixed.lmer <- lmer(Protein2 ~ presences2 + `Group in violin table` + (1|Country), data=protein_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -694,7 +741,7 @@ No significance here.
 seed_nbs_joined_groups <- nbs_joined_groups %>% inner_join(seed_join, by = 'names') 
 seed_nbs_joined_groups$wt2 <- scale(seed_nbs_joined_groups$wt, center=T, scale=T)
 seed_country_nbs_joined_groups <- seed_nbs_joined_groups %>% inner_join(country)
-mixed.lmer <- lmer(wt2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=seed_country_nbs_joined_groups)
+mixed.lmer <- lmer(wt2 ~ presences2 + `Group in violin table` + (1|Country), data=seed_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
