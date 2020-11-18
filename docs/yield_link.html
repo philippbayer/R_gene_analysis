@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreef0de0054cbcadb524704d4cb8991ac43c9a81380targetblankf0de005a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/f0de0054cbcadb524704d4cb8991ac43c9a81380" target="_blank">f0de005</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0targetblank0e810dba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0" target="_blank">0e810db</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreef0de0054cbcadb524704d4cb8991ac43c9a81380targetblankf0de005a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0targetblank0e810dba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/f0de0054cbcadb524704d4cb8991ac43c9a81380" target="_blank">f0de005</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0" target="_blank">0e810db</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,6 +601,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/0e810db2579ad0ee6e28bf81e6154cc5ad83b0d0/analysis/yield_link.Rmd" target="_blank">0e810db</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+More fixedp lots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/4ed21500afffb8d7fd9044f8faeee026eff9f16c/docs/yield_link.html" target="_blank">4ed2150</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2267,7 +2301,7 @@ plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
   xlab(&#39;NLR count&#39;) + 
   theme(plot.title=element_blank())</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>tab_model(mixed.lmer)</code></pre>
+<pre class="r"><code>tab_model(mixed.lmer, p.val=&#39;kr&#39;)</code></pre>
 <table style="border-collapse:collapse; border:none;">
 <tr>
 <th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
@@ -2299,7 +2333,7 @@ p
 8.76
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-3.93 – 13.59
+3.91 – 13.61
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001
@@ -2330,7 +2364,7 @@ Group [Old cultivar]
 -0.51 – 0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.067
+0.068
 </td>
 </tr>
 <tr>
@@ -2341,7 +2375,7 @@ Group [Modern cultivar]
 0.83
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.47 – 1.19
+0.46 – 1.20
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>&lt;0.001
@@ -2397,6 +2431,8 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </td>
 </tr>
 </table>
+<p>σ measures the random effect variance I think, 0.52 is pretty good (this can easily be &gt;1), but more useful to compare models with each other which I don’t do here.</p>
+<p>intraclass-correlation coefficient (ICC) measures how the proportion of variance explained by the grouping structure, in this case, country</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
