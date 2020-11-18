@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb8b60b1c21cd45444b2d0876b5ceecb692608199targetblankb8b60b1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/b8b60b1c21cd45444b2d0876b5ceecb692608199" target="_blank">b8b60b1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreef0de0054cbcadb524704d4cb8991ac43c9a81380targetblankf0de005a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/f0de0054cbcadb524704d4cb8991ac43c9a81380" target="_blank">f0de005</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb8b60b1c21cd45444b2d0876b5ceecb692608199targetblankb8b60b1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreef0de0054cbcadb524704d4cb8991ac43c9a81380targetblankf0de005a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/b8b60b1c21cd45444b2d0876b5ceecb692608199" target="_blank">b8b60b1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/f0de0054cbcadb524704d4cb8991ac43c9a81380" target="_blank">f0de005</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,6 +601,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/f0de0054cbcadb524704d4cb8991ac43c9a81380/analysis/yield_link.Rmd" target="_blank">f0de005</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+PLots in one row now
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/e3242233183002e66dbfb06637a22d1e8d14c60d/docs/yield_link.html" target="_blank">e324223</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1524,7 +1558,7 @@ qqline(resid(mixed.lmer))</code></pre>
 <p>:O</p>
 <p>p-value of 0.000247 for the normalised presences while accounting for the breeding group, that’s beautiful.</p>
 <pre class="r"><code>ggplot(yield_nbs_joined_groups, aes(x = presences2, y = Yield2)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -1583,7 +1617,7 @@ Correlation of Fixed Effects:
 presences2 0.051 </code></pre>
 <p>Nice! Yield is negatively correlated with the number of NLR genes when accounting for breeding group AND country</p>
 <pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -1673,7 +1707,7 @@ Correlation of Fixed Effects:
 presences.x -0.991</code></pre>
 <p>Oh, lower p-values for the intercept</p>
 <pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -1726,7 +1760,7 @@ GrpOldcltvr  0.003 -0.008
 GrpMdrncltv -0.074  0.065  0.156</code></pre>
 <p>Oh, lower p-values for the intercept</p>
 <pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -1875,7 +1909,7 @@ convergence code: 0
 boundary (singular) fit: see ?isSingular</code></pre>
 <p>Oh, a significant p-value, let’s plot plot that and compare with he previous plot:</p>
 <pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -1929,7 +1963,7 @@ convergence code: 0
 unable to evaluate scaled gradient
 Model failed to converge: degenerate  Hessian with 2 negative eigenvalues</code></pre>
 <pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -1972,7 +2006,7 @@ Correlation of Fixed Effects:
            (Intr)
 presences2 0.231 </code></pre>
 <pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -2148,9 +2182,8 @@ presences.x -0.999
 GrpOldcltvr  0.003 -0.008       
 GrpMdrncltv -0.074  0.065  0.156</code></pre>
 <pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
-      theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = &quot;none&quot;) +
