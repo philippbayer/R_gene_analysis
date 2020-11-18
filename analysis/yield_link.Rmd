@@ -809,9 +809,9 @@ plot(resid(mixed.lmer))
 detach("package:lmerTest", unload=TRUE)
 
 yield_country_nbs_joined_groups_renamed <- yield_country_nbs_joined_groups
-names(yield_country_nbs_joined_groups_renamed) <- c('names', 'presences.x', 'PI-ID', 'Group', 'presences2', 'presences.y', 'Yield', 'Yield2', 'Country')
-mixed.lmer <- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
-
+names(yield_country_nbs_joined_groups_renamed) <- c('names', 'Count', 'PI-ID', 'Group', 'presences2.x', 'presences.y', 'Yield', 'Yield2.x', 'Country')
+mixed.lmer <- lmer(Yield ~ `Count` + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
+yield_country_nbs_joined_groups_renamed
 dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2))
 ```
@@ -826,21 +826,27 @@ stargazer(mixed.lmer, type = "text",
 
 ```{r}
 library(ggeffects)
-ggpredict(mixed.lmer, terms = c("presences.x",  'Group'), type = "re") %>% 
+ggpredict(mixed.lmer, terms = c("Count",  'Group'), type = "re") %>% 
    plot() +
    theme_minimal_hgrid() +
-  xlab('NLR count') +  theme(plot.title=element_blank())
+   xlab('NLR count') +  
+   theme(plot.title=element_blank())
 ```
 
 ```{r}
-mixed.lmer <- lmer(Yield ~ presences.x + (presences.x|Group) + (1|Country), data=yield_country_nbs_joined_groups_renamed)
-summary(mixed.lmer)
+library(sjPlot)
+plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
+  theme_minimal_hgrid()
 ```
 
 ```{r}
-ggpredict(mixed.lmer, terms = c("presences.x",  'Group'), type = "re") %>% 
-   plot() +
-   theme_minimal_hgrid() +
-  xlab('NLR count') +  theme(plot.title=element_blank())
+plot_model(mixed.lmer, type = "pred", terms = c("Count", "Group")) +
+  theme_minimal_hgrid() +
+  xlab('NLR count') + 
+  theme(plot.title=element_blank())
+```
+
+```{r}
+tab_model(mixed.lmer)
 ```
 
