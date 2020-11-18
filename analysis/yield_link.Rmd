@@ -21,6 +21,7 @@ library(lme4)
 library(lmerTest)
 library(sjPlot)
 library(dotwhisker)
+library(pals)
 theme_set(theme_cowplot())
 ```
 
@@ -29,7 +30,7 @@ theme_set(theme_cowplot())
 
 ```{r}
 npg_col = pal_npg("nrc")(9)
-col_list <- c(`Wild-type`=npg_col[8],
+col_list <- c(`Wild`=npg_col[8],
    Landrace = npg_col[3],
   `Old cultivar`=npg_col[2],
   `Modern cultivar`=npg_col[4])
@@ -65,20 +66,22 @@ nbs_res_tibb <- new_tibble(list(names = names, presences = presences))
 
 ```{r}
 groups <- read_csv('./data/Table_of_cultivar_groups.csv')
+groups <- rename(groups, Group = `Group in violin table`)
 groups <- groups %>% 
-  mutate(`Group in violin table` = str_replace_all(`Group in violin table`, 'landrace', 'Landrace')) %>%
-  mutate(`Group in violin table` = str_replace_all(`Group in violin table`, 'Old_cultivar', 'Old cultivar')) %>%
-  mutate(`Group in violin table` = str_replace_all(`Group in violin table`, 'Modern_cultivar', 'Modern cultivar'))
+  mutate(Group = str_replace_all(Group, 'landrace', 'Landrace')) %>%
+  mutate(Group = str_replace_all(Group, 'Old_cultivar', 'Old cultivar')) %>%
+  mutate(Group = str_replace_all(Group, 'Modern_cultivar', 'Modern cultivar')) %>%
+  mutate(Group = str_replace_all(Group, 'Wild-type', 'Wild'))
 
-groups$`Group in violin table` <-
+groups$Group <-
   factor(
-    groups$`Group in violin table`,
-    levels = c('Wild-type',
+    groups$Group,
+    levels = c('Wild',
                'Landrace',
                'Old cultivar',
                'Modern cultivar')
   )
-
+groups
 nbs_joined_groups <-
   inner_join(nbs_res_tibb, groups, by = c('names' = 'Data-storage-ID'))
 ```
@@ -165,9 +168,9 @@ OK there are many, many outliers here. Clearly I'll have to do something fancier
 ## Yield
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(yield, by=c('names'='Line')) %>% 
-  ggplot(aes(x=`Group in violin table`, y=Yield, fill = `Group in violin table`)) + 
+  ggplot(aes(x=Group, y=Yield, fill = Group)) + 
   geom_boxplot() +
   scale_fill_manual(values = col_list) + 
   theme_minimal_hgrid() +
@@ -185,9 +188,9 @@ And let's check the dots:
 
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(yield_join, by = 'names') %>% 
-  ggplot(aes(y=presences.x, x=Yield, color=`Group in violin table`)) +
+  ggplot(aes(y=presences.x, x=Yield, color=Group)) +
   geom_point() + 
   scale_color_manual(values = col_list) + 
   theme_minimal_hgrid() +
@@ -199,10 +202,10 @@ nbs_joined_groups %>%
 
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(yield_join, by = 'names') %>% 
-  filter(`Group in violin table` != 'Landrace') %>% 
-  ggplot(aes(x=presences.x, y=Yield, color=`Group in violin table`)) +
+  filter(Group != 'Landrace') %>% 
+  ggplot(aes(x=presences.x, y=Yield, color=Group)) +
   geom_point() + 
   scale_color_manual(values = col_list) + 
   theme_minimal_hgrid() +
@@ -218,15 +221,15 @@ protein vs. the four groups:
 
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(protein, by=c('names'='Line')) %>% 
-  ggplot(aes(x=`Group in violin table`, y=Protein, fill = `Group in violin table`)) + 
+  ggplot(aes(x=Group, y=Protein, fill = Group)) + 
   geom_boxplot() +
   scale_fill_manual(values = col_list) + 
   theme_minimal_hgrid() +
   theme(axis.text.x = element_text(size=12),
         axis.text.y = element_text(size=12)) +
-  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
   guides(fill=FALSE) +
@@ -239,15 +242,15 @@ And seed weight:
 
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(seed_join) %>% 
-  ggplot(aes(x=`Group in violin table`, y=wt, fill = `Group in violin table`)) + 
+  ggplot(aes(x=Group, y=wt, fill = Group)) + 
   geom_boxplot() +
   scale_fill_manual(values = col_list) + 
   theme_minimal_hgrid() +
   theme(axis.text.x = element_text(size=12),
         axis.text.y = element_text(size=12)) +
-  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
   guides(fill=FALSE) +
@@ -263,15 +266,15 @@ And finally, Oil content:
 
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(oil_join, by = 'names') %>% 
-  ggplot(aes(x=`Group in violin table`, y=Oil, fill = `Group in violin table`)) + 
+  ggplot(aes(x=Group, y=Oil, fill = Group)) + 
   geom_boxplot() +
   scale_fill_manual(values = col_list) + 
   theme_minimal_hgrid() +
   theme(axis.text.x = element_text(size=12),
         axis.text.y = element_text(size=12)) +
-  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
   guides(fill=FALSE) +
@@ -285,9 +288,9 @@ Let's redo the above hexplot, but also color the dots by group.
 
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(oil_join, by = 'names') %>% 
-  ggplot(aes(x=presences.x, y=Oil, color=`Group in violin table`)) +
+  ggplot(aes(x=presences.x, y=Oil, color=Group)) +
   geom_point() + 
   scale_color_manual(values = col_list) + 
   theme_minimal_hgrid() +
@@ -296,16 +299,16 @@ nbs_joined_groups %>%
   xlab('NLR gene count')
 ```
 
-Oha, so it's the wild-types that drag this out a lot.
+Oha, so it's the Wilds that drag this out a lot.
 
 Let's remove them and see what it looks like:
 
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(oil_join, by = 'names') %>% 
-  filter(`Group in violin table` %in% c('Old cultivar', 'Modern cultivar')) %>% 
-  ggplot(aes(x=presences.x, y=Oil, color=`Group in violin table`)) +
+  filter(Group %in% c('Old cultivar', 'Modern cultivar')) %>% 
+  ggplot(aes(x=presences.x, y=Oil, color=Group)) +
   geom_point() + 
   scale_color_manual(values = col_list) + 
   theme_minimal_hgrid() +
@@ -318,11 +321,11 @@ nbs_joined_groups %>%
 Let's remove that one outlier:
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(oil_join, by = 'names') %>% 
-  filter(`Group in violin table` %in% c('Old cultivar', 'Modern cultivar')) %>% 
+  filter(Group %in% c('Old cultivar', 'Modern cultivar')) %>% 
   filter(Oil > 13) %>% 
-  ggplot(aes(x=presences.x, y=Oil, color=`Group in violin table`)) +
+  ggplot(aes(x=presences.x, y=Oil, color=Group)) +
   geom_point() + 
   scale_color_manual(values = col_list) + 
   theme_minimal_hgrid() +
@@ -337,16 +340,16 @@ Does the above oil content boxplot become different if we exclude the one outlie
 
 ```{r}
 nbs_joined_groups %>% 
-  filter(!is.na(`Group in violin table`)) %>% 
+  filter(!is.na(Group)) %>% 
   inner_join(oil_join, by = 'names') %>% 
   filter(names != 'USB-393') %>% 
-  ggplot(aes(x=`Group in violin table`, y=Oil, fill = `Group in violin table`)) + 
+  ggplot(aes(x=Group, y=Oil, fill = Group)) + 
   geom_boxplot() +
   scale_fill_manual(values = col_list) + 
   theme_minimal_hgrid() +
   theme(axis.text.x = element_text(size=12),
         axis.text.y = element_text(size=12)) +
-  geom_signif(comparisons = list(c('Wild-type', 'Landrace'),
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
                                  c('Old cultivar', 'Modern cultivar')), 
               map_signif_level = T) +
   guides(fill=FALSE) +
@@ -405,11 +408,11 @@ So let's build an lmer model!
 
 
 ```{r}
-mixed.lmer <- lmer(Oil2 ~ presences2 + (1|`Group in violin table`), data=oil_nbs_joined_groups)
+mixed.lmer <- lmer(Oil2 ~ presences2 + (1|Group), data=oil_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
-So the Variance for `Group in violin table` is 1.3349, that means it's 1.3349/(1.3349+0.4075) *100 = 76% of the variance is explained by the four groups!
+So the Variance for Group is 1.3349, that means it's 1.3349/(1.3349+0.4075) *100 = 76% of the variance is explained by the four groups!
 
 ```{r}
 plot(mixed.lmer)
@@ -434,7 +437,7 @@ yield_nbs_joined_groups$Yield2 <-scale(yield_nbs_joined_groups$Yield, center=T, 
 ```
 
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`), data=yield_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1|Group), data=yield_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -457,14 +460,15 @@ p-value of 0.000247 for the normalised presences while accounting for the breedi
 
 ```{r}
 ggplot(yield_nbs_joined_groups, aes(x = presences2, y = Yield2)) +
-      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('Scaled and centered NLR gene count') +
-      ylab('Scaled and centered yield')
+      ylab('Scaled and centered yield') +
+      scale_color_manual(values=as.vector(isol(40)))
 ```
 
 #### Making the breeding group fixed
@@ -472,7 +476,7 @@ ggplot(yield_nbs_joined_groups, aes(x = presences2, y = Yield2)) +
 We have < 10 possible factors in the group, so making that fixed instead of random 
 ```{r}
 # this doesn't work because you need at least one random effect
-# mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table`, data=yield_nbs_joined_groups)
+# mixed.lmer <- lmer(Yield2 ~ presences2 + Group, data=yield_nbs_joined_groups)
 ```
 
 
@@ -491,22 +495,24 @@ yield_country_nbs_joined_groups <- yield_nbs_joined_groups %>% inner_join(countr
 ```
 
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
 Nice! Yield is negatively correlated with the number of NLR genes when accounting for breeding group AND country
 
 ```{r}
+
 ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('Scaled and centered NLR gene count') +
-      ylab('Scaled and centered yield')
+      ylab('Scaled and centered yield') +
+      scale_color_manual(values=as.vector(isol(40)))
 ```
 
 Some diagnostics:
@@ -528,7 +534,7 @@ BIG DISCLAIMER: Currently, I treat country and group not as nested variables, th
 Since we have too few factors in the breeding groups we have to make that fixed, not random
 
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + Group + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -538,21 +544,23 @@ Let's see whether the 'raw' values perform the same.
 
 
 ```{r}
-mixed.lmer <- lmer(Yield ~ presences.x + (1|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield ~ presences.x + (1|Group) + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 Oh, lower p-values for the intercept
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
-      xlab('Raw NLR gene count') +
-      ylab('Raw yield')
+      xlab('NLR gene count') +
+      ylab('Yield') +
+      scale_color_manual(values=as.vector(isol(40)))
+
 ```
 
 ```{r}
@@ -567,21 +575,23 @@ qqline(resid(mixed.lmer))
 #### Making the breeding group fixed
 
 ```{r}
-mixed.lmer <- lmer(Yield ~ presences.x + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 Oh, lower p-values for the intercept
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
-      xlab('Raw NLR gene count') +
-      ylab('Raw yield')
+      xlab('NLR gene count') +
+      ylab('Yield') +
+      scale_color_manual(values=as.vector(isol(40)))
+
 ```
 
 ```{r}
@@ -639,15 +649,15 @@ mixed.lmer <- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country
 ggpredict(mixed.lmer, terms = c("presences.x",  'Group'), type = "re") %>% 
    plot() +
    theme_minimal_hgrid() +
-  xlab('Raw NLR count') +
-  ylab('Raw yield')
+  xlab('NLR count') +
+  ylab('Yield')
 ```
 
 
 ```{r}
 # alright back to regular programming
 library(lmerTest)
-mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + Group + (1|Country), data=yield_country_nbs_joined_groups)
 
 ```
 
@@ -656,67 +666,70 @@ mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table` + (1|Country), 
 
 If I add random slopes to either groups not much changes, I do get warnings indicating that there's not much in the data:
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + (presences2|`Group in violin table`) + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + (presences2|Group) + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
 
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + `Group in violin table` + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + Group + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 Oh, a significant p-value, let's plot plot that and compare with he previous plot:
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('Scaled and centered NLR gene count') +
-      ylab('Scaled and centered yield')
+      ylab('Scaled and centered yield') +
+      scale_color_manual(values=as.vector(isol(40)))
 ```
 Quite similar, mostly downwards trajectories for each country.
 
 Let's do that non-normalised:
 ```{r}
-mixed.lmer <- lmer(Yield ~ presences.x + `Group in violin table` + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield ~ presences.x + Group + (1 + presences.x|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
-      xlab('Raw NLR gene count') +
-      ylab('Raw yield')
+      xlab('NLR gene count') +
+      ylab('Yield') +
+      scale_color_manual(values=as.vector(isol(40)))
 ```
 Quite similar, mostly downwards trajectories for each country.
 
 And now both random slopes:
 
 ```{r}
-mixed.lmer <- lmer(Yield2 ~ presences2 + (presences2|`Group in violin table`) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield2 ~ presences2 + (presences2|Group) + (1 + presences2|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences2, y = Yield2, colour = Country)) +
-      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('Scaled and centered NLR gene count') +
-      ylab('Scaled and centered yield')
+      ylab('Scaled and centered yield') +
+      scale_color_manual(values=as.vector(isol(40)))
 ```
 Yeah, nah
 
@@ -724,7 +737,7 @@ Yeah, nah
 ```{r}
 oil_country_nbs_joined_groups <- oil_nbs_joined_groups %>% inner_join(country)
 
-mixed.lmer <- lmer(Oil2 ~ presences2 + `Group in violin table` + (1|Country), data=oil_country_nbs_joined_groups)
+mixed.lmer <- lmer(Oil2 ~ presences2 + Group + (1|Country), data=oil_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -737,7 +750,7 @@ protein_nbs_joined_groups <- nbs_joined_groups %>% inner_join(protein_join, by =
 protein_nbs_joined_groups$Protein2 <- scale(protein_nbs_joined_groups$Protein, center=T, scale=T)
 protein_country_nbs_joined_groups <- protein_nbs_joined_groups %>% inner_join(country)
 
-mixed.lmer <- lmer(Protein2 ~ presences2 + `Group in violin table` + (1|Country), data=protein_country_nbs_joined_groups)
+mixed.lmer <- lmer(Protein2 ~ presences2 + Group + (1|Country), data=protein_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -748,7 +761,7 @@ No significance here.
 seed_nbs_joined_groups <- nbs_joined_groups %>% inner_join(seed_join, by = 'names') 
 seed_nbs_joined_groups$wt2 <- scale(seed_nbs_joined_groups$wt, center=T, scale=T)
 seed_country_nbs_joined_groups <- seed_nbs_joined_groups %>% inner_join(country)
-mixed.lmer <- lmer(wt2 ~ presences2 + `Group in violin table` + (1|Country), data=seed_country_nbs_joined_groups)
+mixed.lmer <- lmer(wt2 ~ presences2 + Group + (1|Country), data=seed_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
@@ -761,21 +774,22 @@ Again, no significance here.
 This is the final yield model for the paper
 
 ```{r}
-mixed.lmer <- lmer(Yield ~ presences.x + `Group in violin table` + (1|Country), data=yield_country_nbs_joined_groups)
+mixed.lmer <- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_nbs_joined_groups)
 summary(mixed.lmer)
 ```
 
 
 ```{r}
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
-      facet_wrap(~`Group in violin table`, nrow=2) +   # a panel for each mountain range
+      facet_wrap(~Group, nrow=2) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       theme_classic() +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
-      xlab('Raw NLR gene count') +
-      ylab('Raw yield')
+      xlab('NLR gene count') +
+      ylab('Yield') +
+      scale_color_manual(values=as.vector(isol(40)))
 ```
 
 ```{r}
