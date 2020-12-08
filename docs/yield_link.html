@@ -413,7 +413,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-11-18
+<strong>Last updated:</strong> 2020-12-08
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree77b56332ea1fca0a8c718ae7879eb877f6c2a5e6targetblank77b5633a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/77b56332ea1fca0a8c718ae7879eb877f6c2a5e6" target="_blank">77b5633</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2eec51dabfdd1431df3cfdfff22508bcbc1a43bdtargetblank2eec51da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/2eec51dabfdd1431df3cfdfff22508bcbc1a43bd" target="_blank">2eec51d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree77b56332ea1fca0a8c718ae7879eb877f6c2a5e6targetblank77b5633a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2eec51dabfdd1431df3cfdfff22508bcbc1a43bdtargetblank2eec51da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/77b56332ea1fca0a8c718ae7879eb877f6c2a5e6" target="_blank">77b5633</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/2eec51dabfdd1431df3cfdfff22508bcbc1a43bd" target="_blank">2eec51d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -522,6 +522,7 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/Brec_R1.txt
@@ -601,6 +602,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/2eec51dabfdd1431df3cfdfff22508bcbc1a43bd/analysis/yield_link.Rmd" target="_blank">2eec51d</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-12-08
+</td>
+<td>
+wflow_publish(“analysis/yield_link.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/fa16e50b6a9bb3df1eab052b3258e20fe7f1a951/docs/yield_link.html" target="_blank">fa16e50</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-11-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1146,7 +1181,9 @@ v readr   1.3.1     v forcats 0.5.0</code></pre>
 x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(patchwork)
-library(ggsci)
+library(sjPlot)</code></pre>
+<pre><code>Learn more about sjPlot with &#39;browseVignettes(&quot;sjPlot&quot;)&#39;.</code></pre>
+<pre class="r"><code>library(ggsci)
 library(dabestr)</code></pre>
 <pre><code>Loading required package: magrittr</code></pre>
 <pre><code>
@@ -1168,6 +1205,9 @@ library(cowplot)</code></pre>
 <pre><code>********************************************************</code></pre>
 <pre><code>
 Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:sjPlot&#39;:
+
+    plot_grid, save_plot</code></pre>
 <pre><code>The following object is masked from &#39;package:patchwork&#39;:
 
     align_plots</code></pre>
@@ -1180,7 +1220,8 @@ Attaching package: &#39;Matrix&#39;</code></pre>
 <pre><code>The following objects are masked from &#39;package:tidyr&#39;:
 
     expand, pack, unpack</code></pre>
-<pre class="r"><code>library(lmerTest)</code></pre>
+<pre class="r"><code>library(directlabels)
+library(lmerTest)</code></pre>
 <pre><code>
 Attaching package: &#39;lmerTest&#39;</code></pre>
 <pre><code>The following object is masked from &#39;package:lme4&#39;:
@@ -1189,14 +1230,8 @@ Attaching package: &#39;lmerTest&#39;</code></pre>
 <pre><code>The following object is masked from &#39;package:stats&#39;:
 
     step</code></pre>
-<pre class="r"><code>library(sjPlot)</code></pre>
-<pre><code>Learn more about sjPlot with &#39;browseVignettes(&quot;sjPlot&quot;)&#39;.</code></pre>
-<pre><code>
-Attaching package: &#39;sjPlot&#39;</code></pre>
-<pre><code>The following objects are masked from &#39;package:cowplot&#39;:
-
-    plot_grid, save_plot</code></pre>
-<pre class="r"><code>library(dotwhisker)
+<pre class="r"><code>library(sjPlot)
+library(dotwhisker)
 library(pals)
 theme_set(theme_cowplot())</code></pre>
 <div id="data-loading" class="section level1">
@@ -1405,7 +1440,7 @@ F-statistic: 189.6 on 1 and 960 DF,  p-value: &lt; 2.2e-16</code></pre>
   geom_signif(comparisons = list(c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)), 
               map_signif_level = T) +
   guides(fill=FALSE) +
-  ylab(&#39;Protein&#39;) +
+  ylab(&#39;Yield&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>And let’s check the dots:</p>
@@ -2136,129 +2171,521 @@ presences2 0.231 </code></pre>
 </div>
 <div id="oil-1" class="section level3">
 <h3>Oil</h3>
+<p>I’m removing the wilds from the other phenotypes to make the models comparable with the yield model - the yield model uses Landrace as baseline, if I keep Wild in then the baseline is different!</p>
 <pre class="r"><code>oil_country_nbs_joined_groups &lt;- oil_nbs_joined_groups %&gt;% inner_join(country)
-
-mixed.lmer &lt;- lmer(Oil2 ~ presences2 + Group + (1|Country), data=oil_country_nbs_joined_groups)
+oil_country_nbs_joined_groups &lt;- oil_country_nbs_joined_groups %&gt;% filter(Group != &#39;Wild&#39;)
+mixed.lmer &lt;- lmer(Oil ~ presences.x + Group + (1|Country), data=oil_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: Oil2 ~ presences2 + Group + (1 | Country)
+Formula: Oil ~ presences.x + Group + (1 | Country)
    Data: oil_country_nbs_joined_groups
 
-REML criterion at convergence: 1808.3
+REML criterion at convergence: 3543.5
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--4.5285 -0.5605  0.0983  0.6472  3.2209 
+-4.4112 -0.5544  0.1126  0.6528  3.0813 
 
 Random effects:
  Groups   Name        Variance Std.Dev.
- Country  (Intercept) 0.07703  0.2775  
- Residual             0.39128  0.6255  
-Number of obs: 929, groups:  Country, 41
+ Country  (Intercept) 0.7957   0.892   
+ Residual             5.0326   2.243   
+Number of obs: 789, groups:  Country, 41
 
 Fixed effects:
                       Estimate Std. Error        df t value Pr(&gt;|t|)    
-(Intercept)           -1.66466    0.09388  57.11719 -17.732   &lt;2e-16 ***
-presences2            -0.03579    0.02416 917.65081  -1.481    0.139    
-GroupLandrace          1.93042    0.06953 911.95172  27.763   &lt;2e-16 ***
-GroupOld cultivar      2.25628    0.11897 922.58914  18.965   &lt;2e-16 ***
-GroupModern cultivar   2.46605    0.14998 209.92967  16.443   &lt;2e-16 ***
+(Intercept)           30.65976    7.34188 782.49728   4.176  3.3e-05 ***
+presences.x           -0.02802    0.01654 783.56323  -1.694 0.090583 .  
+GroupOld cultivar      1.12205    0.36849 784.98582   3.045 0.002404 ** 
+GroupModern cultivar   1.71759    0.48119  99.35821   3.569 0.000553 ***
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
-            (Intr) prsnc2 GrpLnd GrpOlc
-presences2  -0.232                     
-GroupLandrc -0.644  0.434              
-GrpOldcltvr -0.405  0.249  0.509       
-GrpMdrncltv -0.447  0.246  0.432  0.338</code></pre>
+            (Intr) prsnc. GrpOlc
+presences.x -0.999              
+GrpOldcltvr -0.002 -0.003       
+GrpMdrncltv -0.075  0.066  0.153</code></pre>
 <p>No significance here.</p>
+<pre class="r"><code>tab_model(mixed.lmer, p.val=&#39;kr&#39;)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Oil
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+30.66
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+16.22 – 45.10
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+presences.x
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.03
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.06 – 0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.091
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Old cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.12
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.40 – 1.85
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.002</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Modern cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.72
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.73 – 2.70
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.001</strong>
+</td>
+</tr>
+<tr>
+<td colspan="4" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+5.03
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub> <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.80
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ICC
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.14
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+41
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+789
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.053 / 0.182
+</td>
+</tr>
+</table>
+<pre class="r"><code>oilmod &lt;- mixed.lmer</code></pre>
 </div>
 <div id="protein-1" class="section level3">
 <h3>Protein</h3>
 <pre class="r"><code>protein_nbs_joined_groups &lt;- nbs_joined_groups %&gt;% inner_join(protein_join, by = &#39;names&#39;) 
-protein_nbs_joined_groups$Protein2 &lt;- scale(protein_nbs_joined_groups$Protein, center=T, scale=T)
+#protein_nbs_joined_groups$Protein2 &lt;- scale(protein_nbs_joined_groups$Protein, center=T, scale=T)
 protein_country_nbs_joined_groups &lt;- protein_nbs_joined_groups %&gt;% inner_join(country)
+#protein_country_nbs_joined_groups &lt;- rename(protein_country_nbs_joined_groups, Group=`Group in violin table`)
+protein_country_nbs_joined_groups &lt;- protein_country_nbs_joined_groups %&gt;% filter(Group != &#39;Wild&#39;)
 
-mixed.lmer &lt;- lmer(Protein2 ~ presences2 + Group + (1|Country), data=protein_country_nbs_joined_groups)
+mixed.lmer &lt;- lmer(Protein ~ presences.x + Group + (1|Country), data=protein_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: Protein2 ~ presences2 + Group + (1 | Country)
+Formula: Protein ~ presences.x + Group + (1 | Country)
    Data: protein_country_nbs_joined_groups
 
-REML criterion at convergence: 2472.7
+REML criterion at convergence: 3867.8
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--3.6001 -0.6747 -0.0423  0.6274  3.5103 
+-2.7191 -0.6983 -0.0562  0.5934  3.5741 
 
 Random effects:
  Groups   Name        Variance Std.Dev.
- Country  (Intercept) 0.07042  0.2654  
- Residual             0.81212  0.9012  
-Number of obs: 929, groups:  Country, 41
+ Country  (Intercept) 0.6582   0.8113  
+ Residual             7.6769   2.7707  
+Number of obs: 789, groups:  Country, 41
 
 Fixed effects:
                       Estimate Std. Error        df t value Pr(&gt;|t|)    
-(Intercept)            0.52736    0.11992  77.94050   4.397 3.43e-05 ***
-presences2             0.04347    0.03466 923.71757   1.254     0.21    
-GroupLandrace         -0.72486    0.09980 923.95960  -7.263 8.04e-13 ***
-GroupOld cultivar     -1.20226    0.17045 923.25626  -7.053 3.42e-12 ***
-GroupModern cultivar  -1.10372    0.20076 140.80066  -5.498 1.76e-07 ***
+(Intercept)           34.21818    9.03231 784.99934   3.788 0.000163 ***
+presences.x            0.02180    0.02033 784.80098   1.072 0.283955    
+GroupOld cultivar     -1.54464    0.45281 784.14871  -3.411 0.000680 ***
+GroupModern cultivar  -1.06476    0.55283  74.32151  -1.926 0.057927 .  
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
-            (Intr) prsnc2 GrpLnd GrpOlc
-presences2  -0.277                     
-GroupLandrc -0.712  0.438              
-GrpOldcltvr -0.445  0.253  0.511       
-GrpMdrncltv -0.507  0.270  0.463  0.340</code></pre>
+            (Intr) prsnc. GrpOlc
+presences.x -1.000              
+GrpOldcltvr -0.003 -0.001       
+GrpMdrncltv -0.083  0.075  0.141</code></pre>
 <p>No significance here.</p>
+<pre class="r"><code>tab_model(mixed.lmer, p.val=&#39;kr&#39;)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Protein
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+34.22
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+16.44 – 52.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+presences.x
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.02 – 0.06
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.285
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Old cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.54
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.44 – -0.65
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.001</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Modern cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.06
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.22 – 0.09
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.071
+</td>
+</tr>
+<tr>
+<td colspan="4" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+7.68
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub> <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.66
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ICC
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.08
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+41
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+789
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.025 / 0.102
+</td>
+</tr>
+</table>
+<pre class="r"><code>protmod &lt;- mixed.lmer</code></pre>
 </div>
 <div id="seed-weight-2" class="section level3">
 <h3>Seed weight</h3>
 <pre class="r"><code>seed_nbs_joined_groups &lt;- nbs_joined_groups %&gt;% inner_join(seed_join, by = &#39;names&#39;) 
-seed_nbs_joined_groups$wt2 &lt;- scale(seed_nbs_joined_groups$wt, center=T, scale=T)
+#seed_nbs_joined_groups$wt2 &lt;- scale(seed_nbs_joined_groups$wt, center=T, scale=T)
 seed_country_nbs_joined_groups &lt;- seed_nbs_joined_groups %&gt;% inner_join(country)
-mixed.lmer &lt;- lmer(wt2 ~ presences2 + Group + (1|Country), data=seed_country_nbs_joined_groups)
+#seed_country_nbs_joined_groups &lt;- rename(seed_country_nbs_joined_groups, Group = `Group in violin table`)
+seed_country_nbs_joined_groups &lt;- seed_country_nbs_joined_groups %&gt;% filter(Group != &#39;Wild&#39;)
+mixed.lmer &lt;- lmer(wt ~ presences.x + Group + (1|Country), data=seed_country_nbs_joined_groups)
 summary(mixed.lmer)</code></pre>
 <pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 lmerModLmerTest]
-Formula: wt2 ~ presences2 + Group + (1 | Country)
+Formula: wt ~ presences.x + Group + (1 | Country)
    Data: seed_country_nbs_joined_groups
 
-REML criterion at convergence: 1676
+REML criterion at convergence: 3608.8
 
 Scaled residuals: 
     Min      1Q  Median      3Q     Max 
--2.9614 -0.6215  0.0110  0.5831  4.8138 
+-2.8823 -0.6388  0.0149  0.6015  4.6946 
 
 Random effects:
  Groups   Name        Variance Std.Dev.
- Country  (Intercept) 0.08566  0.2927  
- Residual             0.70082  0.8371  
-Number of obs: 664, groups:  Country, 38
+ Country  (Intercept)  1.353   1.163   
+ Residual             17.156   4.142   
+Number of obs: 633, groups:  Country, 38
 
 Fixed effects:
-                       Estimate Std. Error         df t value Pr(&gt;|t|)    
-(Intercept)           -2.348857   0.183189  90.849260 -12.822  &lt; 2e-16 ***
-presences2            -0.007261   0.040531 656.652662  -0.179    0.858    
-GroupLandrace          2.412123   0.166724 600.989922  14.468  &lt; 2e-16 ***
-GroupOld cultivar      2.727120   0.224422 656.159635  12.152  &lt; 2e-16 ***
-GroupModern cultivar   2.782167   0.259555  67.478942  10.719 3.26e-16 ***
+                       Estimate Std. Error         df t value Pr(&gt;|t|)  
+(Intercept)           15.329943  15.266389 627.894885   1.004   0.3157  
+presences.x           -0.004727   0.034360 624.361120  -0.138   0.8906  
+GroupOld cultivar      1.554124   0.778695 579.732427   1.996   0.0464 *
+GroupModern cultivar   1.754191   0.925435   6.832254   1.896   0.1009  
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
 Correlation of Fixed Effects:
-            (Intr) prsnc2 GrpLnd GrpOlc
-presences2  -0.267                     
-GroupLandrc -0.864  0.364              
-GrpOldcltvr -0.666  0.274  0.710       
-GrpMdrncltv -0.663  0.298  0.648  0.539</code></pre>
+            (Intr) prsnc. GrpOlc
+presences.x -1.000              
+GrpOldcltvr -0.013  0.009       
+GrpMdrncltv -0.104  0.096  0.137</code></pre>
 <p>Again, no significance here.</p>
+<pre class="r"><code>tab_model(mixed.lmer, p.val=&#39;kr&#39;)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+wt
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+15.33
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-14.75 – 45.41
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.317
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+presences.x
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.07 – 0.06
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.891
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Old cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.55
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.02 – 3.09
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.047</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Modern cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.75
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.23 – 3.74
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.082
+</td>
+</tr>
+<tr>
+<td colspan="4" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+17.16
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub> <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+1.35
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ICC
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.07
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+38
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+633
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.018 / 0.090
+</td>
+</tr>
+</table>
+<pre class="r"><code>seedmod &lt;- mixed.lmer</code></pre>
 </div>
 </div>
 <div id="the-final-yield-model" class="section level2">
@@ -2297,7 +2724,8 @@ Correlation of Fixed Effects:
 presences.x -0.999              
 GrpOldcltvr  0.003 -0.008       
 GrpMdrncltv -0.074  0.065  0.156</code></pre>
-<pre class="r"><code>ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
+<pre class="r"><code>library(ggrepel)
+ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
       facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
       geom_line(data = cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer)), aes(y = pred), size = 1) + 
@@ -2305,15 +2733,37 @@ GrpMdrncltv -0.074  0.065  0.156</code></pre>
       theme(legend.position = &quot;none&quot;) +
       xlab(&#39;NLR gene count&#39;) +
       ylab(&#39;Yield&#39;) +
-      scale_color_manual(values=as.vector(isol(40)))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-71-1.png" width="672" style="display: block; margin: auto;" /></p>
+      scale_color_manual(values=as.vector(isol(40))) +
+      geom_label_repel(aes(label = Country), nudge_x = 0.35, size = 4)</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-74-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>newdat &lt;-cbind(yield_country_nbs_joined_groups, pred = predict(mixed.lmer))
+
+newdat %&gt;% mutate(Country2 = case_when ( Country == &#39;USA&#39; ~ &#39;USA&#39;,
+                                              Country == &#39;China&#39; ~ &#39;China&#39;,
+                                              Country == &#39;Korea&#39; ~ &#39;Korea&#39;,
+                                              Country == &#39;Japan&#39; ~ &#39;Japan&#39;,
+                                              Country == &#39;Russia&#39; ~ &#39;Russia&#39;,
+                                              TRUE ~ &#39;&#39;)) %&gt;% 
+  ggplot(aes(x = presences.x, y = pred, colour = Country)) +
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
+      geom_line( size = 1) +
+      theme_minimal_hgrid() +
+      theme(legend.position = &quot;none&quot;) +
+      xlab(&#39;NLR gene count&#39;) +
+      ylab(&#39;Yield&#39;) +
+      scale_color_manual(values=as.vector(isol(40)))+
+      geom_point(aes(y = Yield),alpha = 0.5) +
+      geom_dl(aes(label = Country2), method=&#39;last.bumpup&#39;) +
+      xlim(c(430, 480))</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>```</p>
 <pre class="r"><code>plot(mixed.lmer)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(resid(mixed.lmer))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-74-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-78-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>detach(&quot;package:lmerTest&quot;, unload=TRUE)
 
 yield_country_nbs_joined_groups_renamed &lt;- yield_country_nbs_joined_groups
@@ -2336,7 +2786,7 @@ yield_country_nbs_joined_groups_renamed</code></pre>
 # ... with 731 more rows, and 1 more variable: Country &lt;chr&gt;</code></pre>
 <pre class="r"><code>dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = &quot;grey60&quot;, linetype = 2))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-79-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>library(stargazer)
 stargazer(mixed.lmer, type = &quot;text&quot;,
           digits = 3,
@@ -2373,16 +2823,15 @@ ggpredict(mixed.lmer, terms = c(&quot;Count&quot;,  &#39;Group&#39;), type = &qu
    theme_minimal_hgrid() +
    xlab(&#39;NLR count&#39;) +  
    theme(plot.title=element_blank())</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>library(sjPlot)
-plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-81-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
   theme_minimal_hgrid()</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-78-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-82-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_model(mixed.lmer, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;)) +
   theme_minimal_hgrid() +
   xlab(&#39;NLR count&#39;) + 
   theme(plot.title=element_blank())</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-79-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-83-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>tab_model(mixed.lmer, p.val=&#39;kr&#39;)</code></pre>
 <table style="border-collapse:collapse; border:none;">
 <tr>
@@ -2515,6 +2964,364 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </table>
 <p>σ measures the random effect variance I think, 0.52 is pretty good (this can easily be &gt;1), but more useful to compare models with each other which I don’t do here.</p>
 <p>intraclass-correlation coefficient (ICC) measures how the proportion of variance explained by the grouping structure, in this case, country</p>
+<p>Let’s compare all models in one table:</p>
+<pre class="r"><code>tab_model(mixed.lmer, oilmod, protmod, seedmod )</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Yield
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Oil
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Protein
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+wt
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col8">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col9">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  0">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  1">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  2">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  3">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+8.76
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+3.93 – 13.59
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+30.66
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+16.27 – 45.05
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+34.22
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+16.52 – 51.92
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+15.33
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-14.59 – 45.25
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.315
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Count
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.03 – -0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.007</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Old cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.24
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.51 – 0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.067
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.12
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.40 – 1.84
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>0.002</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.54
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.43 – -0.66
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+<strong>0.001</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+1.55
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.03 – 3.08
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+<strong>0.046</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Modern cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.83
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.47 – 1.19
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.72
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.77 – 2.66
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.06
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.15 – 0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.054
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+1.75
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.06 – 3.57
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.058
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+presences.x
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.03
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.06 – 0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.090
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-0.02 – 0.06
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.284
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+-0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.07 – 0.06
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.891
+</td>
+</tr>
+<tr>
+<td colspan="13" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.52
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+5.03
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+7.68
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+17.16
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.26 <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.80 <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.66 <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+1.35 <sub>Country</sub>
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ICC
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.33
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.14
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.08
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.07
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+40 <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+41 <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+41 <sub>Country</sub>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+38 <sub>Country</sub>
+</td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+741
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+789
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+789
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+633
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.070 / 0.378
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.053 / 0.182
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.025 / 0.102
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.018 / 0.090
+</td>
+</tr>
+</table>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2538,14 +3345,15 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] ggeffects_0.16.0     stargazer_5.2.2      pals_1.6            
- [4] dotwhisker_0.5.0     sjPlot_2.8.6         lme4_1.1-21         
- [7] Matrix_1.2-18        ggforce_0.3.1        ggsignif_0.6.0      
-[10] cowplot_1.0.0        dabestr_0.3.0        magrittr_1.5        
-[13] ggsci_2.9            patchwork_1.0.0      forcats_0.5.0       
-[16] stringr_1.4.0        dplyr_1.0.0          purrr_0.3.4         
-[19] readr_1.3.1          tidyr_1.1.0          tibble_3.0.2        
-[22] ggplot2_3.3.2        tidyverse_1.3.0      workflowr_1.6.2.9000
+ [1] lmerTest_3.1-2         ggrepel_0.8.2          ggeffects_0.16.0      
+ [4] stargazer_5.2.2        pals_1.6               dotwhisker_0.5.0      
+ [7] directlabels_2020.6.17 lme4_1.1-21            Matrix_1.2-18         
+[10] ggforce_0.3.1          ggsignif_0.6.0         cowplot_1.0.0         
+[13] dabestr_0.3.0          magrittr_1.5           ggsci_2.9             
+[16] sjPlot_2.8.6           patchwork_1.0.0        forcats_0.5.0         
+[19] stringr_1.4.0          dplyr_1.0.0            purrr_0.3.4           
+[22] readr_1.3.1            tidyr_1.1.0            tibble_3.0.2          
+[25] ggplot2_3.3.2          tidyverse_1.3.0        workflowr_1.6.2.9000  
 
 loaded via a namespace (and not attached):
   [1] TH.data_1.0-10      minqa_1.2.4         colorspace_1.4-1   
@@ -2581,7 +3389,7 @@ loaded via a namespace (and not attached):
  [91] grid_3.6.3          readxl_1.3.1        blob_1.2.1         
  [94] callr_3.4.4         git2r_0.27.1        reprex_0.3.0       
  [97] digest_0.6.25       xtable_1.8-4        httpuv_1.5.4       
-[100] numDeriv_2016.8-1.1 munsell_0.5.0      </code></pre>
+[100] numDeriv_2016.8-1.1 munsell_0.5.0       quadprog_1.5-8     </code></pre>
 </div>
 </div>
 </div>
