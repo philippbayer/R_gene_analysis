@@ -576,3 +576,47 @@ rlk_joined_groups %>%
 ```
 
 
+## Ratio of NLR/RLK plot
+
+```{r}
+rlk_nbs_joined_groups <- rlk_joined_groups %>% inner_join(nbs_joined_groups, by=c('names'))
+rlk_nbs_joined_groups$ratio <- rlk_nbs_joined_groups$presences.x / rlk_nbs_joined_groups$presences.y # RLK/NLR
+rlk_nbs_joined_groups %>% 
+  filter( !is.na(`PI-ID.x`) ) %>%
+    ggplot(aes(x=`Group in violin table.x`, y = ratio,
+               fill = `Group in violin table.x`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
+                                 c('Old cultivar', 'Modern cultivar')), 
+              map_signif_level = T) +
+  guides(fill=FALSE) +
+  ylab('Number of RLK divided by NLR') +
+  xlab('Accession group')
+```
+
+## Ratio of NLR/RLP plot
+
+```{r}
+rlp_nbs_joined_groups <- rlp_joined_groups %>% inner_join(nbs_joined_groups, by=c('names'))
+rlp_nbs_joined_groups$ratio <- rlp_nbs_joined_groups$presences.x / rlp_nbs_joined_groups$presences.y # RLP/NLR
+rlp_nbs_joined_groups %>% 
+  filter( !is.na(`PI-ID.x`) ) %>%
+    ggplot(aes(x=`Group in violin table.x`, y = ratio,
+               fill = `Group in violin table.x`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c('Wild', 'Landrace'),
+                                 c('Old cultivar', 'Modern cultivar')), 
+              map_signif_level = T) +
+  guides(fill=FALSE) +
+  ylab('Number of RLP divided by NLR') +
+  xlab('Accession group')
+```
+
