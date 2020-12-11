@@ -65,6 +65,22 @@ for (i in seq_along(nbs_pav_table)){
 nbs_res_tibb <- new_tibble(list(names = names, presences = presences))
 ```
 
+```{r}
+# let's make the same table for all genes too
+names <- c()
+presences <- c()
+
+for (i in seq_along(pav_table)){
+  if ( i == 1) next
+  thisind <- colnames(pav_table)[i]
+  pavs <- pav_table[[i]]
+  presents <- sum(pavs)
+  names <- c(names, thisind)
+  presences <- c(presences, presents)
+}
+res_tibb <- new_tibble(list(names = names, presences = presences))
+```
+
 
 ```{r}
 groups <- read_csv('./data/Table_of_cultivar_groups.csv')
@@ -86,6 +102,9 @@ groups$Group <-
 groups
 nbs_joined_groups <-
   inner_join(nbs_res_tibb, groups, by = c('names' = 'Data-storage-ID'))
+all_joined_groups <-
+    inner_join(res_tibb, groups, by = c('names' = 'Data-storage-ID'))
+
 ```
 
 # Linking with yield
@@ -436,6 +455,7 @@ Let's quickly check yield too
 yield_nbs_joined_groups <- nbs_joined_groups %>% inner_join(yield_join, by = 'names') 
 yield_nbs_joined_groups$Yield2 <-scale(yield_nbs_joined_groups$Yield, center=T, scale=T)
 
+yield_all_joined_groups <- all_joined_groups %>% inner_join(yield_join, by = 'names')
 ```
 
 ```{r}
@@ -494,6 +514,8 @@ country <- read_csv('./data/Cultivar_vs_country.csv')
 names(country) <- c('names', 'PI-ID', 'Country')
 
 yield_country_nbs_joined_groups <- yield_nbs_joined_groups %>% inner_join(country)
+
+yield_country_all_joined_groups <- yield_all_joined_groups %>% inner_join(country)
 ```
 
 I need a summary table of sample sizes:
@@ -831,8 +853,8 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour =
       theme(legend.position = "none") +
       xlab('NLR gene count') +
       ylab('Yield') +
-      scale_color_manual(values=as.vector(isol(40))) +
-      geom_label_repel(aes(label = Country), nudge_x = 0.35, size = 4)
+      scale_color_manual(values=as.vector(isol(40)))# +
+      #geom_label_repel(aes(label = Country), nudge_x = 0.35, size = 4)
 ```
 
 ```{r}
@@ -859,7 +881,6 @@ newdat %>% mutate(Country2 = case_when ( Country == 'USA' ~ 'USA',
 
 ```
 
-```
 
 ```{r}
 plot(mixed.lmer)
@@ -927,5 +948,44 @@ Let's compare all models in one table:
 
 ```{r}
 tab_model(mixed.lmer, oilmod, protmod, seedmod )
+```
+
+## We still need the same model for ALL genes
+
+What if we just see a general gene shrinkage, not just NLR-genes?
+
+```{r}
+library('lmerTest')
+mixed.lmer <- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_all_joined_groups)
+summary(mixed.lmer)
+```
+
+OK good, so all genes don't have a statistically significant correlation.
+
+```{r}
+tab_model(mixed.lmer, p.val='kr')
+
+```
+
+```{r}
+newdat <-cbind(yield_country_all_joined_groups, pred = predict(mixed.lmer))
+
+newdat %>% mutate(Country2 = case_when ( Country == 'USA' ~ 'USA',
+                                              Country == 'China' ~ 'China',
+                                              Country == 'Korea' ~ 'Korea',
+                                              Country == 'Japan' ~ 'Japan',
+                                              Country == 'Russia' ~ 'Russia',
+                                              TRUE ~ '')) %>% 
+  ggplot(aes(x = presences.x/1000, y = pred, colour = Country)) +
+      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
+      geom_line( size = 1) +
+      theme_minimal_hgrid() +
+      theme(legend.position = "none") +
+      xlab('Gene count (1000s)') +
+      ylab('Yield') +
+      scale_color_manual(values=as.vector(isol(40)))+
+      geom_point(aes(y = Yield),alpha = 0.5) +
+      geom_dl(aes(label = Country2), method='last.bumpup')+
+      xlim(c(47.900, 49.700))
 ```
 
