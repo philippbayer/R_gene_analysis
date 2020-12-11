@@ -17,10 +17,4 @@ Welcome to the website summarising the soybean R-gene analysis.
 
 2. Plotting of NBS/RLK/RLP plots based on total numbers: [link](total_numbers.html). These results are the main part of the paper. Finished.
 
-3. Comparing TEs with variable R-genes: TOCOME
-
-4. Running GWAS with NLR PAV: [link](gwas.html) Under construction.
-
-5. Comparing SNP-based phylogenies with NLR PAV: [link](phylo.html) Under construction.
-
-6. Linking yield with NLR gene counts: [link](yield_link.html). Finished.
+3. Linking yield with NLR gene counts: [link](yield_link.html). Finished.
