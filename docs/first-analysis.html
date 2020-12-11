@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Philipp Bayer" />
+
+<meta name="date" content="2020-09-17" />
+
+<title>first-analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R gene analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/philippbayer/R_gene_analysis">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">first-analysis</h1>
+<h4 class="author">Philipp Bayer</h4>
+<h4 class="date">2020-09-17</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-12-11
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>R_gene_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2.9000). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200917code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200917)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200917code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree83dc49a3c8bdb0399ad0004ee65fedea770055b2targetblank83dc49aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/83dc49a3c8bdb0399ad0004ee65fedea770055b2" target="_blank">83dc49a</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree83dc49a3c8bdb0399ad0004ee65fedea770055b2targetblank83dc49aa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/83dc49a3c8bdb0399ad0004ee65fedea770055b2" target="_blank">83dc49a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  data/Brec_R1.txt
+    Untracked:  data/Brec_R2.txt
+    Untracked:  data/CR15_R1.txt
+    Untracked:  data/CR15_R2.txt
+    Untracked:  data/CR_14_R1.txt
+    Untracked:  data/CR_14_R2.txt
+    Untracked:  data/KS_R1.txt
+    Untracked:  data/KS_R2.txt
+    Untracked:  data/NBS_PAV.txt.gz
+    Untracked:  data/NLR_PAV_GD.txt
+    Untracked:  data/NLR_PAV_GM.txt
+    Untracked:  data/PAVs_newick.txt
+    Untracked:  data/PPR1.txt
+    Untracked:  data/PPR2.txt
+    Untracked:  data/SNPs_newick.txt
+    Untracked:  data/bac.txt
+    Untracked:  data/brown.txt
+    Untracked:  data/cy3.txt
+    Untracked:  data/cy5.txt
+    Untracked:  data/early.txt
+    Untracked:  data/flowerings.txt
+    Untracked:  data/foregeye.txt
+    Untracked:  data/height.txt
+    Untracked:  data/late.txt
+    Untracked:  data/mature.txt
+    Untracked:  data/motting.txt
+    Untracked:  data/mvp.kin.bin
+    Untracked:  data/mvp.kin.desc
+    Untracked:  data/oil.txt
+    Untracked:  data/pdh.txt
+    Untracked:  data/protein.txt
+    Untracked:  data/rust_tan.txt
+    Untracked:  data/salt.txt
+    Untracked:  data/seedq.txt
+    Untracked:  data/seedweight.txt
+    Untracked:  data/stem_termination.txt
+    Untracked:  data/sudden.txt
+    Untracked:  data/virus.txt
+    Untracked:  data/yield.txt
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/first-analysis.Rmd</code>) and HTML (<code>docs/first-analysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/83dc49a3c8bdb0399ad0004ee65fedea770055b2/docs/first-analysis.html" target="_blank">83dc49a</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-12-11
+</td>
+<td>
+Trace deleted files
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/dae157bbfbf4210c5a5e22ecdddffb0eebff9a35/docs/first-analysis.html" target="_blank">dae157b</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-24
+</td>
+<td>
+Update of analysis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/1b346e92bf45cf74a9141cfa4f2a7b681277c576/analysis/first-analysis.Rmd" target="_blank">1b346e9</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-22
+</td>
+<td>
+More data!
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/1b346e92bf45cf74a9141cfa4f2a7b681277c576/docs/first-analysis.html" target="_blank">1b346e9</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-22
+</td>
+<td>
+More data!
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/0777e1d8fe1be73aaaaa3f64b0be25c7213a7acd/docs/first-analysis.html" target="_blank">0777e1d</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-22
+</td>
+<td>
+update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/e6e9b9b8b4c4b2978b76526319c8489dae36e44d/docs/first-analysis.html" target="_blank">e6e9b9b</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/c1fbbf9e2d16c27769a40263cacd80a585a11a82/analysis/first-analysis.Rmd" target="_blank">c1fbbf9</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-21
+</td>
+<td>
+wflow_publish(&quot;analysis/*&quot;)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/c71005aede368c70ef4ea2a56848ca990f8abda5/analysis/first-analysis.Rmd" target="_blank">c71005a</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+lots changes
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/c71005aede368c70ef4ea2a56848ca990f8abda5/docs/first-analysis.html" target="_blank">c71005a</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+lots changes
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/7d33bac41a53bd89f2a8e2463da5f1218329158d/docs/first-analysis.html" target="_blank">7d33bac</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/695db1e2a50b4374b8b8a7cd9062b45d037f6c48/analysis/first-analysis.Rmd" target="_blank">695db1e</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+wflow_publish(c(“analysis/eda.Rmd”, “analysis/first-analysis.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/ca65f66e320cb7bdc7bce9cdd886b39b2dbeb3e5/docs/first-analysis.html" target="_blank">ca65f66</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/efd6af1553ef0d224280b55388de5de60934a940/analysis/first-analysis.Rmd" target="_blank">efd6af1</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+wflow_git_commit(all = T)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/efd6af1553ef0d224280b55388de5de60934a940/docs/first-analysis.html" target="_blank">efd6af1</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-09-18
+</td>
+<td>
+wflow_git_commit(all = T)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+library(tidyverse)
+library(patchwork)
+library(ggsci)
+library(dabestr)
+library(dabestr)
+library(cowplot)
+library(ggsignif)
+
+theme_set(theme_cowplot())</code></pre>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<pre class="r"><code>npg_col = pal_npg(&quot;nrc&quot;)(9)
+col_list &lt;- c(`Wild-type`=npg_col[8],
+   Landrace = npg_col[3],
+  `Old cultivar`=npg_col[2],
+  `Modern cultivar`=npg_col[4])
+
+pav_table &lt;- read_tsv(&#39;./data/soybean_pan_pav.matrix_gene.txt.gz&#39;)</code></pre>
+</div>
+<div id="nbs-part" class="section level1">
+<h1>NBS part</h1>
+<p>Let’s pull the NBS genes from the table</p>
+<pre class="r"><code>nbs &lt;- read_tsv(&#39;./data/Lee.NBS.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;))
+# have to remove the .t1s 
+nbs$Name &lt;- gsub(&#39;.t1&#39;,&#39;&#39;, nbs$Name)</code></pre>
+<pre class="r"><code>nbs_pav_table &lt;- pav_table %&gt;% filter(Individual %in% nbs$Name)</code></pre>
+<pre class="r"><code>names &lt;- c()
+percs &lt;- c()
+
+for (i in seq_along(nbs_pav_table)){
+  if ( i == 1) next
+  thisind &lt;- colnames(nbs_pav_table)[i]
+  pavs &lt;- nbs_pav_table[[i]]
+  perc &lt;- sum(pavs) / length(pavs) * 100
+  names &lt;- c(names, thisind)
+  percs &lt;- c(percs, perc)
+}
+nbs_res_tibb &lt;- new_tibble(list(names = names, percs = percs))</code></pre>
+<p>OK what do these presence percentages look like?</p>
+<pre class="r"><code>ggplot(data=nbs_res_tibb, aes(x=percs)) + geom_histogram(bins=25) </code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>On average, 91.7701034% of NBS genes are present in each individual.</p>
+<p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
+<pre class="r"><code>nbs_groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
+nbs_joined_groups &lt;- left_join(nbs_res_tibb, nbs_groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
+<pre class="r"><code>nbs_joined_groups$`Group in violin table` &lt;- gsub(&#39;landrace&#39;, &#39;Landrace&#39;, nbs_joined_groups$`Group in violin table`)
+nbs_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;, nbs_joined_groups$`Group in violin table`)
+nbs_joined_groups$`Group in violin table` &lt;- gsub(&#39;Old_cultivar&#39;, &#39;Old cultivar&#39;, nbs_joined_groups$`Group in violin table`)
+
+nbs_joined_groups$`Group in violin table` &lt;- factor(nbs_joined_groups$`Group in violin table`, levels=c(NA, &#39;Wild-type&#39;, &#39;Landrace&#39;, &#39;Old cultivar&#39;, &#39;Modern cultivar&#39;))</code></pre>
+<pre class="r"><code>library(ggforce)
+nbs_vio &lt;- nbs_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
+  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  geom_violin(draw_quantiles = c(0.5)) +
+  geom_sina(alpha=0.5) +
+  geom_smooth(aes(group=1), method=&#39;glm&#39;) +
+  scale_fill_manual(values=col_list)+
+  guides(fill = FALSE) +
+  ylim(c(87, 100))
+
+nbs_vio</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>nbs_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
+  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  geom_smooth(aes(group=1), method=&#39;lm&#39;, se = FALSE) +
+  geom_jitter() +
+  scale_fill_manual(values=col_list)+
+  guides(fill = FALSE)# +</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  #ylim(c(0, 100))</code></pre>
+<pre class="r"><code>nbs_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
+  group_by(`Group in violin table`) %&gt;% 
+  summarise(min_perc = min(percs),
+            max_perc = max(percs),
+            mean_perc = mean(percs),
+            median_perc = median(percs),
+            std_perc = sd(percs)) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Group in violin table</th>
+<th align="right">min_perc</th>
+<th align="right">max_perc</th>
+<th align="right">mean_perc</th>
+<th align="right">median_perc</th>
+<th align="right">std_perc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Wild-type</td>
+<td align="right">89.50617</td>
+<td align="right">97.32510</td>
+<td align="right">93.19939</td>
+<td align="right">93.20988</td>
+<td align="right">1.4754746</td>
+</tr>
+<tr class="even">
+<td align="left">Landrace</td>
+<td align="right">88.27160</td>
+<td align="right">95.67901</td>
+<td align="right">91.54130</td>
+<td align="right">91.56379</td>
+<td align="right">1.0312082</td>
+</tr>
+<tr class="odd">
+<td align="left">Old cultivar</td>
+<td align="right">89.09465</td>
+<td align="right">93.82716</td>
+<td align="right">91.53695</td>
+<td align="right">91.56379</td>
+<td align="right">1.0701423</td>
+</tr>
+<tr class="even">
+<td align="left">Modern cultivar</td>
+<td align="right">88.68313</td>
+<td align="right">93.62140</td>
+<td align="right">91.01125</td>
+<td align="right">90.94650</td>
+<td align="right">0.8329189</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="rlk-part" class="section level1">
+<h1>RLK part</h1>
+<p>Let’s do the same plot with RLKs</p>
+<pre class="r"><code>rlk &lt;- read_tsv(&#39;./data/Lee.RLK.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;, &#39;Subtype&#39;))
+
+# have to remove the .t1s 
+rlk$Name &lt;- gsub(&#39;.t1&#39;,&#39;&#39;, rlk$Name)</code></pre>
+<pre class="r"><code>rlk_pav_table &lt;- pav_table %&gt;% filter(Individual %in% rlk$Name)</code></pre>
+<pre class="r"><code>names &lt;- c()
+percs &lt;- c()
+
+for (i in seq_along(rlk_pav_table)){
+  if ( i == 1) next
+  thisind &lt;- colnames(rlk_pav_table)[i]
+  pavs &lt;- rlk_pav_table[[i]]
+  perc &lt;- sum(pavs) / length(pavs) * 100
+  names &lt;- c(names, thisind)
+  percs &lt;- c(percs, perc)
+}
+rlk_res_tibb &lt;- new_tibble(list(names = names, percs = percs))</code></pre>
+<p>OK what do these presence percentages look like?</p>
+<pre class="r"><code>ggplot(data=rlk_res_tibb, aes(x=percs)) + geom_histogram(bins=25) </code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>On average, 99.190418% of NBS genes are present in each individual.</p>
+<p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
+<pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
+
+rlk_joined_groups &lt;- left_join(rlk_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
+<pre class="r"><code>rlk_joined_groups$`Group in violin table` &lt;- gsub(&#39;landrace&#39;, &#39;Landrace&#39;, rlk_joined_groups$`Group in violin table`)
+rlk_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;, rlk_joined_groups$`Group in violin table`)
+rlk_joined_groups$`Group in violin table` &lt;- gsub(&#39;Old_cultivar&#39;, &#39;Old cultivar&#39;, rlk_joined_groups$`Group in violin table`)
+
+rlk_joined_groups$`Group in violin table` &lt;- factor(rlk_joined_groups$`Group in violin table`, levels=c(NA, &#39;Wild-type&#39;, &#39;Landrace&#39;, &#39;Old cultivar&#39;, &#39;Modern cultivar&#39;))</code></pre>
+<pre class="r"><code>rlk_vio &lt;- rlk_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
+  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  geom_violin(draw_quantiles = c(0.5)) +
+  geom_sina(alpha=0.5) +
+  geom_smooth(aes(group=1), method=&#39;lm&#39;, se = FALSE) +
+  scale_fill_manual(values=col_list)+
+  guides(fill = FALSE)# +
+  #ylim(c(87, 100))
+rlk_vio</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>rlk_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
+  group_by(`Group in violin table`) %&gt;% 
+  summarise(min_perc = min(percs),
+            max_perc = max(percs),
+            mean_perc = mean(percs),
+            median_perc = median(percs),
+            std_perc = sd(percs)) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Group in violin table</th>
+<th align="right">min_perc</th>
+<th align="right">max_perc</th>
+<th align="right">mean_perc</th>
+<th align="right">median_perc</th>
+<th align="right">std_perc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Wild-type</td>
+<td align="right">98.38022</td>
+<td align="right">99.74425</td>
+<td align="right">99.26314</td>
+<td align="right">99.31799</td>
+<td align="right">0.2177805</td>
+</tr>
+<tr class="even">
+<td align="left">Landrace</td>
+<td align="right">98.63598</td>
+<td align="right">99.57374</td>
+<td align="right">99.16600</td>
+<td align="right">99.14749</td>
+<td align="right">0.1278145</td>
+</tr>
+<tr class="odd">
+<td align="left">Old cultivar</td>
+<td align="right">98.97698</td>
+<td align="right">99.40324</td>
+<td align="right">99.19752</td>
+<td align="right">99.23274</td>
+<td align="right">0.1199946</td>
+</tr>
+<tr class="even">
+<td align="left">Modern cultivar</td>
+<td align="right">98.80648</td>
+<td align="right">99.57374</td>
+<td align="right">99.18922</td>
+<td align="right">99.14749</td>
+<td align="right">0.1255006</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="rlp-part" class="section level1">
+<h1>RLP part</h1>
+<p>And now with RLPs</p>
+<pre class="r"><code>rlp &lt;- read_tsv(&#39;./data/Lee.RLP.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;, &#39;Subtype&#39;))
+
+# have to remove the .t1s 
+rlp$Name &lt;- gsub(&#39;.t1&#39;,&#39;&#39;, rlp$Name)</code></pre>
+<pre class="r"><code>rlp_pav_table &lt;- pav_table %&gt;% filter(Individual %in% rlp$Name)</code></pre>
+<pre class="r"><code>names &lt;- c()
+percs &lt;- c()
+
+for (i in seq_along(rlp_pav_table)){
+  if ( i == 1) next
+  thisind &lt;- colnames(rlp_pav_table)[i]
+  pavs &lt;- rlp_pav_table[[i]]
+  perc &lt;- sum(pavs) / length(pavs) * 100
+  names &lt;- c(names, thisind)
+  percs &lt;- c(percs, perc)
+}
+rlp_res_tibb &lt;- new_tibble(list(names = names, percs = percs))</code></pre>
+<p>OK what do these presence percentages look like?</p>
+<pre class="r"><code>ggplot(data=rlp_res_tibb, aes(x=percs)) + geom_histogram(bins=25) </code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>On average, 95.6496496% of NBS genes are present in each individual.</p>
+<p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
+<pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
+rlp_joined_groups &lt;- left_join(rlp_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
+<pre class="r"><code>rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;landrace&#39;, &#39;Landrace&#39;, rlp_joined_groups$`Group in violin table`)
+rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;, rlp_joined_groups$`Group in violin table`)
+rlp_joined_groups$`Group in violin table` &lt;- gsub(&#39;Old_cultivar&#39;, &#39;Old cultivar&#39;, rlp_joined_groups$`Group in violin table`)
+
+rlp_joined_groups$`Group in violin table` &lt;- factor(rlp_joined_groups$`Group in violin table`, levels=c(NA, &#39;Wild-type&#39;, &#39;Landrace&#39;, &#39;Old cultivar&#39;, &#39;Modern cultivar&#39;))</code></pre>
+<pre class="r"><code>rlp_vio &lt;- rlp_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
+  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  geom_violin(draw_quantiles = c(0.5)) +
+  geom_sina(alpha=0.5) +
+    geom_smooth(aes(group=1), method=&#39;lm&#39;, se = FALSE) +
+  scale_fill_manual(values=col_list)+
+  guides(fill = FALSE) +
+  ylim(c(87, 100))
+rlp_vio</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>rlp_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
+  ggplot(aes(y=percs, x=`Group in violin table`, fill=`Group in violin table`)) + 
+  geom_jitter() +
+  #geom_sina(alpha=0.5) +
+  scale_fill_manual(values=col_list)+
+  guides(fill = FALSE) +
+  ylim(c(87, 100))</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>rlp_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
+  group_by(`Group in violin table`) %&gt;% 
+  summarise(min_perc = min(percs),
+            max_perc = max(percs),
+            mean_perc = mean(percs),
+            median_perc = median(percs),
+            std_perc = sd(percs)) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Group in violin table</th>
+<th align="right">min_perc</th>
+<th align="right">max_perc</th>
+<th align="right">mean_perc</th>
+<th align="right">median_perc</th>
+<th align="right">std_perc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Wild-type</td>
+<td align="right">93.33333</td>
+<td align="right">98.33333</td>
+<td align="right">96.34112</td>
+<td align="right">96.11111</td>
+<td align="right">0.8985510</td>
+</tr>
+<tr class="even">
+<td align="left">Landrace</td>
+<td align="right">90.00000</td>
+<td align="right">98.33333</td>
+<td align="right">95.53711</td>
+<td align="right">95.55556</td>
+<td align="right">0.9230701</td>
+</tr>
+<tr class="odd">
+<td align="left">Old cultivar</td>
+<td align="right">93.88889</td>
+<td align="right">97.77778</td>
+<td align="right">95.45894</td>
+<td align="right">95.55556</td>
+<td align="right">0.9019439</td>
+</tr>
+<tr class="even">
+<td align="left">Modern cultivar</td>
+<td align="right">93.88889</td>
+<td align="right">97.22222</td>
+<td align="right">95.44678</td>
+<td align="right">95.55556</td>
+<td align="right">0.7169931</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="plotting-together" class="section level1">
+<h1>Plotting together</h1>
+<pre class="r"><code>nbs_vio + rlk_vio + rlp_vio</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="stats---dabayes" class="section level1">
+<h1>Stats - Dabayes</h1>
+<p>I want to know whether the groups are statistically significantly different. First let’s use dabestr</p>
+<div id="nbs" class="section level2">
+<h2>NBS</h2>
+<p>Let’s run dabestr first:</p>
+<pre class="r"><code>nbs_multi.two.group.unpaired &lt;- 
+  nbs_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
+  dabest(`Group in violin table`, percs, 
+         idx = list(c(&quot;Wild-type&quot;, &quot;Landrace&quot;),
+                    c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)),
+         paired = FALSE)
+nbs_multi.two.group.unpaired</code></pre>
+<pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
+=============================================================
+
+Good morning!
+The current time is 11:04 AM on Friday December 11, 2020.
+
+Dataset    :  .
+The first five rows are:
+# A tibble: 5 x 4
+  names  percs `PI-ID`  `Group in violin table`
+  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
+1 AB-01   91.6 PI458020 Landrace               
+2 AB-02   93.4 PI603713 Landrace               
+3 DT2000  92.0 PI635999 Modern cultivar        
+4 For     92.2 PI548645 Modern cultivar        
+5 HN001   92.2 PI518664 Modern cultivar        
+
+X Variable :  Group in violin table
+Y Variable :  percs
+
+Effect sizes(s) will be computed for:
+  1. Landrace minus Wild-type
+  2. Modern cultivar minus Old cultivar</code></pre>
+<pre class="r"><code>nbs_multi.two.group.unpaired.meandiff &lt;- mean_diff(nbs_multi.two.group.unpaired)
+nbs_multi.two.group.unpaired.meandiff</code></pre>
+<pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
+=============================================================
+
+Good morning!
+The current time is 11:04 AM on Friday December 11, 2020.
+
+Dataset    :  .
+X Variable :  Group in violin table
+Y Variable :  percs
+
+Unpaired mean difference of Landrace (n = 723) minus Wild-type (n = 157)
+ -1.66 [95CI  -1.9; -1.41]
+
+Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46)
+ -0.526 [95CI  -0.875; -0.2]
+
+
+5000 bootstrap resamples.
+All confidence intervals are bias-corrected and accelerated.</code></pre>
+<pre class="r"><code>plot(nbs_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
+     rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="rlk" class="section level2">
+<h2>RLK</h2>
+<pre class="r"><code>rlk_multi.two.group.unpaired &lt;- 
+  rlk_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
+  dabest(`Group in violin table`, percs, 
+         idx = list(c(&quot;Wild-type&quot;, &quot;Landrace&quot;),
+                    c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)),
+         paired = FALSE)
+rlk_multi.two.group.unpaired</code></pre>
+<pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
+=============================================================
+
+Good morning!
+The current time is 11:04 AM on Friday December 11, 2020.
+
+Dataset    :  .
+The first five rows are:
+# A tibble: 5 x 4
+  names  percs `PI-ID`  `Group in violin table`
+  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
+1 AB-01   99.5 PI458020 Landrace               
+2 AB-02   99.1 PI603713 Landrace               
+3 DT2000  99.3 PI635999 Modern cultivar        
+4 For     99.1 PI548645 Modern cultivar        
+5 HN001   99.1 PI518664 Modern cultivar        
+
+X Variable :  Group in violin table
+Y Variable :  percs
+
+Effect sizes(s) will be computed for:
+  1. Landrace minus Wild-type
+  2. Modern cultivar minus Old cultivar</code></pre>
+<pre class="r"><code>rlk_multi.two.group.unpaired.meandiff &lt;- mean_diff(rlk_multi.two.group.unpaired)
+rlk_multi.two.group.unpaired.meandiff</code></pre>
+<pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
+=============================================================
+
+Good morning!
+The current time is 11:04 AM on Friday December 11, 2020.
+
+Dataset    :  .
+X Variable :  Group in violin table
+Y Variable :  percs
+
+Unpaired mean difference of Landrace (n = 723) minus Wild-type (n = 157)
+ -0.0971 [95CI  -0.132; -0.0611]
+
+Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46)
+ -0.00831 [95CI  -0.0479; 0.0308]
+
+
+5000 bootstrap resamples.
+All confidence intervals are bias-corrected and accelerated.</code></pre>
+<pre class="r"><code>plot(rlk_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
+     rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>No difference between old and modern cultivars!</p>
+</div>
+<div id="rlp" class="section level2">
+<h2>RLP</h2>
+<pre class="r"><code>rlp_multi.two.group.unpaired &lt;- 
+  rlp_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
+  dabest(`Group in violin table`, percs, 
+         idx = list(c(&quot;Wild-type&quot;, &quot;Landrace&quot;),
+                    c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)),
+         paired = FALSE)
+rlp_multi.two.group.unpaired</code></pre>
+<pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
+=============================================================
+
+Good morning!
+The current time is 11:04 AM on Friday December 11, 2020.
+
+Dataset    :  .
+The first five rows are:
+# A tibble: 5 x 4
+  names  percs `PI-ID`  `Group in violin table`
+  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;fct&gt;                  
+1 AB-01   95   PI458020 Landrace               
+2 AB-02   95.6 PI603713 Landrace               
+3 DT2000  95   PI635999 Modern cultivar        
+4 For     95   PI548645 Modern cultivar        
+5 HN001   95.6 PI518664 Modern cultivar        
+
+X Variable :  Group in violin table
+Y Variable :  percs
+
+Effect sizes(s) will be computed for:
+  1. Landrace minus Wild-type
+  2. Modern cultivar minus Old cultivar</code></pre>
+<pre class="r"><code>rlp_multi.two.group.unpaired.meandiff &lt;- mean_diff(rlp_multi.two.group.unpaired)
+rlp_multi.two.group.unpaired.meandiff</code></pre>
+<pre><code>dabestr (Data Analysis with Bootstrap Estimation in R) v0.3.0
+=============================================================
+
+Good morning!
+The current time is 11:04 AM on Friday December 11, 2020.
+
+Dataset    :  .
+X Variable :  Group in violin table
+Y Variable :  percs
+
+Unpaired mean difference of Landrace (n = 723) minus Wild-type (n = 157)
+ -0.804 [95CI  -0.965; -0.651]
+
+Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46)
+ -0.0122 [95CI  -0.294; 0.265]
+
+
+5000 bootstrap resamples.
+All confidence intervals are bias-corrected and accelerated.</code></pre>
+<pre class="r"><code>plot(rlp_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
+     rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Again, no difference between old and modern cultivars!</p>
+</div>
+</div>
+<div id="stats---classic-t-test" class="section level1">
+<h1>Stats - classic t-test</h1>
+<div id="nbs-1" class="section level2">
+<h2>NBS</h2>
+<pre class="r"><code>nbs_joined_groups %&gt;% 
+  filter( !is.na(`PI-ID`) ) %&gt;%
+    ggplot(aes(x=`Group in violin table`, y = percs,
+               fill = `Group in violin table`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c(&#39;Wild-type&#39;, &#39;Landrace&#39;),
+                                 c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)), 
+              map_signif_level = T) +
+  guides(fill=FALSE)</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="rlp-1" class="section level2">
+<h2>RLP</h2>
+<pre class="r"><code>rlp_joined_groups %&gt;% 
+  filter( !is.na(`PI-ID`) ) %&gt;%
+    ggplot(aes(x=`Group in violin table`, y = percs,
+               fill = `Group in violin table`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c(&#39;Wild-type&#39;, &#39;Landrace&#39;),
+                                 c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)), 
+              map_signif_level = T) +
+  guides(fill=FALSE)</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="rlk-1" class="section level2">
+<h2>RLK</h2>
+<pre class="r"><code>rlk_joined_groups %&gt;% 
+  filter( !is.na(`PI-ID`) ) %&gt;%
+    ggplot(aes(x=`Group in violin table`, y = percs,
+               fill = `Group in violin table`)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = col_list) + 
+  theme_minimal_hgrid() +
+  theme(axis.text.x = element_text(size=12),
+        axis.text.y = element_text(size=12)) +
+  geom_signif(comparisons = list(c(&#39;Wild-type&#39;, &#39;Landrace&#39;),
+                                 c(&#39;Old cultivar&#39;, &#39;Modern cultivar&#39;)), 
+              map_signif_level = T) +
+  guides(fill=FALSE)</code></pre>
+<p><img src="figure/first-analysis.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.3 (2020-02-29)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 17134)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_Australia.1252  LC_CTYPE=English_Australia.1252   
+[3] LC_MONETARY=English_Australia.1252 LC_NUMERIC=C                      
+[5] LC_TIME=English_Australia.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggforce_0.3.1        ggsignif_0.6.0       cowplot_1.0.0       
+ [4] dabestr_0.3.0        magrittr_1.5         ggsci_2.9           
+ [7] patchwork_1.0.0      forcats_0.5.0        stringr_1.4.0       
+[10] dplyr_1.0.0          purrr_0.3.4          readr_1.3.1         
+[13] tidyr_1.1.0          tibble_3.0.2         ggplot2_3.3.2       
+[16] tidyverse_1.3.0      workflowr_1.6.2.9000
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-148       fs_1.5.0.9000      lubridate_1.7.9    RColorBrewer_1.1-2
+ [5] httr_1.4.2         rprojroot_1.3-2    tools_3.6.3        backports_1.1.10  
+ [9] utf8_1.1.4         R6_2.4.1           vipor_0.4.5        DBI_1.1.0         
+[13] mgcv_1.8-31        colorspace_1.4-1   withr_2.2.0        tidyselect_1.1.0  
+[17] processx_3.4.4     compiler_3.6.3     git2r_0.27.1       cli_2.0.2         
+[21] rvest_0.3.5        xml2_1.3.2         labeling_0.3       scales_1.1.1      
+[25] callr_3.4.4        digest_0.6.25      rmarkdown_2.3      pkgconfig_2.0.3   
+[29] htmltools_0.5.0    dbplyr_1.4.4       highr_0.8          rlang_0.4.7       
+[33] readxl_1.3.1       rstudioapi_0.11    farver_2.0.3       generics_0.0.2    
+[37] jsonlite_1.7.1     Matrix_1.2-18      Rcpp_1.0.5         ggbeeswarm_0.6.0  
+[41] munsell_0.5.0      fansi_0.4.1        lifecycle_0.2.0    stringi_1.5.3     
+[45] whisker_0.4        yaml_2.2.1         MASS_7.3-51.6      plyr_1.8.6        
+[49] grid_3.6.3         blob_1.2.1         promises_1.1.1     crayon_1.3.4      
+[53] lattice_0.20-41    haven_2.3.1        splines_3.6.3      hms_0.5.3         
+[57] knitr_1.29         ps_1.3.4           pillar_1.4.4       boot_1.3-25       
+[61] reprex_0.3.0       glue_1.4.2         evaluate_0.14      getPass_0.2-2     
+[65] modelr_0.1.8       vctrs_0.3.1        tweenr_1.0.1       httpuv_1.5.4      
+[69] cellranger_1.1.0   gtable_0.3.0       polyclip_1.10-0    assertthat_0.2.1  
+[73] xfun_0.17          broom_0.5.6        later_1.1.0.1      beeswarm_0.2.3    
+[77] ellipsis_0.3.1    </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
