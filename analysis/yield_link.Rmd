@@ -529,7 +529,7 @@ And a summary histogram:
 ```{r}
 yield_country_nbs_joined_groups %>% ggplot(aes(x=presences.x, fill=Group)) + 
   geom_histogram(bins=25) +
-  xlab('Yield') +
+  xlab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
   ylab('Count') +
   facet_wrap(~Group) +
   scale_fill_manual(values = col_list) +
@@ -601,7 +601,7 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour =
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('NLR gene count') +
-      ylab('Yield') +
+      xlab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
       scale_color_manual(values=as.vector(isol(40)))
 
 ```
@@ -632,7 +632,7 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour =
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('NLR gene count') +
-      ylab('Yield') +
+    xlab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
       scale_color_manual(values=as.vector(isol(40)))
 
 ```
@@ -693,7 +693,7 @@ ggpredict(mixed.lmer, terms = c("presences.x",  'Group'), type = "re") %>%
    plot() +
    theme_minimal_hgrid() +
   xlab('NLR count') +
-  ylab('Yield')
+  ylab(expression(paste('Yield [Mg ', ha^-1, ']')))
 ```
 
 
@@ -750,7 +750,7 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour =
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('NLR gene count') +
-      ylab('Yield') +
+    ylab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
       scale_color_manual(values=as.vector(isol(40)))
 ```
 Quite similar, mostly downwards trajectories for each country.
@@ -844,7 +844,6 @@ summary(mixed.lmer)
 
 
 ```{r}
-library(ggrepel)
 ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour = Country)) +
       facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
       geom_point(alpha = 0.5) +
@@ -852,9 +851,8 @@ ggplot(yield_country_nbs_joined_groups, aes(x = presences.x, y = Yield, colour =
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('NLR gene count') +
-      ylab('Yield') +
-      scale_color_manual(values=as.vector(isol(40)))# +
-      #geom_label_repel(aes(label = Country), nudge_x = 0.35, size = 4)
+  ylab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
+      scale_color_manual(values=as.vector(isol(40)))
 ```
 
 ```{r}
@@ -873,7 +871,7 @@ newdat %>% mutate(Country2 = case_when ( Country == 'USA' ~ 'USA',
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('NLR gene count') +
-      ylab('Yield') +
+  ylab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
       scale_color_manual(values=as.vector(isol(40)))+
       geom_point(aes(y = Yield),alpha = 0.5) +
       geom_dl(aes(label = Country2), method='last.bumpup') +
@@ -925,18 +923,21 @@ ggpredict(mixed.lmer, terms = c("Count",  'Group'), type = "re") %>%
 
 ```{r}
 plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
-  theme_minimal_hgrid()
+  theme_minimal_hgrid() +
+  theme(plot.title=element_blank())
+
 ```
 
 ```{r}
 plot_model(mixed.lmer, type = "pred", terms = c("Count", "Group")) +
   theme_minimal_hgrid() +
   xlab('NLR count') + 
+  ylab((expression(paste('Yield [Mg ', ha^-1, ']')))) +
   theme(plot.title=element_blank())
 ```
 
 ```{r}
-tab_model(mixed.lmer, p.val='kr')
+tab_model(mixed.lmer, p.val='kr', digits=3)
 ```
 
 σ measures the random effect variance I think, 0.52 is pretty good (this can easily be >1), but more useful to compare models with each other which I don't do here. 
@@ -947,7 +948,7 @@ intraclass-correlation coefficient (ICC) measures how the proportion of variance
 Let's compare all models in one table:
 
 ```{r}
-tab_model(mixed.lmer, oilmod, protmod, seedmod )
+tab_model(mixed.lmer, oilmod, protmod, seedmod, digits=3 )
 ```
 
 ## We still need the same model for ALL genes
@@ -963,7 +964,7 @@ summary(mixed.lmer)
 OK good, so all genes don't have a statistically significant correlation.
 
 ```{r}
-tab_model(mixed.lmer, p.val='kr')
+tab_model(mixed.lmer, p.val='kr', digits=3)
 
 ```
 
@@ -982,7 +983,7 @@ newdat %>% mutate(Country2 = case_when ( Country == 'USA' ~ 'USA',
       theme_minimal_hgrid() +
       theme(legend.position = "none") +
       xlab('Gene count (1000s)') +
-      ylab('Yield') +
+  ylab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
       scale_color_manual(values=as.vector(isol(40)))+
       geom_point(aes(y = Yield),alpha = 0.5) +
       geom_dl(aes(label = Country2), method='last.bumpup')+
