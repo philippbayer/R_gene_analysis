@@ -700,8 +700,6 @@ ggpredict(mixed.lmer, terms = c("presences.x",  'Group'), type = "re") %>%
 ```{r}
 # alright back to regular programming
 library(lmerTest)
-mixed.lmer <- lmer(Yield2 ~ presences2 + Group + (1|Country), data=yield_country_nbs_joined_groups)
-
 ```
 
 
@@ -922,6 +920,11 @@ ggpredict(mixed.lmer, terms = c("Count",  'Group'), type = "re") %>%
 ```
 
 ```{r}
+plot_model(mixed.lmer, type = "re", sort.est = TRUE) + theme(plot.title=element_blank())
+
+```
+
+```{r}
 plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
   theme_minimal_hgrid() +
   theme(plot.title=element_blank())
@@ -950,6 +953,7 @@ Let's compare all models in one table:
 ```{r}
 tab_model(mixed.lmer, oilmod, protmod, seedmod, digits=3 )
 ```
+
 
 ## We still need the same model for ALL genes
 
