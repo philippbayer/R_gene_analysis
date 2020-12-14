@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreec777575c6fa7e0a9f8004e34c68a365880364560targetblankc777575a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/c777575c6fa7e0a9f8004e34c68a365880364560" target="_blank">c777575</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb87834e6ddfa33ab00518d6c722cc6cfd67ccef0targetblankb87834ea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/b87834e6ddfa33ab00518d6c722cc6cfd67ccef0" target="_blank">b87834e</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreec777575c6fa7e0a9f8004e34c68a365880364560targetblankc777575a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb87834e6ddfa33ab00518d6c722cc6cfd67ccef0targetblankb87834ea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/c777575c6fa7e0a9f8004e34c68a365880364560" target="_blank">c777575</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/b87834e6ddfa33ab00518d6c722cc6cfd67ccef0" target="_blank">b87834e</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -602,6 +602,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/b87834e6ddfa33ab00518d6c722cc6cfd67ccef0/analysis/yield_link.Rmd" target="_blank">b87834e</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-12-14
+</td>
+<td>
+wflow_publish(“analysis/yield_link.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/25ba454f602941c8f66b94ef2012e0734495e1c1/docs/yield_link.html" target="_blank">25ba454</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-12-14
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -2091,8 +2125,7 @@ ggpredict(mixed.lmer, terms = c(&quot;presences.x&quot;,  &#39;Group&#39;), type
   ylab(expression(paste(&#39;Yield [Mg &#39;, ha^-1, &#39;]&#39;)))</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-59-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># alright back to regular programming
-library(lmerTest)
-mixed.lmer &lt;- lmer(Yield2 ~ presences2 + Group + (1|Country), data=yield_country_nbs_joined_groups)</code></pre>
+library(lmerTest)</code></pre>
 </div>
 <div id="more-complex-models" class="section level4">
 <h4>More complex models</h4>
@@ -2925,16 +2958,18 @@ ggpredict(mixed.lmer, terms = c(&quot;Count&quot;,  &#39;Group&#39;), type = &qu
    xlab(&#39;NLR count&#39;) +  
    theme(plot.title=element_blank())</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-82-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_model(mixed.lmer, type = &quot;re&quot;, sort.est = TRUE) + theme(plot.title=element_blank())</code></pre>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-83-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_model(mixed.lmer, data=yield_country_nbs_joined_groups_renamed) +
   theme_minimal_hgrid() +
   theme(plot.title=element_blank())</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-83-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-84-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_model(mixed.lmer, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;)) +
   theme_minimal_hgrid() +
   xlab(&#39;NLR count&#39;) + 
   ylab((expression(paste(&#39;Yield [Mg &#39;, ha^-1, &#39;]&#39;)))) +
   theme(plot.title=element_blank())</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-84-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-85-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>tab_model(mixed.lmer, p.val=&#39;kr&#39;, digits=3)</code></pre>
 <table style="border-collapse:collapse; border:none;">
 <tr>
@@ -3613,7 +3648,7 @@ newdat %&gt;% mutate(Country2 = case_when ( Country == &#39;USA&#39; ~ &#39;USA&
       geom_point(aes(y = Yield),alpha = 0.5) +
       geom_dl(aes(label = Country2), method=&#39;last.bumpup&#39;)+
       xlim(c(47.900, 49.700))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-89-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_link.Rmd/unnamed-chunk-90-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
