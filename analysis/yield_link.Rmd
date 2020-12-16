@@ -945,7 +945,9 @@ newdat %>% mutate(Country2 = case_when ( Country == 'USA' ~ 'USA',
       ylab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
       scale_color_manual(values=mycol) +
       xlim(c(430, 480)) +
-  labs(color = "Country")
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+        axis.text.x = element_text(size=10))
 ```
 
 OK that's much better, nice and strong colors.
@@ -1069,22 +1071,33 @@ newdat %>% mutate(Country2 = case_when ( Country == 'USA' ~ 'USA',
 With better color scheme:
 
 ```{r}
-newdat %>% mutate(Country2 = case_when ( Country == 'USA' ~ 'USA',
-                                              Country == 'China' ~ 'China',
-                                              Country == 'Korea' ~ 'Korea',
-                                              Country == 'Japan' ~ 'Japan',
-                                              Country == 'Russia' ~ 'Russia',
-                                              TRUE ~ 'Rest')) %>% 
-  mutate(Country2 = factor(Country2, levels=c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest'))) %>% 
-  ggplot(aes(x = presences.x/1000, y = pred, color = Country2)) +
-      facet_wrap(~Group, nrow=1) +   # a panel for each mountain range
-      geom_point(aes(y = Yield, color=Country2),alpha = 0.8, size=2) +
-      geom_line(aes(y=pred, group=Country, color=Country2), size = 1.5) +
-      theme_minimal_hgrid() +
-      xlab('NLR gene count') +
-      ylab(expression(paste('Yield [Mg ', ha^-1, ']'))) +
-      scale_color_manual(values=mycol) +
-      xlim(c(47.900, 49.700)) +
-  labs(color = "Country")
+newdat %>% mutate(
+  Country2 = case_when (
+  Country == 'USA' ~ 'USA',
+  Country == 'China' ~ 'China',
+  Country == 'Korea' ~ 'Korea',
+  Country == 'Japan' ~ 'Japan',
+  Country == 'Russia' ~ 'Russia',
+  TRUE ~ 'Rest'
+  )
+  ) %>%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
+  )) %>%
+  ggplot(aes(x = presences.x / 1000, y = pred, color = Country2)) +
+  facet_wrap( ~ Group, nrow = 1) +   # a panel for each mountain range
+  geom_point(aes(y = Yield, color = Country2),
+  alpha = 0.8,
+  size = 2) +
+  geom_line(aes(y = pred, group = Country, color = Country2), size = 1.5) +
+  theme_minimal_hgrid() +
+  xlab('NLR gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10))
 ```
 
