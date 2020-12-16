@@ -1092,7 +1092,7 @@ newdat %>% mutate(
   size = 2) +
   geom_line(aes(y = pred, group = Country, color = Country2), size = 1.5) +
   theme_minimal_hgrid() +
-  xlab('NLR gene count') +
+  xlab('Gene count') +
   ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
   scale_color_manual(values = mycol) +
   xlim(c(47.900, 49.700)) +
