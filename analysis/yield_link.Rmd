@@ -389,13 +389,16 @@ Great tutorial here: https://ourcodingclub.github.io/tutorials/mixed-models
 
 So we'll have to build some lme4 models! 
 
-## Oil
 
+## Normalising NLR gene counts
 
 ```{r}
 nbs_joined_groups$presences2 <- scale(nbs_joined_groups$presences, center=T, scale=T)
 hist(nbs_joined_groups$presences2)
 ```
+
+## Oil
+
 ```{r}
 oil_nbs_joined_groups <- nbs_joined_groups %>% inner_join(oil_join, by = 'names') 
 oil_nbs_joined_groups$Oil2 <- scale(oil_nbs_joined_groups$Oil, center=T, scale=T)
@@ -1097,6 +1100,57 @@ newdat %>% mutate(
   scale_color_manual(values = mycol) +
   xlim(c(47.900, 49.700)) +
   labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10))
+```
+
+
+## Let's join the countries into continents and then run everything again
+
+
+```{r}
+library(countrycode)
+
+yield_country_nbs_joined_groups$continent <- countrycode(sourcevar = yield_country_nbs_joined_groups$Country,
+                                                         origin = 'country.name',
+                                                         destination = 'continent')
+yield_country_nbs_joined_groups <- yield_country_nbs_joined_groups %>% mutate(continent2 = case_when (
+  Country == 'USA' ~ 'North America',
+  Country == 'Canada' ~ 'North America',
+  continent == 'Americas' ~ 'South America',
+  TRUE ~ continent
+  )) 
+```
+
+
+```{r}
+mixed.ranslope <- lmer(Yield ~ presences.y + ( 1 + presences.y | continent2) +  Group, data = yield_country_nbs_joined_groups, REML = F) 
+summary(mixed.ranslope)
+
+```
+
+```{r}
+tab_model(mixed.ranslope, p.val='kr', digits=3)
+```
+
+```{r}
+no_na <- yield_country_nbs_joined_groups %>% filter(!is.na(continent))
+
+newdat <-cbind(no_na, pred = predict(mixed.ranslope))
+newdat
+newdat %>%
+  ggplot(aes(x = presences.y, y = pred, color = continent2)) +
+  facet_wrap( ~ Group, nrow = 1) +   # a panel for each mountain range
+  geom_point(aes(y = Yield, color = continent2),
+  alpha = 0.8,
+  size = 2) +
+  geom_line(aes(y = pred, group = Country, color = continent2), size = 1.5) +
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  #scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Continent") +
   theme(panel.spacing = unit(0.9, "lines"),
   axis.text.x = element_text(size = 10))
 ```
