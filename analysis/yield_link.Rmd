@@ -21,7 +21,6 @@ library(ggforce)
 library(lme4)
 library(directlabels)
 library(lmerTest)
-library(sjPlot)
 library(dotwhisker)
 library(pals)
 theme_set(theme_cowplot())
@@ -1046,7 +1045,6 @@ OK good, so all genes don't have a statistically significant correlation.
 
 ```{r}
 tab_model(mixed.lmer, p.val='kr', digits=3)
-
 ```
 
 ```{r}
@@ -1130,7 +1128,7 @@ summary(mixed.ranslope)
 ```
 
 ```{r}
-tab_model(mixed.ranslope, p.val='kr', digits=3)
+tab_model(mixed.ranslope, digits=3)#, p.val='kr', digits=3)
 ```
 
 ```{r}
@@ -1153,5 +1151,103 @@ newdat %>%
   labs(color = "Continent") +
   theme(panel.spacing = unit(0.9, "lines"),
   axis.text.x = element_text(size = 10))
+```
+
+
+# Let's redo everything using basic lm()
+
+Do we even need lme4? Let's find out!
+```{r}
+yield_country_nbs_joined_groups$Count <- yield_country_nbs_joined_groups$presences.y
+yield_country_all_joined_groups$Count <- yield_country_all_joined_groups$presences.y
+```
+
+```{r}
+lm_model <- lm(Yield ~ Count +  Group, data = yield_country_nbs_joined_groups) 
+summary(lm_model)
+```
+
+```{r}
+clm_model <- lm(Yield ~ Count +  Group + Country, data = yield_country_nbs_joined_groups) 
+summary(clm_model)
+```
+
+```{r}
+interlm_model <- lm(Yield ~ Count * Group, data = yield_country_nbs_joined_groups) 
+summary(interlm_model)
+```
+
+
+```{r}
+tab_model(lm_model, p.val='kr', digits=3)
+```
+
+```{r}
+newdat <-cbind(yield_country_all_joined_groups, pred = predict(clm_model))
+
+```
+
+```{r}
+newdat %>% mutate(
+  Country2 = case_when (
+  Country == 'USA' ~ 'USA',
+  Country == 'China' ~ 'China',
+  Country == 'Korea' ~ 'Korea',
+  Country == 'Japan' ~ 'Japan',
+  Country == 'Russia' ~ 'Russia',
+  TRUE ~ 'Rest'
+  )
+  ) %>%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
+  )) %>%
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap( ~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10))
+```
+
+Oh wow, that looks very similar.
+
+```{r}
+plot_model(clm_model, type = "pred", terms = c("Count", "Group")) +
+  theme_minimal_hgrid() +
+  #scale_fill_manual(values = col_list) +
+  #scale_color_manual(values = col_list) +
+  xlab('NLR count') + 
+  ylab((expression(paste('Yield [Mg ', ha^-1, ']')))) +
+  theme(plot.title=element_blank())
+```
+
+```{r}
+qqnorm(resid(clm_model))
+qqline(resid(clm_model))
+```
+
+```{r}
+plot(resid(clm_model))
+```
+
+```{r}
+plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
+```
+
+```{r}
+plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,)
+```
+
+```{r}
+plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
 ```
 
