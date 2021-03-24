@@ -116,7 +116,8 @@ country <- read_csv('./data/Cultivar_vs_country.csv')
 names(country) <- c('names', 'PI-ID', 'Country')
 
 # fix weird ND issue
-country <- country %>% mutate(Country = na_if(Country, 'ND'))
+country <- country %>% mutate(Country = na_if(Country, 'ND')) %>% 
+  mutate(Country = str_replace_all(Country, 'Costa', 'Costa Rica'))
 
 ```
 
