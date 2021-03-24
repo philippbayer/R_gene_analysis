@@ -1,0 +1,4754 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Philipp Bayer" />
+
+<meta name="date" content="2020-09-22" />
+
+<title>Linking yield with NLR PAV</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R gene analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/philippbayer/R_gene_analysis">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Linking yield with NLR PAV</h1>
+<h4 class="author">Philipp Bayer</h4>
+<h4 class="date">2020-09-22</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-03-24
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>R_gene_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2.9000). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20200917code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20200917)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20200917code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee747dc62c641928547b80e25e004af5fa60080f2targetblanke747dc6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/e747dc62c641928547b80e25e004af5fa60080f2" target="_blank">e747dc6</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee747dc62c641928547b80e25e004af5fa60080f2targetblanke747dc6a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/e747dc62c641928547b80e25e004af5fa60080f2" target="_blank">e747dc6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  data/Brec_R1.txt
+    Untracked:  data/Brec_R2.txt
+    Untracked:  data/CR15_R1.txt
+    Untracked:  data/CR15_R2.txt
+    Untracked:  data/CR_14_R1.txt
+    Untracked:  data/CR_14_R2.txt
+    Untracked:  data/KS_R1.txt
+    Untracked:  data/KS_R2.txt
+    Untracked:  data/NBS_PAV.txt.gz
+    Untracked:  data/NLR_PAV_GD.txt
+    Untracked:  data/NLR_PAV_GM.txt
+    Untracked:  data/PAVs_newick.txt
+    Untracked:  data/PPR1.txt
+    Untracked:  data/PPR2.txt
+    Untracked:  data/SNPs_newick.txt
+    Untracked:  data/bac.txt
+    Untracked:  data/brown.txt
+    Untracked:  data/cy3.txt
+    Untracked:  data/cy5.txt
+    Untracked:  data/early.txt
+    Untracked:  data/flowerings.txt
+    Untracked:  data/foregeye.txt
+    Untracked:  data/height.txt
+    Untracked:  data/late.txt
+    Untracked:  data/mature.txt
+    Untracked:  data/motting.txt
+    Untracked:  data/mvp.kin.bin
+    Untracked:  data/mvp.kin.desc
+    Untracked:  data/oil.txt
+    Untracked:  data/pdh.txt
+    Untracked:  data/protein.txt
+    Untracked:  data/rust_tan.txt
+    Untracked:  data/salt.txt
+    Untracked:  data/seedq.txt
+    Untracked:  data/seedweight.txt
+    Untracked:  data/stem_termination.txt
+    Untracked:  data/sudden.txt
+    Untracked:  data/virus.txt
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/yield_lm_link.Rmd</code>) and HTML (<code>docs/yield_lm_link.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/e747dc62c641928547b80e25e004af5fa60080f2/analysis/yield_lm_link.Rmd" target="_blank">e747dc6</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-24
+</td>
+<td>
+wflow_publish(files = c(“analysis/index.Rmd”, “analysis/yield_lm_link.Rmd”,
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code>knitr::opts_chunk$set(message = FALSE) 
+library(tidyverse)</code></pre>
+<pre><code>-- Attaching packages ------------------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --</code></pre>
+<pre><code>v ggplot2 3.3.2     v purrr   0.3.4
+v tibble  3.0.2     v dplyr   1.0.0
+v tidyr   1.1.0     v stringr 1.4.0
+v readr   1.3.1     v forcats 0.5.0</code></pre>
+<pre><code>-- Conflicts ---------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+x dplyr::filter() masks stats::filter()
+x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(patchwork)
+library(sjPlot)</code></pre>
+<pre><code>Learn more about sjPlot with &#39;browseVignettes(&quot;sjPlot&quot;)&#39;.</code></pre>
+<pre class="r"><code>library(ggsci)
+library(dabestr)</code></pre>
+<pre><code>Loading required package: magrittr</code></pre>
+<pre><code>
+Attaching package: &#39;magrittr&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:purrr&#39;:
+
+    set_names</code></pre>
+<pre><code>The following object is masked from &#39;package:tidyr&#39;:
+
+    extract</code></pre>
+<pre class="r"><code>library(dabestr)
+library(cowplot)</code></pre>
+<pre><code>
+********************************************************</code></pre>
+<pre><code>Note: As of version 1.0.0, cowplot does not change the</code></pre>
+<pre><code>  default ggplot2 theme anymore. To recover the previous</code></pre>
+<pre><code>  behavior, execute:
+  theme_set(theme_cowplot())</code></pre>
+<pre><code>********************************************************</code></pre>
+<pre><code>
+Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:sjPlot&#39;:
+
+    plot_grid, save_plot</code></pre>
+<pre><code>The following object is masked from &#39;package:patchwork&#39;:
+
+    align_plots</code></pre>
+<pre class="r"><code>library(ggsignif)
+library(ggforce)
+library(lme4)</code></pre>
+<pre><code>Loading required package: Matrix</code></pre>
+<pre><code>
+Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:tidyr&#39;:
+
+    expand, pack, unpack</code></pre>
+<pre class="r"><code>library(directlabels)
+library(lmerTest)</code></pre>
+<pre><code>
+Attaching package: &#39;lmerTest&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:lme4&#39;:
+
+    lmer</code></pre>
+<pre><code>The following object is masked from &#39;package:stats&#39;:
+
+    step</code></pre>
+<pre class="r"><code>library(dotwhisker)
+library(pals)
+theme_set(theme_cowplot())
+library(RColorBrewer)
+library(countrycode)
+library(broom)</code></pre>
+<div id="data-loading" class="section level1">
+<h1>Data loading</h1>
+<pre class="r"><code>npg_col = pal_npg(&quot;nrc&quot;)(9)
+col_list &lt;- c(`Wild`=npg_col[8],
+   Landrace = npg_col[3],
+  `Old cultivar`=npg_col[2],
+  `Modern cultivar`=npg_col[4])
+
+pav_table &lt;- read_tsv(&#39;./data/soybean_pan_pav.matrix_gene.txt.gz&#39;)</code></pre>
+<pre class="r"><code>nbs &lt;- read_tsv(&#39;./data/Lee.NBS.candidates.lst&#39;, col_names = c(&#39;Name&#39;, &#39;Class&#39;))
+nbs</code></pre>
+<pre><code># A tibble: 486 x 2
+   Name                   Class
+   &lt;chr&gt;                  &lt;chr&gt;
+ 1 UWASoyPan00953.t1      CN   
+ 2 GlymaLee.13G222900.1.p CN   
+ 3 GlymaLee.18G227000.1.p CN   
+ 4 GlymaLee.18G080600.1.p CN   
+ 5 GlymaLee.20G036200.1.p CN   
+ 6 UWASoyPan01876.t1      CN   
+ 7 UWASoyPan04211.t1      CN   
+ 8 GlymaLee.19G105400.1.p CN   
+ 9 GlymaLee.18G085100.1.p CN   
+10 GlymaLee.11G142600.1.p CN   
+# ... with 476 more rows</code></pre>
+<pre class="r"><code># have to remove the .t1s 
+nbs$Name &lt;- gsub(&#39;.t1&#39;,&#39;&#39;, nbs$Name)
+nbs_pav_table &lt;- pav_table %&gt;% filter(Individual %in% nbs$Name)</code></pre>
+<pre class="r"><code>names &lt;- c()
+presences &lt;- c()
+
+for (i in seq_along(nbs_pav_table)){
+  if ( i == 1) next
+  thisind &lt;- colnames(nbs_pav_table)[i]
+  pavs &lt;- nbs_pav_table[[i]]
+  presents &lt;- sum(pavs)
+  names &lt;- c(names, thisind)
+  presences &lt;- c(presences, presents)
+}
+nbs_res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
+<pre><code>Warning: The `nrow` argument of `new_tibble()` can&#39;t be missing as of tibble 2.0.0.
+`x` must be a scalar integer.
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<pre class="r"><code># let&#39;s make the same table for all genes too
+names &lt;- c()
+presences &lt;- c()
+
+for (i in seq_along(pav_table)){
+  if ( i == 1) next
+  thisind &lt;- colnames(pav_table)[i]
+  pavs &lt;- pav_table[[i]]
+  presents &lt;- sum(pavs)
+  names &lt;- c(names, thisind)
+  presences &lt;- c(presences, presents)
+}
+res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
+<pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)
+groups &lt;- groups %&gt;% dplyr::rename(Group = `Group in violin table`)
+groups &lt;- groups %&gt;% 
+  mutate(Group = str_replace_all(Group, &#39;landrace&#39;, &#39;Landrace&#39;)) %&gt;%
+  mutate(Group = str_replace_all(Group, &#39;Old_cultivar&#39;, &#39;Old cultivar&#39;)) %&gt;%
+  mutate(Group = str_replace_all(Group, &#39;Modern_cultivar&#39;, &#39;Modern cultivar&#39;)) %&gt;%
+  mutate(Group = str_replace_all(Group, &#39;Wild-type&#39;, &#39;Wild&#39;))
+
+groups$Group &lt;-
+  factor(
+    groups$Group,
+    levels = c(&#39;Wild&#39;,
+               &#39;Landrace&#39;,
+               &#39;Old cultivar&#39;,
+               &#39;Modern cultivar&#39;)
+  )
+
+nbs_joined_groups &lt;-
+  inner_join(nbs_res_tibb, groups, by = c(&#39;names&#39; = &#39;Data-storage-ID&#39;))
+all_joined_groups &lt;-
+    inner_join(res_tibb, groups, by = c(&#39;names&#39; = &#39;Data-storage-ID&#39;))</code></pre>
+<pre class="r"><code>country &lt;- read_csv(&#39;./data/Cultivar_vs_country.csv&#39;)
+
+
+names(country) &lt;- c(&#39;names&#39;, &#39;PI-ID&#39;, &#39;Country&#39;)
+
+# fix weird ND issue
+country &lt;- country %&gt;% mutate(Country = na_if(Country, &#39;ND&#39;))</code></pre>
+</div>
+<div id="linking-with-yield" class="section level1">
+<h1>Linking with yield</h1>
+<p>Can we link the trajectory of NLR genes with the trajectory of yield across the history of soybean breeding? let’s make a simple regression for now</p>
+<div id="yield" class="section level2">
+<h2>Yield</h2>
+<pre class="r"><code>yield &lt;- read_tsv(&#39;./data/yield.txt&#39;)
+yield_join &lt;- inner_join(nbs_res_tibb, yield, by=c(&#39;names&#39;=&#39;Line&#39;))</code></pre>
+</div>
+<div id="protein" class="section level2">
+<h2>Protein</h2>
+<pre class="r"><code>protein &lt;- read_tsv(&#39;./data/protein_phenotype.txt&#39;)
+protein_join &lt;- left_join(nbs_res_tibb, protein, by=c(&#39;names&#39;=&#39;Line&#39;)) %&gt;% filter(!is.na(Protein))</code></pre>
+</div>
+<div id="seed-weight" class="section level2">
+<h2>Seed weight</h2>
+<p>Let’s look at seed weight:</p>
+<pre class="r"><code>seed_weight &lt;- read_tsv(&#39;./data/Seed_weight_Phenotype.txt&#39;, col_names = c(&#39;names&#39;, &#39;wt&#39;))
+seed_join &lt;- left_join(nbs_res_tibb, seed_weight) %&gt;% filter(!is.na(wt))</code></pre>
+</div>
+<div id="oil-content" class="section level2">
+<h2>Oil content</h2>
+<p>And now let’s look at the oil phenotype:</p>
+<pre class="r"><code>oil &lt;- read_tsv(&#39;./data/oil_phenotype.txt&#39;)
+oil_join &lt;- left_join(nbs_res_tibb, oil, by=c(&#39;names&#39;=&#39;Line&#39;)) %&gt;% filter(!is.na(Oil))
+oil_join</code></pre>
+<pre><code># A tibble: 962 x 3
+   names presences   Oil
+   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;
+ 1 AB-01       445  17.6
+ 2 AB-02       454  16.8
+ 3 BR-24       455  20.6
+ 4 ESS         454  20.9
+ 5 For         448  21  
+ 6 HN001       448  23.6
+ 7 HN002       444  18.5
+ 8 HN003       446  17.5
+ 9 HN004       442  18.9
+10 HN005       440  15.5
+# ... with 952 more rows</code></pre>
+</div>
+</div>
+<div id="basic-lm" class="section level1">
+<h1>Basic lm()</h1>
+<p>These results form the basis of the paper.</p>
+<div id="yield-1" class="section level2">
+<h2>Yield</h2>
+<pre class="r"><code>yield_nbs_joined_groups &lt;- nbs_joined_groups %&gt;% inner_join(yield_join, by = &#39;names&#39;) 
+yield_nbs_joined_groups$Yield2 &lt;-scale(yield_nbs_joined_groups$Yield, center=T, scale=T)
+
+yield_all_joined_groups &lt;- all_joined_groups %&gt;% inner_join(yield_join, by = &#39;names&#39;)</code></pre>
+<pre class="r"><code>yield_country_nbs_joined_groups &lt;- yield_nbs_joined_groups %&gt;% inner_join(country)
+yield_country_all_joined_groups &lt;- yield_all_joined_groups %&gt;% inner_join(country)
+yield_country_nbs_joined_groups$Count &lt;- yield_country_nbs_joined_groups$presences.y
+yield_country_all_joined_groups$Count &lt;- yield_country_all_joined_groups$presences.y
+
+yield_country_all_joined_groups %&gt;% count(Country)</code></pre>
+<pre><code># A tibble: 40 x 2
+   Country       n
+   &lt;chr&gt;     &lt;int&gt;
+ 1 Algeria       3
+ 2 Argentina     2
+ 3 Australia     1
+ 4 Austria       1
+ 5 Belgium       2
+ 6 Brazil        1
+ 7 Bulgaria      1
+ 8 Canada        5
+ 9 China       410
+10 Costa         1
+# ... with 30 more rows</code></pre>
+<pre class="r"><code>lm_model &lt;- lm(Yield ~ Count +  Group, data = yield_country_nbs_joined_groups) 
+summary(lm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = Yield ~ Count + Group, data = yield_country_nbs_joined_groups)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.47398 -0.52358  0.02648  0.53660  2.14648 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          10.985573   2.532389   4.338 1.64e-05 ***
+Count                -0.019960   0.005694  -3.505 0.000483 ***
+GroupOld cultivar    -0.198279   0.137005  -1.447 0.148255    
+GroupModern cultivar  1.080136   0.111621   9.677  &lt; 2e-16 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.768 on 737 degrees of freedom
+Multiple R-squared:  0.1412,    Adjusted R-squared:  0.1377 
+F-statistic: 40.41 on 3 and 737 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>clm_model &lt;- lm(Yield ~ Count +  Group + Country, data = yield_country_nbs_joined_groups) 
+summary(clm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = Yield ~ Count + Group + Country, data = yield_country_nbs_joined_groups)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.25859 -0.39669  0.00554  0.45439  2.09622 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           9.306701   2.552306   3.646 0.000286 ***
+Count                -0.016068   0.005701  -2.818 0.004965 ** 
+GroupOld cultivar    -0.217698   0.139274  -1.563 0.118490    
+GroupModern cultivar  0.801209   0.214539   3.735 0.000204 ***
+CountryArgentina     -0.599057   0.693473  -0.864 0.387970    
+CountryAustralia     -0.684304   0.834828  -0.820 0.412674    
+CountryAustria        0.415356   0.834277   0.498 0.618739    
+CountryBelgium       -0.290712   0.659563  -0.441 0.659522    
+CountryBrazil        -0.734304   0.834828  -0.880 0.379390    
+CountryBulgaria      -0.418916   0.834536  -0.502 0.615846    
+CountryCanada        -0.151286   0.557169  -0.272 0.786068    
+CountryChina         -0.028384   0.418992  -0.068 0.946009    
+CountryCosta          0.781084   0.834536   0.936 0.349627    
+CountryFormer Serbia  1.044147   0.861446   1.212 0.225895    
+CountryFrance         0.309458   0.551920   0.561 0.575188    
+CountryGeorgia        0.814118   0.659799   1.234 0.217665    
+CountryGermany       -0.241499   0.556404  -0.434 0.664398    
+CountryHungary        0.613026   0.552057   1.110 0.267197    
+CountryIndia         -1.154389   0.552312  -2.090 0.036974 *  
+CountryIndonesia     -1.244474   0.552057  -2.254 0.024494 *  
+CountryItaly          0.479122   0.845855   0.566 0.571282    
+CountryJapan         -0.335560   0.427004  -0.786 0.432227    
+CountryKorea         -0.230379   0.426146  -0.541 0.588951    
+CountryKyrgyzstan     0.705356   0.834277   0.845 0.398142    
+CountryMoldova        0.021216   0.498774   0.043 0.966083    
+CountryMorocco        0.830308   0.838267   0.991 0.322275    
+CountryMyanmar       -1.112120   0.660646  -1.683 0.092754 .  
+CountryNepal         -0.445542   0.659635  -0.675 0.499624    
+CountryNetherlands   -0.710712   0.834283  -0.852 0.394575    
+CountryPakistan      -2.183188   0.835419  -2.613 0.009163 ** 
+CountryPeru          -1.182508   0.834381  -1.417 0.156868    
+CountryPoland         0.955696   0.834828   1.145 0.252697    
+CountryRomania        1.153091   0.510943   2.257 0.024334 *  
+CountryRussia         0.539649   0.432796   1.247 0.212862    
+CountrySerbia         0.221424   0.659596   0.336 0.737202    
+CountrySouth Africa  -0.600125   0.861382  -0.697 0.486225    
+CountrySweden        -0.766382   0.592628  -1.293 0.196378    
+CountryTaiwan        -0.656968   0.528544  -1.243 0.214299    
+CountryUkraine        0.723560   0.834491   0.867 0.386207    
+CountryUSA            0.345864   0.463385   0.746 0.455689    
+CountryUzbekistan     0.315016   0.834699   0.377 0.705992    
+CountryVietnam       -0.693042   0.551920  -1.256 0.209653    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.7225 on 689 degrees of freedom
+  (10 observations deleted due to missingness)
+Multiple R-squared:  0.2829,    Adjusted R-squared:  0.2403 
+F-statistic: 6.631 on 41 and 689 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>yieldmod &lt;- clm_model</code></pre>
+<pre class="r"><code>interlm_model &lt;- lm(Yield ~ Count * Group, data = yield_country_nbs_joined_groups) 
+summary(interlm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = Yield ~ Count * Group, data = yield_country_nbs_joined_groups)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.38311 -0.51569  0.01947  0.53258  2.13947 
+
+Coefficients:
+                           Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                 9.62255    2.70414   3.558 0.000397 ***
+Count                      -0.01690    0.00608  -2.779 0.005598 ** 
+GroupOld cultivar          18.63259   11.02113   1.691 0.091333 .  
+GroupModern cultivar        5.56130   10.01054   0.556 0.578692    
+Count:GroupOld cultivar    -0.04234    0.02478  -1.709 0.087920 .  
+Count:GroupModern cultivar -0.01012    0.02263  -0.447 0.654959    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.7674 on 735 degrees of freedom
+Multiple R-squared:  0.1448,    Adjusted R-squared:  0.139 
+F-statistic: 24.88 on 5 and 735 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>tab_model(clm_model, p.val=&#39;kr&#39;, digits=3)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Yield
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+9.307
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+4.295 – 14.318
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Count
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.016
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.027 – -0.005
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.005</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Old cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.218
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.491 – 0.056
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.118
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Modern cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.801
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.380 – 1.222
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Argentina]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.599
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.961 – 0.763
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.388
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Australia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.684
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.323 – 0.955
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.413
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Austria]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.415
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.223 – 2.053
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.619
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Belgium]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.291
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.586 – 1.004
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.660
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Brazil]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.734
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.373 – 0.905
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.379
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Bulgaria]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.419
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.057 – 1.220
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.616
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Canada]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.151
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.245 – 0.943
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.786
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [China]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.028
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.851 – 0.794
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.946
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Costa]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.781
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.857 – 2.420
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.350
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Former Serbia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.044
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.647 – 2.736
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.226
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [France]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.309
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.774 – 1.393
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.575
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Georgia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.814
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.481 – 2.110
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.218
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Germany]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.241
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.334 – 0.851
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.664
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Hungary]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.613
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.471 – 1.697
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.267
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [India]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.154
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.239 – -0.070
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.037</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Indonesia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.244
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.328 – -0.161
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.024</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Italy]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.479
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.182 – 2.140
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.571
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Japan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.336
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.174 – 0.503
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.432
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Korea]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.230
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.067 – 0.606
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.589
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Kyrgyzstan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.705
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.933 – 2.343
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.398
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Moldova]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.021
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.958 – 1.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.966
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Morocco]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.830
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.816 – 2.476
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.322
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Myanmar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.112
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.409 – 0.185
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.093
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Nepal]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.446
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.741 – 0.850
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.500
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Netherlands]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.711
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.349 – 0.927
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.395
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Pakistan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.183
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.823 – -0.543
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.009</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Peru]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.183
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.821 – 0.456
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.157
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Poland]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.956
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.683 – 2.595
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.253
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Romania]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.153
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.150 – 2.156
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.024</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Russia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.540
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.310 – 1.389
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.213
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Serbia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.221
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.074 – 1.516
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.737
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [South Africa]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.600
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.291 – 1.091
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.486
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Sweden]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.766
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.930 – 0.397
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.196
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Taiwan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.657
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.695 – 0.381
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.214
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Ukraine]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.724
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.915 – 2.362
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.386
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [USA]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.346
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.564 – 1.256
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.456
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Uzbekistan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.315
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.324 – 1.954
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.706
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Vietnam]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.693
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.777 – 0.391
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.210
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+731
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> / R<sup>2</sup> adjusted
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.283 / 0.240
+</td>
+</tr>
+</table>
+<pre class="r"><code>newdat &lt;-cbind(yield_country_all_joined_groups %&gt;% filter(!is.na(Country)), pred = predict(clm_model))</code></pre>
+<pre class="r"><code># I want only every second, stronger color of the Paired scheme
+mycol &lt;- brewer.pal(n = 12, name = &quot;Paired&quot;)[seq(2, 12, 2)]</code></pre>
+<pre class="r"><code>newdat %&gt;% mutate(
+  Country2 = case_when (
+  Country == &#39;USA&#39; ~ &#39;USA&#39;,
+  Country == &#39;China&#39; ~ &#39;China&#39;,
+  Country == &#39;Korea&#39; ~ &#39;Korea&#39;,
+  Country == &#39;Japan&#39; ~ &#39;Japan&#39;,
+  Country == &#39;Russia&#39; ~ &#39;Russia&#39;,
+  TRUE ~ &#39;Rest&#39;
+  )
+  ) %&gt;%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c(&#39;China&#39;, &#39;Japan&#39;, &#39;Korea&#39;, &#39;Russia&#39;, &#39;USA&#39;, &#39;Rest&#39;)
+  )) %&gt;%
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap( ~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab(&#39;Gene count&#39;) +
+  ylab(expression(paste(&#39;Yield [Mg &#39;, ha ^ -1, &#39;]&#39;))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = &quot;Country&quot;) +
+  theme(panel.spacing = unit(0.9, &quot;lines&quot;),
+  axis.text.x = element_text(size = 10))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Oh wow, that looks very similar.</p>
+<pre class="r"><code>plot_model(clm_model, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;)) +
+  theme_minimal_hgrid() +
+  #scale_fill_manual(values = col_list) +
+  #scale_color_manual(values = col_list) +
+  xlab(&#39;NLR count&#39;) + 
+  ylab((expression(paste(&#39;Yield [Mg &#39;, ha^-1, &#39;]&#39;)))) +
+  theme(plot.title=element_blank())</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>qqnorm(resid(clm_model))
+qqline(resid(clm_model))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(resid(clm_model))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c(&#39;GroupOld cultivar&#39;, &#39;Count&#39;, &#39;GroupModern cultivar&#39;))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_model(clm_model, type = &quot;std&quot;, show.values = TRUE, value.offset = .3,)</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-20-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_model(clm_model, type = &quot;std&quot;, show.values = TRUE, value.offset = .3,, terms=c(&#39;GroupOld cultivar&#39;, &#39;Count&#39;, &#39;GroupModern cultivar&#39;))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="protein-1" class="section level2">
+<h2>Protein</h2>
+<pre class="r"><code>protein_nbs_joined_groups &lt;- nbs_joined_groups %&gt;% inner_join(protein_join, by = &#39;names&#39;) 
+#protein_nbs_joined_groups$Protein2 &lt;- scale(protein_nbs_joined_groups$Protein, center=T, scale=T)
+protein_country_nbs_joined_groups &lt;- protein_nbs_joined_groups %&gt;% inner_join(country)
+#protein_country_nbs_joined_groups &lt;- rename(protein_country_nbs_joined_groups, Group=`Group in violin table`)
+protein_country_nbs_joined_groups &lt;- protein_country_nbs_joined_groups %&gt;% filter(Group != &#39;Wild&#39;)
+protein_country_nbs_joined_groups &lt;- protein_country_nbs_joined_groups %&gt;% rename(Count = presences.x)</code></pre>
+<pre class="r"><code>lm_model &lt;- lm(Protein ~ Count +  Group, data = protein_country_nbs_joined_groups) 
+summary(lm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = Protein ~ Count + Group, data = protein_country_nbs_joined_groups)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.4693 -1.9952 -0.1035  1.6965  9.5650 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          29.16057    8.99723   3.241 0.001241 ** 
+Count                 0.03425    0.02023   1.693 0.090781 .  
+GroupOld cultivar    -1.53490    0.45402  -3.381 0.000759 ***
+GroupModern cultivar -1.42768    0.35601  -4.010 6.64e-05 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.823 on 785 degrees of freedom
+Multiple R-squared:  0.03787,   Adjusted R-squared:  0.0342 
+F-statistic:  10.3 on 3 and 785 DF,  p-value: 1.178e-06</code></pre>
+<pre class="r"><code>clm_model &lt;- lm(Protein ~ Count +  Group + Country, data = protein_country_nbs_joined_groups) 
+summary(clm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = Protein ~ Count + Group + Country, data = protein_country_nbs_joined_groups)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-7.5543 -1.8497 -0.1008  1.6682  9.9914 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          37.14499    9.50557   3.908 0.000102 ***
+Count                 0.01416    0.02121   0.668 0.504547    
+GroupOld cultivar    -1.59216    0.47823  -3.329 0.000914 ***
+GroupModern cultivar -0.83999    0.76763  -1.094 0.274196    
+CountryArgentina      0.17776    2.65850   0.067 0.946708    
+CountryAustralia      0.88155    2.54745   0.346 0.729403    
+CountryAustria       -1.70472    3.21970  -0.529 0.596642    
+CountryBelgium        0.50944    2.54543   0.200 0.841426    
+CountryBrazil         0.36257    2.13865   0.170 0.865423    
+CountryBulgaria      -0.94807    3.22063  -0.294 0.768554    
+CountryCanada        -0.53675    2.00875  -0.267 0.789386    
+CountryChina          1.02128    1.61681   0.632 0.527801    
+CountryCosta         -2.54807    3.22063  -0.791 0.429098    
+CountryFormer Serbia  0.83527    3.31001   0.252 0.800843    
+CountryFrance        -0.95096    2.12998  -0.446 0.655392    
+CountryGeorgia        0.79485    2.54627   0.312 0.755007    
+CountryGermany       -0.31615    2.14375  -0.147 0.882795    
+CountryHungary       -0.51513    2.13047  -0.242 0.809010    
+CountryIndia          1.49958    1.89230   0.792 0.428346    
+CountryIndonesia      3.23487    2.13047   1.518 0.129347    
+CountryItaly          0.47328    3.25514   0.145 0.884440    
+CountryJapan          0.31111    1.64568   0.189 0.850108    
+CountryKorea          2.11269    1.64371   1.285 0.199087    
+CountryKyrgyzstan    -2.50472    3.21970  -0.778 0.436856    
+CountryMoldova       -1.24935    1.92485  -0.649 0.516498    
+CountryMorocco        2.79701    3.23401   0.865 0.387390    
+CountryMyanmar        5.79442    2.54931   2.273 0.023318 *  
+CountryNepal          0.52404    2.54568   0.206 0.836963    
+CountryNetherlands   -1.79056    3.21972  -0.556 0.578296    
+CountryPakistan      -1.99142    3.22379  -0.618 0.536947    
+CountryPeru           2.06695    3.22007   0.642 0.521139    
+CountryPoland         0.12447    3.22167   0.039 0.969192    
+CountryRomania       -1.91888    1.97185  -0.973 0.330804    
+CountryRussia         1.14427    1.67007   0.685 0.493458    
+CountrySerbia        -1.11888    2.54554  -0.440 0.660395    
+CountrySouth Africa  -1.90808    3.31005  -0.576 0.564487    
+CountrySweden        -0.68287    2.28541  -0.299 0.765181    
+CountryTaiwan         2.00539    2.03916   0.983 0.325715    
+CountryTanzania      -2.96137    3.22100  -0.919 0.358190    
+CountryUkraine       -2.44721    3.22046  -0.760 0.447562    
+CountryUSA            0.37499    1.76882   0.212 0.832164    
+CountryUzbekistan    -2.43391    3.22121  -0.756 0.450137    
+CountryVietnam        2.17404    2.12998   1.021 0.307739    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.788 on 736 degrees of freedom
+  (10 observations deleted due to missingness)
+Multiple R-squared:  0.112, Adjusted R-squared:  0.06128 
+F-statistic: 2.209 on 42 and 736 DF,  p-value: 2.577e-05</code></pre>
+<pre class="r"><code>protmod &lt;- clm_model</code></pre>
+</div>
+<div id="seed-weight-1" class="section level2">
+<h2>Seed weight</h2>
+<pre class="r"><code>seed_nbs_joined_groups &lt;- nbs_joined_groups %&gt;% inner_join(seed_join, by = &#39;names&#39;) 
+#seed_nbs_joined_groups$wt2 &lt;- scale(seed_nbs_joined_groups$wt, center=T, scale=T)
+seed_country_nbs_joined_groups &lt;- seed_nbs_joined_groups %&gt;% inner_join(country)
+#seed_country_nbs_joined_groups &lt;- rename(seed_country_nbs_joined_groups, Group = `Group in violin table`)
+seed_country_nbs_joined_groups &lt;- seed_country_nbs_joined_groups %&gt;% filter(Group != &#39;Wild&#39;)
+seed_country_nbs_joined_groups &lt;- seed_country_nbs_joined_groups %&gt;% rename(Count = presences.x)</code></pre>
+<pre class="r"><code>lm_model &lt;- lm(wt ~ Count +  Group, data = seed_country_nbs_joined_groups) 
+summary(lm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = wt ~ Count + Group, data = seed_country_nbs_joined_groups)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.0968  -2.7970   0.0037   2.5611  19.6026 
+
+Coefficients:
+                      Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)          1.314e+01  1.512e+01   0.869  0.38510   
+Count                1.307e-04  3.399e-02   0.004  0.99693   
+GroupOld cultivar    1.612e+00  7.732e-01   2.085  0.03745 * 
+GroupModern cultivar 1.643e+00  6.035e-01   2.723  0.00665 **
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 4.188 on 629 degrees of freedom
+Multiple R-squared:  0.01745,   Adjusted R-squared:  0.01276 
+F-statistic: 3.724 on 3 and 629 DF,  p-value: 0.01129</code></pre>
+<pre class="r"><code>clm_model &lt;- lm(wt ~ Count +  Group + Country, data = seed_country_nbs_joined_groups) 
+summary(clm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = wt ~ Count + Group + Country, data = seed_country_nbs_joined_groups)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-12.222  -2.473   0.000   2.297  19.312 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          20.41722   15.96470   1.279 0.201439    
+Count                -0.02562    0.03574  -0.717 0.473706    
+GroupOld cultivar     1.01558    0.84334   1.204 0.228982    
+GroupModern cultivar  1.78999    1.32483   1.351 0.177182    
+CountryArgentina      1.16481    4.94786   0.235 0.813967    
+CountryAustralia      5.32385    3.77255   1.411 0.158714    
+CountryBelgium        4.03167    4.76789   0.846 0.398127    
+CountryBrazil         4.05979    3.37177   1.204 0.229054    
+CountryBulgaria       4.40605    4.76874   0.924 0.355895    
+CountryCanada         4.83881    3.21326   1.506 0.132634    
+CountryChina          3.97326    2.39648   1.658 0.097861 .  
+CountryCosta          4.60605    4.76874   0.966 0.334500    
+CountryFormer Serbia  5.61855    4.94786   1.136 0.256607    
+CountryFrance        13.55072    3.77898   3.586 0.000364 ***
+CountryGeorgia        7.51886    3.77029   1.994 0.046588 *  
+CountryGermany        8.35203    3.86586   2.160 0.031141 *  
+CountryHungary        6.85125    3.37149   2.032 0.042592 *  
+CountryIndia         -0.33772    3.02336  -0.112 0.911098    
+CountryIndonesia     -0.11542    3.37149  -0.034 0.972702    
+CountryItaly          1.81858    4.84127   0.376 0.707319    
+CountryJapan          5.17895    2.44293   2.120 0.034427 *  
+CountryKorea          4.44772    2.44494   1.819 0.069397 .  
+CountryKyrgyzstan     4.80854    4.76695   1.009 0.313522    
+CountryMoldova        2.58441    3.01551   0.857 0.391773    
+CountryMorocco        7.26728    4.79439   1.516 0.130111    
+CountryMyanmar       -1.57083    3.77612  -0.416 0.677570    
+CountryNepal          3.14698    3.76916   0.835 0.404099    
+CountryPakistan      -4.99645    4.77481  -1.046 0.295798    
+CountryPeru           7.45979    4.76767   1.565 0.118201    
+CountryRomania        3.53479    3.15414   1.121 0.262881    
+CountryRussia         4.72218    2.48399   1.901 0.057785 .  
+CountrySerbia         2.13417    3.76890   0.566 0.571435    
+CountrySouth Africa   2.71606    4.94682   0.549 0.583179    
+CountrySweden         8.10668    3.38864   2.392 0.017056 *  
+CountryTaiwan         3.89395    3.37328   1.154 0.248826    
+CountryTanzania       5.01104    4.76945   1.051 0.293851    
+CountryUkraine        9.08541    4.76843   1.905 0.057226 .  
+CountryUSA            3.91751    2.69217   1.455 0.146162    
+CountryUzbekistan     5.28042    4.76985   1.107 0.268730    
+CountryVietnam       -0.22802    3.15371  -0.072 0.942385    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 4.128 on 587 degrees of freedom
+  (6 observations deleted due to missingness)
+Multiple R-squared:  0.09879,   Adjusted R-squared:  0.03892 
+F-statistic:  1.65 on 39 and 587 DF,  p-value: 0.008891</code></pre>
+<pre class="r"><code>seedmod &lt;- clm_model</code></pre>
+<p>Nothing at all.</p>
+</div>
+<div id="oil-content-1" class="section level2">
+<h2>Oil content</h2>
+<pre class="r"><code>oil_nbs_joined_groups &lt;- nbs_joined_groups %&gt;% inner_join(oil_join, by = &#39;names&#39;) 
+oil_nbs_joined_groups$Oil2 &lt;- scale(oil_nbs_joined_groups$Oil, center=T, scale=T)
+oil_country_nbs_joined_groups &lt;- oil_nbs_joined_groups %&gt;% inner_join(country)
+oil_country_nbs_joined_groups &lt;- oil_country_nbs_joined_groups %&gt;% filter(Group != &#39;Wild&#39;)
+oil_country_nbs_joined_groups &lt;- oil_country_nbs_joined_groups %&gt;% rename(Count = presences.x)</code></pre>
+<pre class="r"><code>lm_model &lt;- lm(Oil ~ Count +  Group, data = oil_country_nbs_joined_groups) 
+summary(lm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = Oil ~ Count + Group, data = oil_country_nbs_joined_groups)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-10.0707  -1.2772   0.2899   1.5654   7.0260 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          35.58518    7.29827   4.876 1.31e-06 ***
+Count                -0.03935    0.01641  -2.398  0.01671 *  
+GroupOld cultivar     1.17018    0.36829   3.177  0.00154 ** 
+GroupModern cultivar  1.77380    0.28878   6.142 1.29e-09 ***
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.29 on 785 degrees of freedom
+Multiple R-squared:  0.06684,   Adjusted R-squared:  0.06328 
+F-statistic: 18.74 on 3 and 785 DF,  p-value: 9.485e-12</code></pre>
+<p>Interesting, the simple model has p&lt; 0.05 for oil content!</p>
+<pre class="r"><code>clm_model &lt;- lm(Oil ~ Count +  Group + Country, data = oil_country_nbs_joined_groups) 
+summary(clm_model)</code></pre>
+<pre><code>
+Call:
+lm(formula = Oil ~ Count + Group + Country, data = oil_country_nbs_joined_groups)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.8810 -1.2328  0.1494  1.4493  6.9085 
+
+Coefficients:
+                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)          29.54369    7.66209   3.856 0.000125 ***
+Count                -0.02893    0.01710  -1.692 0.091068 .  
+GroupOld cultivar     1.04686    0.38549   2.716 0.006769 ** 
+GroupModern cultivar  1.27422    0.61876   2.059 0.039816 *  
+CountryArgentina      2.43197    2.14292   1.135 0.256792    
+CountryAustralia      2.17316    2.05341   1.058 0.290257    
+CountryAustria        2.64298    2.59528   1.018 0.308832    
+CountryBelgium        1.31405    2.05177   0.640 0.522083    
+CountryBrazil         2.11058    1.72389   1.224 0.221224    
+CountryBulgaria       1.62726    2.59603   0.627 0.530967    
+CountryCanada         2.82941    1.61918   1.747 0.080979 .  
+CountryChina          1.52124    1.30325   1.167 0.243480    
+CountryCosta          3.52726    2.59603   1.359 0.174654    
+CountryFormer Serbia  3.06876    2.66808   1.150 0.250445    
+CountryFrance         2.91137    1.71690   1.696 0.090363 .  
+CountryGeorgia        0.94172    2.05246   0.459 0.646493    
+CountryGermany        2.73276    1.72799   1.581 0.114202    
+CountryHungary        3.59030    1.71729   2.091 0.036900 *  
+CountryIndia         -1.39957    1.52531  -0.918 0.359149    
+CountryIndonesia     -0.48470    1.71729  -0.282 0.777834    
+CountryItaly          2.92505    2.62385   1.115 0.265303    
+CountryJapan          1.26616    1.32653   0.954 0.340149    
+CountryKorea          0.69858    1.32494   0.527 0.598176    
+CountryKyrgyzstan     2.74298    2.59528   1.057 0.290899    
+CountryMoldova        2.23354    1.55155   1.440 0.150419    
+CountryMorocco        2.54798    2.60682   0.977 0.328677    
+CountryMyanmar       -1.90953    2.05491  -0.929 0.353063    
+CountryNepal          1.33637    2.05198   0.651 0.515083    
+CountryNetherlands    1.81405    2.59530   0.699 0.484788    
+CountryPakistan      -4.38846    2.59858  -1.689 0.091683 .  
+CountryPeru          -0.89917    2.59558  -0.346 0.729125    
+CountryPoland         3.68762    2.59687   1.420 0.156024    
+CountryRomania        2.70524    1.58944   1.702 0.089175 .  
+CountryRussia         1.59189    1.34619   1.183 0.237382    
+CountrySerbia         2.17191    2.05187   1.059 0.290174    
+CountrySouth Africa   3.75304    2.66811   1.407 0.159959    
+CountrySweden         2.41498    1.84218   1.311 0.190289    
+CountryTaiwan         0.65146    1.64369   0.396 0.691968    
+CountryTanzania       5.85869    2.59633   2.257 0.024330 *  
+CountryUkraine        3.32976    2.59590   1.283 0.200000    
+CountryUSA            1.79837    1.42578   1.261 0.207592    
+CountryUzbekistan     2.29833    2.59650   0.885 0.376356    
+CountryVietnam       -1.51363    1.71690  -0.882 0.378277    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 2.248 on 736 degrees of freedom
+  (10 observations deleted due to missingness)
+Multiple R-squared:  0.148, Adjusted R-squared:  0.09939 
+F-statistic: 3.044 on 42 and 736 DF,  p-value: 1.373e-09</code></pre>
+<pre class="r"><code>oilmod &lt;- clm_model</code></pre>
+<p>p = 0.07 for Count + Group + Country in the model</p>
+</div>
+<div id="all-models-together" class="section level2">
+<h2>All models together</h2>
+<pre class="r"><code>tab_model(yieldmod, oilmod, protmod, seedmod, digits=3 )</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Yield
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Oil
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Protein
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+wt
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col8">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col9">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  0">
+p
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  1">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  2">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  3">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+9.307
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+4.295 – 14.318
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+29.544
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+14.502 – 44.586
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+37.145
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+18.484 – 55.806
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+20.417
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-10.938 – 51.772
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.201
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Count
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.016
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.027 – -0.005
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.005</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.029
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.062 – 0.005
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.091
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.014
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-0.027 – 0.056
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.505
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+-0.026
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.096 – 0.045
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.474
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Old cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.218
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.491 – 0.056
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.118
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.047
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.290 – 1.804
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>0.007</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.592
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.531 – -0.653
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+<strong>0.001</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+1.016
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.641 – 2.672
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.229
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Modern cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.801
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.380 – 1.222
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.274
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.059 – 2.489
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>0.040</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.840
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.347 – 0.667
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.274
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+1.790
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.812 – 4.392
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.177
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Argentina]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.599
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.961 – 0.763
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.388
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.432
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.775 – 6.639
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.257
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.178
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-5.041 – 5.397
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.947
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+1.165
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-8.553 – 10.882
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.814
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Australia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.684
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.323 – 0.955
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.413
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.173
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.858 – 6.204
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.290
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.882
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-4.120 – 5.883
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.729
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+5.324
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-2.085 – 12.733
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.159
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Austria]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.415
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.223 – 2.053
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.619
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.643
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.452 – 7.738
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.309
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.705
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-8.026 – 4.616
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.597
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Belgium]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.291
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.586 – 1.004
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.660
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.314
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.714 – 5.342
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.522
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.509
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-4.488 – 5.507
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.841
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+4.032
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-5.333 – 13.396
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.398
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Brazil]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.734
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.373 – 0.905
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.379
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.111
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.274 – 5.495
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.221
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.363
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-3.836 – 4.561
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.865
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+4.060
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-2.562 – 10.682
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.229
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Bulgaria]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.419
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.057 – 1.220
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.616
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.627
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.469 – 6.724
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.531
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.948
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-7.271 – 5.375
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.769
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+4.406
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-4.960 – 13.772
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.356
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Canada]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.151
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.245 – 0.943
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.786
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.829
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.349 – 6.008
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.081
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.537
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-4.480 – 3.407
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.789
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+4.839
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-1.472 – 11.150
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.133
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [China]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.028
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.851 – 0.794
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.946
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.521
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.037 – 4.080
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.243
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+1.021
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.153 – 4.195
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.528
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+3.973
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.733 – 8.680
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.098
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Costa]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.781
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.857 – 2.420
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.350
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+3.527
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.569 – 8.624
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.175
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-2.548
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-8.871 – 3.775
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.429
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+4.606
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-4.760 – 13.972
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.335
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Former Serbia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.044
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.647 – 2.736
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.226
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+3.069
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.169 – 8.307
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.250
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.835
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-5.663 – 7.333
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.801
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+5.619
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-4.099 – 15.336
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.257
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [France]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.309
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.774 – 1.393
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.575
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.911
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.459 – 6.282
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.090
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.951
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-5.133 – 3.231
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.655
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+13.551
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+6.129 – 20.973
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+<strong>&lt;0.001
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Georgia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.814
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.481 – 2.110
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.218
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.942
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.088 – 4.971
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.646
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.795
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-4.204 – 5.794
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.755
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+7.519
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.114 – 14.924
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+<strong>0.047</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Germany]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.241
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.334 – 0.851
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.664
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.733
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.660 – 6.125
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.114
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.316
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-4.525 – 3.892
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.883
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+8.352
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.759 – 15.945
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+<strong>0.031</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Hungary]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.613
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.471 – 1.697
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.267
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+3.590
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.219 – 6.962
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>0.037</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.515
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-4.698 – 3.667
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.809
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+6.851
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.230 – 13.473
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+<strong>0.043</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [India]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.154
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.239 – -0.070
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.037</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.400
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-4.394 – 1.595
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.359
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+1.500
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.215 – 5.215
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.428
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+-0.338
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-6.276 – 5.600
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.911
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Indonesia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.244
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.328 – -0.161
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.024</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.485
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.856 – 2.887
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.778
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+3.235
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-0.948 – 7.417
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.129
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+-0.115
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-6.737 – 6.506
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.973
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Italy]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.479
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.182 – 2.140
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.571
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.925
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.226 – 8.076
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.265
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.473
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-5.917 – 6.864
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.884
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+1.819
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-7.690 – 11.327
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.707
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Japan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.336
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.174 – 0.503
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.432
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.266
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.338 – 3.870
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.340
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.311
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.920 – 3.542
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.850
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+5.179
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.381 – 9.977
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+<strong>0.034</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Korea]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.230
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.067 – 0.606
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.589
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.699
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.903 – 3.300
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.598
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+2.113
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-1.114 – 5.340
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.199
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+4.448
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.354 – 9.250
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.069
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Kyrgyzstan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.705
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.933 – 2.343
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.398
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.743
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.352 – 7.838
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.291
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-2.505
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-8.826 – 3.816
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.437
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+4.809
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-4.554 – 14.171
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.314
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Moldova]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.021
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.958 – 1.001
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.966
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.234
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.812 – 5.280
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.150
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.249
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-5.028 – 2.529
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.516
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+2.584
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-3.338 – 8.507
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.392
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Morocco]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.830
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.816 – 2.476
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.322
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.548
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.570 – 7.666
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.329
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+2.797
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-3.552 – 9.146
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.387
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+7.267
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-2.149 – 16.684
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.130
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Myanmar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.112
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.409 – 0.185
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.093
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.910
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-5.944 – 2.125
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.353
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+5.794
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.790 – 10.799
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+<strong>0.023</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+-1.571
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-8.987 – 5.846
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.678
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Nepal]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.446
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.741 – 0.850
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.500
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.336
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.692 – 5.365
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.515
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.524
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-4.474 – 5.522
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.837
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+3.147
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-4.256 – 10.550
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.404
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Netherlands]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.711
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.349 – 0.927
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.395
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.814
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.281 – 6.909
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.485
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.791
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-8.111 – 4.530
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.578
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Pakistan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.183
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.823 – -0.543
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.009</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-4.388
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-9.490 – 0.713
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.092
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.991
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-8.320 – 4.338
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.537
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+-4.996
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-14.374 – 4.381
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.296
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Peru]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.183
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.821 – 0.456
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.157
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.899
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-5.995 – 4.196
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.729
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+2.067
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-4.255 – 8.389
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.521
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+7.460
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-1.904 – 16.824
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.118
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Poland]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.956
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.683 – 2.595
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.253
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+3.688
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.411 – 8.786
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.156
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.124
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-6.200 – 6.449
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.969
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Romania]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.153
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.150 – 2.156
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.024</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.705
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.415 – 5.826
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.089
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.919
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-5.790 – 1.952
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.331
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+3.535
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-2.660 – 9.730
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.263
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Russia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.540
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.310 – 1.389
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.213
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.592
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.051 – 4.235
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.237
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+1.144
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.134 – 4.423
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.493
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+4.722
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.156 – 9.601
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.058
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Serbia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.221
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.074 – 1.516
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.737
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.172
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.856 – 6.200
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.290
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.119
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-6.116 – 3.879
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.660
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+2.134
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-5.268 – 9.536
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.571
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [South Africa]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.600
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.291 – 1.091
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.486
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+3.753
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.485 – 8.991
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.160
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-1.908
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-8.406 – 4.590
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.564
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+2.716
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-7.000 – 12.432
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.583
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Sweden]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.766
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.930 – 0.397
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.196
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.415
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.202 – 6.032
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.190
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.683
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-5.170 – 3.804
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.765
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+8.107
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+1.451 – 14.762
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+<strong>0.017</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Taiwan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.657
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.695 – 0.381
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.214
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.651
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.575 – 3.878
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.692
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+2.005
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-1.998 – 6.009
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.326
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+3.894
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-2.731 – 10.519
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.249
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Ukraine]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.724
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.915 – 2.362
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.386
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+3.330
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.766 – 8.426
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.200
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-2.447
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-8.770 – 3.875
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.448
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+9.085
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-0.280 – 18.451
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.057
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [USA]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.346
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.564 – 1.256
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.456
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.798
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.001 – 4.597
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.208
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.375
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-3.098 – 3.848
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.832
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+3.918
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-1.370 – 9.205
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.146
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Uzbekistan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.315
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.324 – 1.954
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.706
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.298
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.799 – 7.396
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.376
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-2.434
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-8.758 – 3.890
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.450
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+5.280
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-4.088 – 14.648
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.269
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Vietnam]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.693
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.777 – 0.391
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.210
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.514
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-4.884 – 1.857
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.378
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+2.174
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-2.008 – 6.356
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.308
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+-0.228
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-6.422 – 5.966
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.942
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Tanzania]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+5.859
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.762 – 10.956
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+<strong>0.024</strong>
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-2.961
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+-9.285 – 3.362
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.358
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+5.011
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+-4.356 – 14.378
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.294
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+731
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+779
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+779
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+627
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> / R<sup>2</sup> adjusted
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.283 / 0.240
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.148 / 0.099
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.112 / 0.061
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.099 / 0.039
+</td>
+</tr>
+</table>
+</div>
+<div id="the-yield-model-for-all-genes" class="section level2">
+<h2>The yield model for all genes</h2>
+<pre class="r"><code>yield_country_all_joined_groups &lt;- yield_country_all_joined_groups %&gt;% rename(`All genes` = presences.x)</code></pre>
+<pre class="r"><code>clm &lt;- lm(Yield ~ `All genes` + Group + Country, data=yield_country_all_joined_groups)
+summary(clm)</code></pre>
+<pre><code>
+Call:
+lm(formula = Yield ~ `All genes` + Group + Country, data = yield_country_all_joined_groups)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.45433 -0.38016  0.01363  0.45362  2.01898 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           4.3846649  9.4830523   0.462 0.643963    
+`All genes`          -0.0000450  0.0001961  -0.230 0.818513    
+GroupOld cultivar    -0.2181643  0.1401041  -1.557 0.119892    
+GroupModern cultivar  0.8284865  0.2171747   3.815 0.000149 ***
+CountryArgentina     -0.5842141  0.6978474  -0.837 0.402790    
+CountryAustralia     -0.7716951  0.8390702  -0.920 0.358050    
+CountryAustria        0.4071798  0.8391277   0.485 0.627659    
+CountryBelgium       -0.2806376  0.6633234  -0.423 0.672370    
+CountryBrazil        -0.8234953  0.8391759  -0.981 0.326782    
+CountryBulgaria      -0.3590849  0.8390472  -0.428 0.668809    
+CountryCanada        -0.1765815  0.5604944  -0.315 0.752822    
+CountryChina         -0.0722465  0.4211295  -0.172 0.863838    
+CountryCosta          0.8302041  0.8401223   0.988 0.323404    
+CountryFormer Serbia  1.0045079  0.8662586   1.160 0.246616    
+CountryFrance         0.2812639  0.5549986   0.507 0.612469    
+CountryGeorgia        0.8601321  0.6636565   1.296 0.195392    
+CountryGermany       -0.1990329  0.5593739  -0.356 0.722089    
+CountryHungary        0.5695627  0.5550440   1.026 0.305177    
+CountryIndia         -1.2192424  0.5549811  -2.197 0.028359 *  
+CountryIndonesia     -1.2874198  0.5550851  -2.319 0.020669 *  
+CountryItaly          0.4669101  0.8516478   0.548 0.583703    
+CountryJapan         -0.3986662  0.4288991  -0.930 0.352950    
+CountryKorea         -0.3196161  0.4275551  -0.748 0.454990    
+CountryKyrgyzstan     0.6991149  0.8390466   0.833 0.405006    
+CountryMoldova       -0.0165313  0.5014997  -0.033 0.973713    
+CountryMorocco        0.6192767  0.8432298   0.734 0.462949    
+CountryMyanmar       -1.0069877  0.6633741  -1.518 0.129478    
+CountryNepal         -0.4759751  0.6633311  -0.718 0.473276    
+CountryNetherlands   -0.7048454  0.8393032  -0.840 0.401313    
+CountryPakistan      -2.0554396  0.8392729  -2.449 0.014571 *  
+CountryPeru          -1.2263756  0.8394973  -1.461 0.144514    
+CountryPoland         0.8733453  0.8391643   1.041 0.298365    
+CountryRomania        1.1384698  0.5146576   2.212 0.027288 *  
+CountryRussia         0.5181480  0.4352209   1.191 0.234244    
+CountrySerbia         0.1960997  0.6635351   0.296 0.767672    
+CountrySouth Africa  -0.5749971  0.8662537  -0.664 0.507057    
+CountrySweden        -0.8583437  0.5951344  -1.442 0.149681    
+CountryTaiwan        -0.6960443  0.5314349  -1.310 0.190719    
+CountryUkraine        0.6639845  0.8394469   0.791 0.429229    
+CountryUSA            0.3072519  0.4662389   0.659 0.510115    
+CountryUzbekistan     0.3874948  0.8391087   0.462 0.644375    
+CountryVietnam       -0.7200660  0.5550726  -1.297 0.194981    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.7266 on 689 degrees of freedom
+  (10 observations deleted due to missingness)
+Multiple R-squared:  0.2747,    Adjusted R-squared:  0.2316 
+F-statistic: 6.365 on 41 and 689 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Good, p = 0.78</p>
+<pre class="r"><code>tab_model(clm, p.val=&#39;kr&#39;, digits=3)</code></pre>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+Yield
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Estimates
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+p
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+(Intercept)
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+4.385
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-14.234 – 23.004
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.644
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+All genes
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.000
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.000 – 0.000
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.819
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Old cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.218
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.493 – 0.057
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.120
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Group [Modern cultivar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.828
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.402 – 1.255
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>&lt;0.001
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Argentina]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.584
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.954 – 0.786
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.403
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Australia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.772
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.419 – 0.876
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.358
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Austria]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.407
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.240 – 2.055
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.628
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Belgium]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.281
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.583 – 1.022
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.672
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Brazil]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.823
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.471 – 0.824
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.327
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Bulgaria]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.359
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.006 – 1.288
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.669
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Canada]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.177
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.277 – 0.924
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.753
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [China]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.072
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.899 – 0.755
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.864
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Costa]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.830
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.819 – 2.480
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.323
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Former Serbia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.005
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.696 – 2.705
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.247
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [France]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.281
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.808 – 1.371
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.612
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Georgia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.860
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.443 – 2.163
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.195
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Germany]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.199
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.297 – 0.899
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.722
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Hungary]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.570
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.520 – 1.659
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.305
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [India]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.219
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.309 – -0.130
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.028</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Indonesia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.287
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.377 – -0.198
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.021</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Italy]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.467
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.205 – 2.139
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.584
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Japan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.399
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.241 – 0.443
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.353
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Korea]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.320
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.159 – 0.520
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.455
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Kyrgyzstan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.699
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.948 – 2.347
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.405
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Moldova]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.017
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.001 – 0.968
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.974
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Morocco]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.619
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.036 – 2.275
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.463
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Myanmar]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.007
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.309 – 0.295
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.129
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Nepal]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.476
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.778 – 0.826
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.473
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Netherlands]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.705
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.353 – 0.943
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.401
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Pakistan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.055
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-3.703 – -0.408
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.015</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Peru]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.226
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.875 – 0.422
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.145
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Poland]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.873
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.774 – 2.521
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.298
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Romania]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.138
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.128 – 2.149
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+<strong>0.027</strong>
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Russia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.518
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.336 – 1.373
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.234
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Serbia]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.196
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.107 – 1.499
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.768
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [South Africa]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.575
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.276 – 1.126
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.507
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Sweden]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.858
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-2.027 – 0.310
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.150
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Taiwan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.696
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.739 – 0.347
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.191
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Ukraine]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.664
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.984 – 2.312
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.429
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [USA]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.307
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.608 – 1.223
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.510
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Uzbekistan]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.387
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.260 – 2.035
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.644
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Country [Vietnam]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.720
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-1.810 – 0.370
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.195
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
+731
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> / R<sup>2</sup> adjusted
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
+0.275 / 0.232
+</td>
+</tr>
+</table>
+</div>
+<div id="continents-not-countries" class="section level2">
+<h2>Continents, not countries</h2>
+<pre class="r"><code>yield_country_nbs_joined_groups$continent &lt;- countrycode(sourcevar = yield_country_nbs_joined_groups$Country,
+                                                         origin = &#39;country.name&#39;,
+                                                         destination = &#39;continent&#39;)</code></pre>
+<pre><code>Warning in countrycode(sourcevar = yield_country_nbs_joined_groups$Country, : Some values were not matched unambiguously: Costa</code></pre>
+<pre class="r"><code>yield_country_nbs_joined_groups &lt;- yield_country_nbs_joined_groups %&gt;% mutate(continent2 = case_when (
+  Country == &#39;USA&#39; ~ &#39;North America&#39;,
+  Country == &#39;Canada&#39; ~ &#39;North America&#39;,
+  continent == &#39;Americas&#39; ~ &#39;South America&#39;,
+  TRUE ~ continent
+  )) </code></pre>
+<pre class="r"><code>clm &lt;- lm(Yield ~ Count + Group + continent2, data=yield_country_nbs_joined_groups)
+summary(clm)</code></pre>
+<pre><code>
+Call:
+lm(formula = Yield ~ Count + Group + continent2, data = yield_country_nbs_joined_groups)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.16547 -0.49319  0.04099  0.53052  2.18719 
+
+Coefficients:
+                         Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              9.372111   2.535097   3.697 0.000235 ***
+Count                   -0.016111   0.005656  -2.849 0.004515 ** 
+GroupOld cultivar       -0.297019   0.138254  -2.148 0.032018 *  
+GroupModern cultivar     0.799320   0.199245   4.012 6.66e-05 ***
+continent2Asia          -0.165547   0.338984  -0.488 0.625442    
+continent2Europe         0.359429   0.347911   1.033 0.301901    
+continent2North America  0.262194   0.370672   0.707 0.479579    
+continent2Oceania       -0.730581   0.822581  -0.888 0.374752    
+continent2South America -0.824268   0.506595  -1.627 0.104158    
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 0.7499 on 721 degrees of freedom
+  (11 observations deleted due to missingness)
+Multiple R-squared:  0.1904,    Adjusted R-squared:  0.1814 
+F-statistic:  21.2 on 8 and 721 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>yield_country_nbs_joined_groups_nonacont &lt;- yield_country_nbs_joined_groups %&gt;% filter(!is.na(continent2))
+newdat &lt;- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm))</code></pre>
+<pre class="r"><code>newdat %&gt;% 
+  ggplot(aes(x = Count, y = pred, color = continent2)) +
+  facet_wrap( ~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = continent2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, continent2),colour=continent2), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab(&#39;Gene count&#39;) +
+  ylab(expression(paste(&#39;Yield [Mg &#39;, ha ^ -1, &#39;]&#39;))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = &quot;Continent&quot;) +
+  theme(panel.spacing = unit(0.9, &quot;lines&quot;),
+  axis.text.x = element_text(size = 10))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="finally-a-regression-by-continent" class="section level2">
+<h2>Finally, a regression by continent</h2>
+<p>I remove Oceania as there are very little individuals in there.</p>
+<pre class="r"><code>by_continent_model &lt;- function(df) {
+  lm(Yield ~ Count + Group, data = df)
+}</code></pre>
+<pre class="r"><code>with_models &lt;- yield_country_nbs_joined_groups_nonacont %&gt;% 
+  filter(!continent2 %in% c(&#39;Africa&#39;, &#39;South America&#39;, &#39;Oceania&#39;)) %&gt;% 
+  group_by(continent2) %&gt;% 
+  nest() %&gt;%
+  mutate(models = map(data, by_continent_model))</code></pre>
+<pre class="r"><code>with_models %&gt;% mutate(glance = map(models, broom::glance)) %&gt;% 
+  unnest(glance)</code></pre>
+<pre><code># A tibble: 3 x 14
+# Groups:   continent2 [3]
+  continent2 data  models r.squared adj.r.squared sigma statistic p.value    df
+  &lt;chr&gt;      &lt;lis&gt; &lt;list&gt;     &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;
+1 Asia       &lt;tib~ &lt;lm&gt;      0.0193        0.0142 0.754      3.80 1.02e-2     4
+2 North Ame~ &lt;tib~ &lt;lm&gt;      0.318         0.279  0.773      8.08 1.63e-4     4
+3 Europe     &lt;tib~ &lt;lm&gt;      0.107         0.0710 0.693      2.99 3.64e-2     4
+# ... with 5 more variables: logLik &lt;dbl&gt;, AIC &lt;dbl&gt;, BIC &lt;dbl&gt;,
+#   deviance &lt;dbl&gt;, df.residual &lt;int&gt;</code></pre>
+<p>Let’s pull out the data</p>
+<pre class="r"><code>with_models %&gt;% filter(continent2 == &#39;Asia&#39;) %&gt;% unnest(data)</code></pre>
+<pre><code># A tibble: 585 x 12
+# Groups:   continent2 [1]
+   continent2 names presences.x `PI-ID` Group presences.y Yield Yield2[,1]
+   &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;   &lt;fct&gt;       &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Asia       AB-01         445 PI4580~ Land~         445  1.54    -0.774 
+ 2 Asia       AB-02         454 PI6037~ Land~         454  1.3     -1.06  
+ 3 Asia       HN005         440 PI4041~ Land~         440  2.15    -0.0366
+ 4 Asia       HN006         448 PI4077~ Land~         448  2.06    -0.145 
+ 5 Asia       HN007         442 PI4242~ Land~         442  1.64    -0.653 
+ 6 Asia       HN008         439 PI4376~ Land~         439  2.51     0.399 
+ 7 Asia       HN009         445 PI4950~ Land~         445  1.85    -0.399 
+ 8 Asia       HN010         447 PI4689~ Land~         447  2.8      0.749 
+ 9 Asia       HN011         441 PI5073~ Land~         441  1.49    -0.835 
+10 Asia       HN012         443 PI5673~ Land~         443  1.86    -0.387 
+# ... with 575 more rows, and 4 more variables: Country &lt;chr&gt;, Count &lt;dbl&gt;,
+#   continent &lt;chr&gt;, models &lt;list&gt;</code></pre>
+<pre class="r"><code>plots &lt;- with_models %&gt;% 
+  mutate(plots = map2(data, continent2, 
+                      ~ ggplot(data =.x, aes(x=presences.x, y=Yield)) + 
+                        geom_point() +
+                        geom_smooth(method = &quot;lm&quot;)
+                      )
+         )</code></pre>
+<p>I have no idea how to use standard facet_wrap with this.</p>
+<pre class="r"><code>print(plots$plots)</code></pre>
+<pre><code>[[1]]</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[2]]</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-44-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre><code>
+[[3]]</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-44-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plots %&gt;% unnest(data) %&gt;% group_by(continent2) %&gt;% 
+  do(augment(.$models[[1]]))</code></pre>
+<pre><code># A tibble: 720 x 11
+# Groups:   continent2 [3]
+   continent2 Yield Count Group .fitted .se.fit  .resid    .hat .sigma .cooksd
+   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Asia        1.54   445 Land~    2.03  0.0318 -0.493  0.00178  0.754 1.91e-4
+ 2 Asia        1.3    454 Land~    1.85  0.0654 -0.545  0.00752  0.754 9.99e-4
+ 3 Asia        2.15   440 Land~    2.14  0.0445  0.0131 0.00348  0.754 2.63e-7
+ 4 Asia        2.06   448 Land~    1.97  0.0372  0.0898 0.00244  0.754 8.68e-6
+ 5 Asia        1.64   442 Land~    2.10  0.0368 -0.455  0.00238  0.754 2.18e-4
+ 6 Asia        2.51   439 Land~    2.16  0.0491  0.352  0.00424  0.754 2.33e-4
+ 7 Asia        1.85   445 Land~    2.03  0.0318 -0.183  0.00178  0.754 2.62e-5
+ 8 Asia        2.8    447 Land~    1.99  0.0344  0.809  0.00208  0.754 6.01e-4
+ 9 Asia        1.49   441 Land~    2.12  0.0403 -0.626  0.00286  0.754 4.96e-4
+10 Asia        1.86   443 Land~    2.07  0.0340 -0.214  0.00204  0.754 4.14e-5
+# ... with 710 more rows, and 1 more variable: .std.resid &lt;dbl&gt;</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.3 (2020-02-29)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 17134)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_Australia.1252  LC_CTYPE=English_Australia.1252   
+[3] LC_MONETARY=English_Australia.1252 LC_NUMERIC=C                      
+[5] LC_TIME=English_Australia.1252    
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] broom_0.5.6            countrycode_1.1.1      RColorBrewer_1.1-2    
+ [4] pals_1.6               dotwhisker_0.5.0       lmerTest_3.1-2        
+ [7] directlabels_2020.6.17 lme4_1.1-21            Matrix_1.2-18         
+[10] ggforce_0.3.1          ggsignif_0.6.0         cowplot_1.0.0         
+[13] dabestr_0.3.0          magrittr_1.5           ggsci_2.9             
+[16] sjPlot_2.8.6           patchwork_1.0.0        forcats_0.5.0         
+[19] stringr_1.4.0          dplyr_1.0.0            purrr_0.3.4           
+[22] readr_1.3.1            tidyr_1.1.0            tibble_3.0.2          
+[25] ggplot2_3.3.2          tidyverse_1.3.0        workflowr_1.6.2.9000  
+
+loaded via a namespace (and not attached):
+ [1] TH.data_1.0-10      minqa_1.2.4         colorspace_1.4-1   
+ [4] ellipsis_0.3.1      sjlabelled_1.1.7    rprojroot_1.3-2    
+ [7] estimability_1.3    ggstance_0.3.4      parameters_0.9.0   
+[10] fs_1.5.0.9000       dichromat_2.0-0     rstudioapi_0.11    
+[13] farver_2.0.3        fansi_0.4.1         mvtnorm_1.1-1      
+[16] lubridate_1.7.9     xml2_1.3.2          codetools_0.2-16   
+[19] splines_3.6.3       knitr_1.29          sjmisc_2.8.5       
+[22] polyclip_1.10-0     jsonlite_1.7.1      nloptr_1.2.1       
+[25] ggeffects_0.16.0    dbplyr_1.4.4        effectsize_0.4.0   
+[28] mapproj_1.2.7       compiler_3.6.3      httr_1.4.2         
+[31] sjstats_0.18.0      emmeans_1.4.5       backports_1.1.10   
+[34] assertthat_0.2.1    cli_2.0.2           later_1.1.0.1      
+[37] tweenr_1.0.1        htmltools_0.5.0     tools_3.6.3        
+[40] coda_0.19-3         gtable_0.3.0        glue_1.4.2         
+[43] maps_3.3.0          Rcpp_1.0.5          cellranger_1.1.0   
+[46] vctrs_0.3.1         nlme_3.1-148        insight_0.10.0     
+[49] xfun_0.17           ps_1.3.4            rvest_0.3.5        
+[52] lifecycle_0.2.0     getPass_0.2-2       MASS_7.3-51.6      
+[55] zoo_1.8-8           scales_1.1.1        hms_0.5.3          
+[58] promises_1.1.1      sandwich_2.5-1      yaml_2.2.1         
+[61] stringi_1.5.3       bayestestR_0.7.5    boot_1.3-25        
+[64] rlang_0.4.7         pkgconfig_2.0.3     evaluate_0.14      
+[67] lattice_0.20-41     labeling_0.3        processx_3.4.4     
+[70] tidyselect_1.1.0    R6_2.4.1            generics_0.0.2     
+[73] multcomp_1.4-13     DBI_1.1.0           mgcv_1.8-31        
+[76] pillar_1.4.4        haven_2.3.1         whisker_0.4        
+[79] withr_2.2.0         survival_3.2-3      performance_0.5.1  
+[82] modelr_0.1.8        crayon_1.3.4        utf8_1.1.4         
+[85] rmarkdown_2.3       grid_3.6.3          readxl_1.3.1       
+[88] blob_1.2.1          callr_3.4.4         git2r_0.27.1       
+[91] reprex_0.3.0        digest_0.6.25       xtable_1.8-4       
+[94] httpuv_1.5.4        numDeriv_2016.8-1.1 munsell_0.5.0      
+[97] quadprog_1.5-8     </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

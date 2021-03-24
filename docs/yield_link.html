@@ -413,7 +413,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-09
+<strong>Last updated:</strong> 2021-03-24
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree3c54326f36f24a4c2ae84dca7277b50befe329fbtargetblank3c54326a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/3c54326f36f24a4c2ae84dca7277b50befe329fb" target="_blank">3c54326</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee747dc62c641928547b80e25e004af5fa60080f2targetblanke747dc6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/e747dc62c641928547b80e25e004af5fa60080f2" target="_blank">e747dc6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree3c54326f36f24a4c2ae84dca7277b50befe329fbtargetblank3c54326a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee747dc62c641928547b80e25e004af5fa60080f2targetblanke747dc6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/3c54326f36f24a4c2ae84dca7277b50befe329fb" target="_blank">3c54326</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/e747dc62c641928547b80e25e004af5fa60080f2" target="_blank">e747dc6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -522,7 +522,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/Brec_R1.txt
@@ -601,6 +600,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/e747dc62c641928547b80e25e004af5fa60080f2/analysis/yield_link.Rmd" target="_blank">e747dc6</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-24
+</td>
+<td>
+wflow_publish(files = c(“analysis/index.Rmd”, “analysis/yield_lm_link.Rmd”,
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/8bcd1457cf7138632b32a70576b6e06ad97547e8/docs/yield_link.html" target="_blank">8bcd145</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-09
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1504,7 +1537,8 @@ Attaching package: &#39;lmerTest&#39;</code></pre>
 <pre class="r"><code>library(dotwhisker)
 library(pals)
 theme_set(theme_cowplot())
-library(RColorBrewer)</code></pre>
+library(RColorBrewer)
+library(countrycode)</code></pre>
 <div id="data-loading" class="section level1">
 <h1>Data loading</h1>
 <pre class="r"><code>npg_col = pal_npg(&quot;nrc&quot;)(9)
@@ -3894,9 +3928,7 @@ newdat %&gt;% mutate(Country2 = case_when ( Country == &#39;USA&#39; ~ &#39;USA&
 </div>
 <div id="lets-join-the-countries-into-continents-and-then-run-everything-again" class="section level2">
 <h2>Let’s join the countries into continents and then run everything again</h2>
-<pre class="r"><code>library(countrycode)
-
-yield_country_nbs_joined_groups$continent &lt;- countrycode(sourcevar = yield_country_nbs_joined_groups$Country,
+<pre class="r"><code>yield_country_nbs_joined_groups$continent &lt;- countrycode(sourcevar = yield_country_nbs_joined_groups$Country,
                                                          origin = &#39;country.name&#39;,
                                                          destination = &#39;continent&#39;)</code></pre>
 <pre><code>Warning in countrycode(sourcevar = yield_country_nbs_joined_groups$Country, : Some values were not matched unambiguously: Costa, ND</code></pre>
@@ -5562,267 +5594,7 @@ newdat</code></pre>
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10))</code></pre>
 <p><img src="figure/yield_link.Rmd/unnamed-chunk-102-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-<div id="lets-redo-everything-using-basic-lm" class="section level1">
-<h1>Let’s redo everything using basic lm()</h1>
-<p>Do we even need lme4? Let’s find out!</p>
-<pre class="r"><code>yield_country_nbs_joined_groups$Count &lt;- yield_country_nbs_joined_groups$presences.y
-yield_country_all_joined_groups$Count &lt;- yield_country_all_joined_groups$presences.y</code></pre>
-<pre class="r"><code>lm_model &lt;- lm(Yield ~ Count +  Group, data = yield_country_nbs_joined_groups) 
-summary(lm_model)</code></pre>
-<pre><code>
-Call:
-lm(formula = Yield ~ Count + Group, data = yield_country_nbs_joined_groups)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--2.47398 -0.52358  0.02648  0.53660  2.14648 
-
-Coefficients:
-                      Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)          10.985573   2.532389   4.338 1.64e-05 ***
-Count                -0.019960   0.005694  -3.505 0.000483 ***
-GroupOld cultivar    -0.198279   0.137005  -1.447 0.148255    
-GroupModern cultivar  1.080136   0.111621   9.677  &lt; 2e-16 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Residual standard error: 0.768 on 737 degrees of freedom
-Multiple R-squared:  0.1412,    Adjusted R-squared:  0.1377 
-F-statistic: 40.41 on 3 and 737 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>clm_model &lt;- lm(Yield ~ Count +  Group + Country, data = yield_country_nbs_joined_groups) 
-summary(clm_model)</code></pre>
-<pre><code>
-Call:
-lm(formula = Yield ~ Count + Group + Country, data = yield_country_nbs_joined_groups)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--2.26158 -0.38952  0.00518  0.45393  2.09468 
-
-Coefficients:
-                      Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)           9.254610   2.523097   3.668 0.000263 ***
-Count                -0.015950   0.005634  -2.831 0.004776 ** 
-GroupOld cultivar    -0.251301   0.136739  -1.838 0.066514 .  
-GroupModern cultivar  0.791799   0.213969   3.701 0.000232 ***
-CountryArgentina     -0.589333   0.692075  -0.852 0.394759    
-CountryAustralia     -0.684933   0.833177  -0.822 0.411316    
-CountryAustria        0.415317   0.832637   0.499 0.618080    
-CountryBelgium       -0.290633   0.658267  -0.442 0.658978    
-CountryBrazil        -0.734933   0.833177  -0.882 0.378035    
-CountryBulgaria      -0.418484   0.832891  -0.502 0.615512    
-CountryCanada        -0.137052   0.555958  -0.247 0.805356    
-CountryChina         -0.027711   0.418161  -0.066 0.947184    
-CountryCosta          0.781516   0.832891   0.938 0.348406    
-CountryFormer Serbia  1.053517   0.859715   1.225 0.220828    
-CountryFrance         0.309242   0.550833   0.561 0.574700    
-CountryGeorgia        0.814491   0.658498   1.237 0.216543    
-CountryGermany       -0.224383   0.555185  -0.404 0.686220    
-CountryHungary        0.612692   0.550968   1.112 0.266509    
-CountryIndia         -1.154871   0.551217  -2.095 0.036519 *  
-CountryIndonesia     -1.244808   0.550968  -2.259 0.024172 *  
-CountryItaly          0.512568   0.843810   0.607 0.543754    
-CountryJapan         -0.335536   0.426151  -0.787 0.431336    
-CountryKorea         -0.228364   0.425271  -0.537 0.591449    
-CountryKyrgyzstan     0.705317   0.832637   0.847 0.397237    
-CountryMoldova        0.020924   0.497790   0.042 0.966484    
-CountryMorocco        0.828618   0.836543   0.991 0.322260    
-CountryMyanmar       -1.111334   0.659327  -1.686 0.092328 .  
-CountryND             0.304537   0.475083   0.641 0.521721    
-CountryNepal         -0.445758   0.658337  -0.677 0.498568    
-CountryNetherlands   -0.710633   0.832644  -0.853 0.393693    
-CountryPakistan      -2.182284   0.833755  -2.617 0.009052 ** 
-CountryPeru          -1.182783   0.832739  -1.420 0.155951    
-CountryPoland         0.955067   0.833177   1.146 0.252066    
-CountryRomania        1.152933   0.509938   2.261 0.024071 *  
-CountryRussia         0.542843   0.431934   1.257 0.209256    
-CountrySerbia         0.221267   0.658299   0.336 0.736882    
-CountrySouth Africa  -0.590283   0.859663  -0.687 0.492535    
-CountrySweden        -0.755849   0.591363  -1.278 0.201622    
-CountryTaiwan        -0.650523   0.527472  -1.233 0.217885    
-CountryUkraine        0.723167   0.832847   0.868 0.385525    
-CountryUSA            0.355285   0.462399   0.768 0.442538    
-CountryUzbekistan     0.315566   0.833050   0.379 0.704945    
-CountryVietnam       -0.693258   0.550833  -1.259 0.208609    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Residual standard error: 0.7211 on 698 degrees of freedom
-Multiple R-squared:  0.2829,    Adjusted R-squared:  0.2398 
-F-statistic: 6.557 on 42 and 698 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>interlm_model &lt;- lm(Yield ~ Count * Group, data = yield_country_nbs_joined_groups) 
-summary(interlm_model)</code></pre>
-<pre><code>
-Call:
-lm(formula = Yield ~ Count * Group, data = yield_country_nbs_joined_groups)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--2.38311 -0.51569  0.01947  0.53258  2.13947 
-
-Coefficients:
-                           Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)                 9.62255    2.70414   3.558 0.000397 ***
-Count                      -0.01690    0.00608  -2.779 0.005598 ** 
-GroupOld cultivar          18.63259   11.02113   1.691 0.091333 .  
-GroupModern cultivar        5.56130   10.01054   0.556 0.578692    
-Count:GroupOld cultivar    -0.04234    0.02478  -1.709 0.087920 .  
-Count:GroupModern cultivar -0.01012    0.02263  -0.447 0.654959    
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Residual standard error: 0.7674 on 735 degrees of freedom
-Multiple R-squared:  0.1448,    Adjusted R-squared:  0.139 
-F-statistic: 24.88 on 5 and 735 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>tab_model(lm_model, p.val=&#39;kr&#39;, digits=3)</code></pre>
-<table style="border-collapse:collapse; border:none;">
-<tr>
-<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
- 
-</th>
-<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
-Yield
-</th>
-</tr>
-<tr>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
-Predictors
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-Estimates
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-CI
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-p
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-(Intercept)
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-10.986
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-6.014 – 15.957
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>&lt;0.001
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-Count
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.020
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.031 – -0.009
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>&lt;0.001
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-Group [Old cultivar]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.198
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.467 – 0.071
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.148
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-Group [Modern cultivar]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-1.080
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.861 – 1.299
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>&lt;0.001
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
-Observations
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-741
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-R<sup>2</sup> / R<sup>2</sup> adjusted
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.141 / 0.138
-</td>
-</tr>
-</table>
-<pre class="r"><code>newdat &lt;-cbind(yield_country_all_joined_groups, pred = predict(clm_model))</code></pre>
-<pre class="r"><code>newdat %&gt;% mutate(
-  Country2 = case_when (
-  Country == &#39;USA&#39; ~ &#39;USA&#39;,
-  Country == &#39;China&#39; ~ &#39;China&#39;,
-  Country == &#39;Korea&#39; ~ &#39;Korea&#39;,
-  Country == &#39;Japan&#39; ~ &#39;Japan&#39;,
-  Country == &#39;Russia&#39; ~ &#39;Russia&#39;,
-  TRUE ~ &#39;Rest&#39;
-  )
-  ) %&gt;%
-  mutate(Country2 = factor(
-  Country2,
-  levels = c(&#39;China&#39;, &#39;Japan&#39;, &#39;Korea&#39;, &#39;Russia&#39;, &#39;USA&#39;, &#39;Rest&#39;)
-  )) %&gt;%
-  ggplot(aes(x = Count, y = pred, color = Country2)) +
-  facet_wrap( ~ Group, nrow = 1) +  
-  geom_point(aes(y = Yield, color = Country2),
-    alpha = 0.8,
-    size = 2) +
-  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5)+
-  theme_minimal_hgrid() +
-  xlab(&#39;Gene count&#39;) +
-  ylab(expression(paste(&#39;Yield [Mg &#39;, ha ^ -1, &#39;]&#39;))) +
-  scale_color_manual(values = mycol) +
-  #xlim(c(47.900, 49.700)) +
-  labs(color = &quot;Country&quot;) +
-  theme(panel.spacing = unit(0.9, &quot;lines&quot;),
-  axis.text.x = element_text(size = 10))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-109-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Oh wow, that looks very similar.</p>
-<pre class="r"><code>plot_model(clm_model, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;)) +
-  theme_minimal_hgrid() +
-  #scale_fill_manual(values = col_list) +
-  #scale_color_manual(values = col_list) +
-  xlab(&#39;NLR count&#39;) + 
-  ylab((expression(paste(&#39;Yield [Mg &#39;, ha^-1, &#39;]&#39;)))) +
-  theme(plot.title=element_blank())</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-110-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>qqnorm(resid(clm_model))
-qqline(resid(clm_model))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-111-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot(resid(clm_model))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-112-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c(&#39;GroupOld cultivar&#39;, &#39;Count&#39;, &#39;GroupModern cultivar&#39;))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-113-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_model(clm_model, type = &quot;std&quot;, show.values = TRUE, value.offset = .3,)</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-114-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_model(clm_model, type = &quot;std&quot;, show.values = TRUE, value.offset = .3,, terms=c(&#39;GroupOld cultivar&#39;, &#39;Count&#39;, &#39;GroupModern cultivar&#39;))</code></pre>
-<p><img src="figure/yield_link.Rmd/unnamed-chunk-115-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>At this point, after discussion with Lyron, we decided to go for lm().</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -5846,8 +5618,8 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] countrycode_1.1.1      lmerTest_3.1-2         ggeffects_0.16.0      
- [4] stargazer_5.2.2        RColorBrewer_1.1-2     pals_1.6              
+ [1] lmerTest_3.1-2         ggeffects_0.16.0       stargazer_5.2.2       
+ [4] countrycode_1.1.1      RColorBrewer_1.1-2     pals_1.6              
  [7] dotwhisker_0.5.0       directlabels_2020.6.17 lme4_1.1-21           
 [10] Matrix_1.2-18          ggforce_0.3.1          ggsignif_0.6.0        
 [13] cowplot_1.0.0          dabestr_0.3.0          magrittr_1.5          
@@ -5892,6 +5664,7 @@ loaded via a namespace (and not attached):
  [94] git2r_0.27.1        reprex_0.3.0        digest_0.6.25      
  [97] xtable_1.8-4        httpuv_1.5.4        numDeriv_2016.8-1.1
 [100] munsell_0.5.0       quadprog_1.5-8     </code></pre>
+</div>
 </div>
 </div>
 
