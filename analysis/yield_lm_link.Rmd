@@ -363,18 +363,53 @@ tab_model(yieldmod, oilmod, protmod, seedmod, digits=3 )
 ## The yield model for all genes
 
 ```{r}
-yield_country_all_joined_groups <- yield_country_all_joined_groups %>% rename(`All genes` = presences.x)
+yield_country_all_joined_groups <- yield_country_all_joined_groups %>% dplyr::rename(`All genes` = presences.x)
 ```
 
 ```{r}
 clm <- lm(Yield ~ `All genes` + Group + Country, data=yield_country_all_joined_groups)
 summary(clm)
 ```
-Good, p = 0.78
+Good, p > 0.05
 
 ```{r}
 tab_model(clm, p.val='kr', digits=3)
 ```
+
+```{r}
+newdat <- cbind(yield_country_all_joined_groups %>% filter(!is.na(Country)), pred = predict(clm))
+```
+
+```{r}
+newdat %>% mutate(
+  Country2 = case_when (
+  Country == 'USA' ~ 'USA',
+  Country == 'China' ~ 'China',
+  Country == 'Korea' ~ 'Korea',
+  Country == 'Japan' ~ 'Japan',
+  Country == 'Russia' ~ 'Russia',
+  TRUE ~ 'Rest'
+  )
+  ) %>%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
+  )) %>%
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap( ~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5) +
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10))
+```
+
 
 ## Continents, not countries 
 ```{r}
