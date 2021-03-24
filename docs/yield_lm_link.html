@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebf0623f755b156be5c61e3fa7b126b4fc3827bf6targetblankbf0623fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/bf0623f755b156be5c61e3fa7b126b4fc3827bf6" target="_blank">bf0623f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb1e62b5a126105443a6531cb90eaf5b907d44b1etargetblankb1e62b5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/b1e62b5a126105443a6531cb90eaf5b907d44b1e" target="_blank">b1e62b5</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebf0623f755b156be5c61e3fa7b126b4fc3827bf6targetblankbf0623fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb1e62b5a126105443a6531cb90eaf5b907d44b1etargetblankb1e62b5a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/bf0623f755b156be5c61e3fa7b126b4fc3827bf6" target="_blank">bf0623f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/b1e62b5a126105443a6531cb90eaf5b907d44b1e" target="_blank">b1e62b5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -600,6 +600,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/b1e62b5a126105443a6531cb90eaf5b907d44b1e/analysis/yield_lm_link.Rmd" target="_blank">b1e62b5</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-24
+</td>
+<td>
+wflow_publish(files = c(“analysis/yield_lm_link.Rmd”))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/e4a52a8366117c371ece792ece8e1be7bcce6963/docs/yield_lm_link.html" target="_blank">e4a52a8</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -3841,7 +3875,7 @@ R<sup>2</sup> / R<sup>2</sup> adjusted
 </div>
 <div id="the-yield-model-for-all-genes" class="section level2">
 <h2>The yield model for all genes</h2>
-<pre class="r"><code>yield_country_all_joined_groups &lt;- yield_country_all_joined_groups %&gt;% rename(`All genes` = presences.x)</code></pre>
+<pre class="r"><code>yield_country_all_joined_groups &lt;- yield_country_all_joined_groups %&gt;% dplyr::rename(`All genes` = presences.x)</code></pre>
 <pre class="r"><code>clm &lt;- lm(Yield ~ `All genes` + Group + Country, data=yield_country_all_joined_groups)
 summary(clm)</code></pre>
 <pre><code>
@@ -3903,7 +3937,7 @@ Residual standard error: 0.7266 on 689 degrees of freedom
   (10 observations deleted due to missingness)
 Multiple R-squared:  0.2747,    Adjusted R-squared:  0.2316 
 F-statistic: 6.365 on 41 and 689 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>Good, p = 0.78</p>
+<p>Good, p &gt; 0.05</p>
 <pre class="r"><code>tab_model(clm, p.val=&#39;kr&#39;, digits=3)</code></pre>
 <table style="border-collapse:collapse; border:none;">
 <tr>
@@ -4533,6 +4567,35 @@ R<sup>2</sup> / R<sup>2</sup> adjusted
 </td>
 </tr>
 </table>
+<pre class="r"><code>newdat &lt;- cbind(yield_country_all_joined_groups %&gt;% filter(!is.na(Country)), pred = predict(clm))</code></pre>
+<pre class="r"><code>newdat %&gt;% mutate(
+  Country2 = case_when (
+  Country == &#39;USA&#39; ~ &#39;USA&#39;,
+  Country == &#39;China&#39; ~ &#39;China&#39;,
+  Country == &#39;Korea&#39; ~ &#39;Korea&#39;,
+  Country == &#39;Japan&#39; ~ &#39;Japan&#39;,
+  Country == &#39;Russia&#39; ~ &#39;Russia&#39;,
+  TRUE ~ &#39;Rest&#39;
+  )
+  ) %&gt;%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c(&#39;China&#39;, &#39;Japan&#39;, &#39;Korea&#39;, &#39;Russia&#39;, &#39;USA&#39;, &#39;Rest&#39;)
+  )) %&gt;%
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap( ~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5) +
+  theme_minimal_hgrid() +
+  xlab(&#39;Gene count&#39;) +
+  ylab(expression(paste(&#39;Yield [Mg &#39;, ha ^ -1, &#39;]&#39;))) +
+  scale_color_manual(values = mycol) +
+  labs(color = &quot;Country&quot;) +
+  theme(panel.spacing = unit(0.9, &quot;lines&quot;),
+  axis.text.x = element_text(size = 10))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="continents-not-countries" class="section level2">
 <h2>Continents, not countries</h2>
@@ -4591,7 +4654,7 @@ newdat &lt;- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm)
   labs(color = &quot;Continent&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="finally-a-regression-by-continent" class="section level2">
 <h2>Finally, a regression by continent</h2>
@@ -4643,13 +4706,13 @@ newdat &lt;- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm)
 <p>I have no idea how to use standard facet_wrap with this.</p>
 <pre class="r"><code>print(plots$plots)</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-45-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-47-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[3]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-45-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-47-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plots %&gt;% unnest(data) %&gt;% group_by(continent2) %&gt;% 
   do(augment(.$models[[1]]))</code></pre>
 <pre><code># A tibble: 720 x 11
