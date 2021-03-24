@@ -85,7 +85,7 @@ res_tibb <- new_tibble(list(names = names, presences = presences))
 
 ```{r}
 groups <- read_csv('./data/Table_of_cultivar_groups.csv')
-groups <- rename(groups, Group = `Group in violin table`)
+groups <- dplyr::rename(groups, Group = `Group in violin table`)
 groups <- groups %>% 
   mutate(Group = str_replace_all(Group, 'landrace', 'Landrace')) %>%
   mutate(Group = str_replace_all(Group, 'Old_cultivar', 'Old cultivar')) %>%
@@ -516,10 +516,15 @@ We should also add the country the plant is from as a random effect, that defini
 country <- read_csv('./data/Cultivar_vs_country.csv')
 
 names(country) <- c('names', 'PI-ID', 'Country')
+# fix weird ND issue
+country <- country %>% mutate(Country = na_if(Country, 'ND')) %>% 
+  mutate(Country = str_replace_all(Country, 'Costa', 'Costa Rica'))
 
 yield_country_nbs_joined_groups <- yield_nbs_joined_groups %>% inner_join(country)
 
 yield_country_all_joined_groups <- yield_all_joined_groups %>% inner_join(country)
+
+yield_country_nbs_joined_groups <- yield_country_nbs_joined_groups %>% filter(!is.na(Country))
 ```
 
 I need a summary table of sample sizes:
@@ -566,6 +571,7 @@ Some diagnostics:
 ```{r}
 plot(mixed.lmer)
 ```
+
 ```{r}
 qqnorm(resid(mixed.lmer))
 qqline(resid(mixed.lmer))
@@ -822,11 +828,6 @@ tab_model(mixed.lmer, p.val='kr')
 protmod <- mixed.lmer
 ```
 
-```{r}
-table(protein_country_nbs_joined_groups$Group)
-
-```
-
 ### Seed weight
 ```{r}
 seed_nbs_joined_groups <- nbs_joined_groups %>% inner_join(seed_join, by = 'names') 
@@ -845,14 +846,9 @@ tab_model(mixed.lmer, p.val='kr')
 seedmod <- mixed.lmer
 ```
 
-```{r}
-table(seed_country_nbs_joined_groups$Group)
-
-```
-
 ## The final yield model
 
-This is the final yield model for the paper
+This is the final yield model - I ended up switching this with lm() (see yield_lm_link.html), both give me very similar results
 
 ```{r}
 mixed.lmer <- lmer(Yield ~ presences.x + Group + (1|Country), data=yield_country_nbs_joined_groups)
@@ -974,7 +970,6 @@ detach("package:lmerTest", unload=TRUE)
 yield_country_nbs_joined_groups_renamed <- yield_country_nbs_joined_groups
 names(yield_country_nbs_joined_groups_renamed) <- c('names', 'Count', 'PI-ID', 'Group', 'presences2.x', 'presences.y', 'Yield', 'Yield2.x', 'Country')
 mixed.lmer <- lmer(Yield ~ `Count` + Group + (1|Country), data=yield_country_nbs_joined_groups_renamed)
-yield_country_nbs_joined_groups_renamed
 dwplot(mixed.lmer,
        vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2))
 ```
@@ -1049,6 +1044,7 @@ tab_model(mixed.lmer, p.val='kr', digits=3)
 ```
 
 ```{r}
+yield_country_all_joined_groups <- yield_country_all_joined_groups %>% filter(!is.na(Country))
 newdat <-cbind(yield_country_all_joined_groups, pred = predict(mixed.lmer))
 
 newdat %>% mutate(Country2 = case_when ( Country == 'USA' ~ 'USA',
@@ -1136,7 +1132,7 @@ tab_model(mixed.ranslope, digits=3)#, p.val='kr', digits=3)
 no_na <- yield_country_nbs_joined_groups %>% filter(!is.na(continent))
 
 newdat <-cbind(no_na, pred = predict(mixed.ranslope))
-newdat
+
 newdat %>%
   ggplot(aes(x = presences.y, y = pred, color = continent2)) +
   facet_wrap( ~ Group, nrow = 1) +   # a panel for each mountain range
