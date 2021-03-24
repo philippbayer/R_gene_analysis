@@ -1,0 +1,464 @@
+---
+title: "Linking yield with NLR PAV"
+author: "Philipp Bayer"
+date: "2020-09-22"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup}
+knitr::opts_chunk$set(message = FALSE) 
+library(tidyverse)
+library(patchwork)
+library(sjPlot)
+library(ggsci)
+library(dabestr)
+library(dabestr)
+library(cowplot)
+library(ggsignif)
+library(ggforce)
+library(lme4)
+library(directlabels)
+library(lmerTest)
+library(dotwhisker)
+library(pals)
+theme_set(theme_cowplot())
+library(RColorBrewer)
+library(countrycode)
+library(broom)
+```
+
+
+# Data loading
+
+```{r}
+npg_col = pal_npg("nrc")(9)
+col_list <- c(`Wild`=npg_col[8],
+   Landrace = npg_col[3],
+  `Old cultivar`=npg_col[2],
+  `Modern cultivar`=npg_col[4])
+
+pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt.gz')
+```
+
+
+```{r}
+nbs <- read_tsv('./data/Lee.NBS.candidates.lst', col_names = c('Name', 'Class'))
+nbs
+# have to remove the .t1s 
+nbs$Name <- gsub('.t1','', nbs$Name)
+nbs_pav_table <- pav_table %>% filter(Individual %in% nbs$Name)
+```
+
+
+```{r}
+names <- c()
+presences <- c()
+
+for (i in seq_along(nbs_pav_table)){
+  if ( i == 1) next
+  thisind <- colnames(nbs_pav_table)[i]
+  pavs <- nbs_pav_table[[i]]
+  presents <- sum(pavs)
+  names <- c(names, thisind)
+  presences <- c(presences, presents)
+}
+nbs_res_tibb <- new_tibble(list(names = names, presences = presences))
+```
+
+```{r}
+# let's make the same table for all genes too
+names <- c()
+presences <- c()
+
+for (i in seq_along(pav_table)){
+  if ( i == 1) next
+  thisind <- colnames(pav_table)[i]
+  pavs <- pav_table[[i]]
+  presents <- sum(pavs)
+  names <- c(names, thisind)
+  presences <- c(presences, presents)
+}
+res_tibb <- new_tibble(list(names = names, presences = presences))
+```
+
+
+```{r}
+groups <- read_csv('./data/Table_of_cultivar_groups.csv')
+groups <- groups %>% dplyr::rename(Group = `Group in violin table`)
+groups <- groups %>% 
+  mutate(Group = str_replace_all(Group, 'landrace', 'Landrace')) %>%
+  mutate(Group = str_replace_all(Group, 'Old_cultivar', 'Old cultivar')) %>%
+  mutate(Group = str_replace_all(Group, 'Modern_cultivar', 'Modern cultivar')) %>%
+  mutate(Group = str_replace_all(Group, 'Wild-type', 'Wild'))
+
+groups$Group <-
+  factor(
+    groups$Group,
+    levels = c('Wild',
+               'Landrace',
+               'Old cultivar',
+               'Modern cultivar')
+  )
+
+nbs_joined_groups <-
+  inner_join(nbs_res_tibb, groups, by = c('names' = 'Data-storage-ID'))
+all_joined_groups <-
+    inner_join(res_tibb, groups, by = c('names' = 'Data-storage-ID'))
+
+```
+
+```{r}
+country <- read_csv('./data/Cultivar_vs_country.csv')
+
+
+names(country) <- c('names', 'PI-ID', 'Country')
+
+# fix weird ND issue
+country <- country %>% mutate(Country = na_if(Country, 'ND'))
+
+```
+
+# Linking with yield
+
+Can we link the trajectory of NLR genes with the trajectory of yield across the history of soybean breeding? let's make a simple regression for now
+
+## Yield
+
+```{r yield_join}
+
+yield <- read_tsv('./data/yield.txt')
+yield_join <- inner_join(nbs_res_tibb, yield, by=c('names'='Line'))
+```
+
+## Protein
+
+```{r protein_join}
+protein <- read_tsv('./data/protein_phenotype.txt')
+protein_join <- left_join(nbs_res_tibb, protein, by=c('names'='Line')) %>% filter(!is.na(Protein))
+```
+
+## Seed weight
+
+Let's look at seed weight:
+
+```{r seed_join}
+seed_weight <- read_tsv('./data/Seed_weight_Phenotype.txt', col_names = c('names', 'wt'))
+seed_join <- left_join(nbs_res_tibb, seed_weight) %>% filter(!is.na(wt))
+```
+
+## Oil content
+And now let's look at the oil phenotype:
+
+```{r oil_join}
+oil <- read_tsv('./data/oil_phenotype.txt')
+oil_join <- left_join(nbs_res_tibb, oil, by=c('names'='Line')) %>% filter(!is.na(Oil))
+oil_join
+```
+
+
+# Basic lm()
+
+These results form the basis of the paper.
+
+## Yield
+
+```{r}
+yield_nbs_joined_groups <- nbs_joined_groups %>% inner_join(yield_join, by = 'names') 
+yield_nbs_joined_groups$Yield2 <-scale(yield_nbs_joined_groups$Yield, center=T, scale=T)
+
+yield_all_joined_groups <- all_joined_groups %>% inner_join(yield_join, by = 'names')
+```
+
+```{r}
+yield_country_nbs_joined_groups <- yield_nbs_joined_groups %>% inner_join(country)
+yield_country_all_joined_groups <- yield_all_joined_groups %>% inner_join(country)
+yield_country_nbs_joined_groups$Count <- yield_country_nbs_joined_groups$presences.y
+yield_country_all_joined_groups$Count <- yield_country_all_joined_groups$presences.y
+
+yield_country_all_joined_groups %>% count(Country)
+```
+
+```{r}
+lm_model <- lm(Yield ~ Count +  Group, data = yield_country_nbs_joined_groups) 
+summary(lm_model)
+```
+
+```{r}
+clm_model <- lm(Yield ~ Count +  Group + Country, data = yield_country_nbs_joined_groups) 
+summary(clm_model)
+yieldmod <- clm_model
+```
+
+```{r}
+interlm_model <- lm(Yield ~ Count * Group, data = yield_country_nbs_joined_groups) 
+summary(interlm_model)
+```
+
+
+```{r}
+tab_model(clm_model, p.val='kr', digits=3)
+```
+
+```{r}
+newdat <-cbind(yield_country_all_joined_groups %>% filter(!is.na(Country)), pred = predict(clm_model))
+```
+
+```{r}
+# I want only every second, stronger color of the Paired scheme
+mycol <- brewer.pal(n = 12, name = "Paired")[seq(2, 12, 2)]
+```
+
+```{r}
+newdat %>% mutate(
+  Country2 = case_when (
+  Country == 'USA' ~ 'USA',
+  Country == 'China' ~ 'China',
+  Country == 'Korea' ~ 'Korea',
+  Country == 'Japan' ~ 'Japan',
+  Country == 'Russia' ~ 'Russia',
+  TRUE ~ 'Rest'
+  )
+  ) %>%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
+  )) %>%
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap( ~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10))
+```
+
+Oh wow, that looks very similar.
+
+```{r}
+plot_model(clm_model, type = "pred", terms = c("Count", "Group")) +
+  theme_minimal_hgrid() +
+  #scale_fill_manual(values = col_list) +
+  #scale_color_manual(values = col_list) +
+  xlab('NLR count') + 
+  ylab((expression(paste('Yield [Mg ', ha^-1, ']')))) +
+  theme(plot.title=element_blank())
+```
+
+```{r}
+qqnorm(resid(clm_model))
+qqline(resid(clm_model))
+```
+
+```{r}
+plot(resid(clm_model))
+```
+
+```{r}
+plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
+```
+
+```{r fig.height=8, fig.width=8}
+plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,)
+```
+
+```{r}
+plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
+```
+
+## Protein
+```{r}
+protein_nbs_joined_groups <- nbs_joined_groups %>% inner_join(protein_join, by = 'names') 
+#protein_nbs_joined_groups$Protein2 <- scale(protein_nbs_joined_groups$Protein, center=T, scale=T)
+protein_country_nbs_joined_groups <- protein_nbs_joined_groups %>% inner_join(country)
+#protein_country_nbs_joined_groups <- rename(protein_country_nbs_joined_groups, Group=`Group in violin table`)
+protein_country_nbs_joined_groups <- protein_country_nbs_joined_groups %>% filter(Group != 'Wild')
+protein_country_nbs_joined_groups <- protein_country_nbs_joined_groups %>% rename(Count = presences.x)
+```
+
+
+```{r}
+lm_model <- lm(Protein ~ Count +  Group, data = protein_country_nbs_joined_groups) 
+summary(lm_model)
+```
+
+```{r}
+clm_model <- lm(Protein ~ Count +  Group + Country, data = protein_country_nbs_joined_groups) 
+summary(clm_model)
+protmod <- clm_model
+```
+
+## Seed weight
+
+```{r}
+seed_nbs_joined_groups <- nbs_joined_groups %>% inner_join(seed_join, by = 'names') 
+#seed_nbs_joined_groups$wt2 <- scale(seed_nbs_joined_groups$wt, center=T, scale=T)
+seed_country_nbs_joined_groups <- seed_nbs_joined_groups %>% inner_join(country)
+#seed_country_nbs_joined_groups <- rename(seed_country_nbs_joined_groups, Group = `Group in violin table`)
+seed_country_nbs_joined_groups <- seed_country_nbs_joined_groups %>% filter(Group != 'Wild')
+seed_country_nbs_joined_groups <- seed_country_nbs_joined_groups %>% rename(Count = presences.x)
+```
+
+```{r}
+lm_model <- lm(wt ~ Count +  Group, data = seed_country_nbs_joined_groups) 
+summary(lm_model)
+```
+
+```{r}
+clm_model <- lm(wt ~ Count +  Group + Country, data = seed_country_nbs_joined_groups) 
+summary(clm_model)
+seedmod <- clm_model
+```
+
+Nothing at all.
+
+## Oil content
+
+```{r}
+oil_nbs_joined_groups <- nbs_joined_groups %>% inner_join(oil_join, by = 'names') 
+oil_nbs_joined_groups$Oil2 <- scale(oil_nbs_joined_groups$Oil, center=T, scale=T)
+oil_country_nbs_joined_groups <- oil_nbs_joined_groups %>% inner_join(country)
+oil_country_nbs_joined_groups <- oil_country_nbs_joined_groups %>% filter(Group != 'Wild')
+oil_country_nbs_joined_groups <- oil_country_nbs_joined_groups %>% rename(Count = presences.x)
+```
+
+```{r}
+lm_model <- lm(Oil ~ Count +  Group, data = oil_country_nbs_joined_groups) 
+summary(lm_model)
+```
+
+Interesting, the simple model has p< 0.05 for oil content!
+
+```{r}
+clm_model <- lm(Oil ~ Count +  Group + Country, data = oil_country_nbs_joined_groups) 
+summary(clm_model)
+oilmod <- clm_model
+```
+
+p = 0.07 for Count + Group + Country in the model
+
+
+## All models together
+
+```{r}
+tab_model(yieldmod, oilmod, protmod, seedmod, digits=3 )
+```
+
+## The yield model for all genes
+
+```{r}
+yield_country_all_joined_groups <- yield_country_all_joined_groups %>% rename(`All genes` = presences.x)
+```
+
+```{r}
+clm <- lm(Yield ~ `All genes` + Group + Country, data=yield_country_all_joined_groups)
+summary(clm)
+```
+Good, p = 0.78
+
+```{r}
+tab_model(clm, p.val='kr', digits=3)
+```
+
+## Continents, not countries 
+```{r}
+
+yield_country_nbs_joined_groups$continent <- countrycode(sourcevar = yield_country_nbs_joined_groups$Country,
+                                                         origin = 'country.name',
+                                                         destination = 'continent')
+
+yield_country_nbs_joined_groups <- yield_country_nbs_joined_groups %>% mutate(continent2 = case_when (
+  Country == 'USA' ~ 'North America',
+  Country == 'Canada' ~ 'North America',
+  continent == 'Americas' ~ 'South America',
+  TRUE ~ continent
+  )) 
+```
+
+```{r}
+clm <- lm(Yield ~ Count + Group + continent2, data=yield_country_nbs_joined_groups)
+summary(clm)
+```
+
+```{r}
+yield_country_nbs_joined_groups_nonacont <- yield_country_nbs_joined_groups %>% filter(!is.na(continent2))
+newdat <- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm))
+```
+
+
+```{r}
+newdat %>% 
+  ggplot(aes(x = Count, y = pred, color = continent2)) +
+  facet_wrap( ~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = continent2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, continent2),colour=continent2), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Continent") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10))
+```
+
+## Finally, a regression by continent
+
+I remove Oceania as there are very little individuals in there.
+
+```{r}
+by_continent_model <- function(df) {
+  lm(Yield ~ Count + Group, data = df)
+}
+```
+
+```{r}
+with_models <- yield_country_nbs_joined_groups_nonacont %>% 
+  filter(!continent2 %in% c('Africa', 'South America', 'Oceania')) %>% 
+  group_by(continent2) %>% 
+  nest() %>%
+  mutate(models = map(data, by_continent_model))
+```
+
+
+```{r}
+with_models %>% mutate(glance = map(models, broom::glance)) %>% 
+  unnest(glance)
+```
+
+Let's pull out the data
+
+```{r}
+with_models %>% filter(continent2 == 'Asia') %>% unnest(data)
+```
+
+```{r}
+plots <- with_models %>% 
+  mutate(plots = map2(data, continent2, 
+                      ~ ggplot(data =.x, aes(x=presences.x, y=Yield)) + 
+                        geom_point() +
+                        geom_smooth(method = "lm")
+                      )
+         )
+```
+
+I have no idea how to use standard facet_wrap with this.
+
+```{r}
+print(plots$plots)
+```
+```{r}
+plots %>% unnest(data) %>% group_by(continent2) %>% 
+  do(augment(.$models[[1]]))
+```
+
