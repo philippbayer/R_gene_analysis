@@ -266,12 +266,20 @@ plot(resid(clm_model))
 plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
 ```
 
+All terms in the model:
 ```{r fig.height=8, fig.width=8}
 plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,)
 ```
 
+Only groups and count:
+
 ```{r}
 plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
+```
+
+Only countries and count:
+```{r fig.height=8, fig.width=8}
+plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, terms=c(names(clm_model$coefficients)[2], names(clm_model$coefficients)[-1:-4]))
 ```
 
 ## Protein
@@ -457,6 +465,7 @@ I have no idea how to use standard facet_wrap with this.
 ```{r}
 print(plots$plots)
 ```
+
 ```{r}
 plots %>% unnest(data) %>% group_by(continent2) %>% 
   do(augment(.$models[[1]]))
