@@ -396,7 +396,7 @@ newdat %>% mutate(
   Country2,
   levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
   )) %>%
-  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  ggplot(aes(x = `All genes`/1000, y = pred, color = Country2)) +
   facet_wrap( ~ Group, nrow = 1) +  
   geom_point(aes(y = Yield, color = Country2),
     alpha = 0.8,
