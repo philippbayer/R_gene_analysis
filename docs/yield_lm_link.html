@@ -413,7 +413,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-24
+<strong>Last updated:</strong> 2021-03-25
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb1e62b5a126105443a6531cb90eaf5b907d44b1etargetblankb1e62b5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/b1e62b5a126105443a6531cb90eaf5b907d44b1e" target="_blank">b1e62b5</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree4a9d2c2a69f12acccc49ebba9deee050d4944b33targetblank4a9d2c2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/4a9d2c2a69f12acccc49ebba9deee050d4944b33" target="_blank">4a9d2c2</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreeb1e62b5a126105443a6531cb90eaf5b907d44b1etargetblankb1e62b5a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree4a9d2c2a69f12acccc49ebba9deee050d4944b33targetblank4a9d2c2a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/b1e62b5a126105443a6531cb90eaf5b907d44b1e" target="_blank">b1e62b5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/4a9d2c2a69f12acccc49ebba9deee050d4944b33" target="_blank">4a9d2c2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -600,6 +600,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/4a9d2c2a69f12acccc49ebba9deee050d4944b33/analysis/yield_lm_link.Rmd" target="_blank">4a9d2c2</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-25
+</td>
+<td>
+wflow_publish(files = c(“analysis/yield_lm_link.Rmd”))
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/1328f2195961f5c8856fda02211143cc3f388115/analysis/yield_lm_link.Rmd" target="_blank">1328f21</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-24
+</td>
+<td>
+Changed Rmd
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/1c1dab8c0561e904b971cb0fc0b24a15bbf725ac/docs/yield_lm_link.html" target="_blank">1c1dab8</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -876,7 +927,8 @@ all_joined_groups &lt;-
 names(country) &lt;- c(&#39;names&#39;, &#39;PI-ID&#39;, &#39;Country&#39;)
 
 # fix weird ND issue
-country &lt;- country %&gt;% mutate(Country = na_if(Country, &#39;ND&#39;))</code></pre>
+country &lt;- country %&gt;% mutate(Country = na_if(Country, &#39;ND&#39;)) %&gt;% 
+  mutate(Country = str_replace_all(Country, &#39;Costa&#39;, &#39;Costa Rica&#39;))</code></pre>
 </div>
 <div id="linking-with-yield" class="section level1">
 <h1>Linking with yield</h1>
@@ -935,18 +987,18 @@ yield_country_all_joined_groups$Count &lt;- yield_country_all_joined_groups$pres
 
 yield_country_all_joined_groups %&gt;% count(Country)</code></pre>
 <pre><code># A tibble: 40 x 2
-   Country       n
-   &lt;chr&gt;     &lt;int&gt;
- 1 Algeria       3
- 2 Argentina     2
- 3 Australia     1
- 4 Austria       1
- 5 Belgium       2
- 6 Brazil        1
- 7 Bulgaria      1
- 8 Canada        5
- 9 China       410
-10 Costa         1
+   Country        n
+   &lt;chr&gt;      &lt;int&gt;
+ 1 Algeria        3
+ 2 Argentina      2
+ 3 Australia      1
+ 4 Austria        1
+ 5 Belgium        2
+ 6 Brazil         1
+ 7 Bulgaria       1
+ 8 Canada         5
+ 9 China        410
+10 Costa Rica     1
 # ... with 30 more rows</code></pre>
 <pre class="r"><code>lm_model &lt;- lm(Yield ~ Count +  Group, data = yield_country_nbs_joined_groups) 
 summary(lm_model)</code></pre>
@@ -994,7 +1046,7 @@ CountryBrazil        -0.734304   0.834828  -0.880 0.379390
 CountryBulgaria      -0.418916   0.834536  -0.502 0.615846    
 CountryCanada        -0.151286   0.557169  -0.272 0.786068    
 CountryChina         -0.028384   0.418992  -0.068 0.946009    
-CountryCosta          0.781084   0.834536   0.936 0.349627    
+CountryCosta Rica     0.781084   0.834536   0.936 0.349627    
 CountryFormer Serbia  1.044147   0.861446   1.212 0.225895    
 CountryFrance         0.309458   0.551920   0.561 0.575188    
 CountryGeorgia        0.814118   0.659799   1.234 0.217665    
@@ -1250,7 +1302,7 @@ Country [China]
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-Country [Costa]
+Country [Costa Rica]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 0.781
@@ -1797,7 +1849,7 @@ CountryBrazil         0.36257    2.13865   0.170 0.865423
 CountryBulgaria      -0.94807    3.22063  -0.294 0.768554    
 CountryCanada        -0.53675    2.00875  -0.267 0.789386    
 CountryChina          1.02128    1.61681   0.632 0.527801    
-CountryCosta         -2.54807    3.22063  -0.791 0.429098    
+CountryCosta Rica    -2.54807    3.22063  -0.791 0.429098    
 CountryFormer Serbia  0.83527    3.31001   0.252 0.800843    
 CountryFrance        -0.95096    2.12998  -0.446 0.655392    
 CountryGeorgia        0.79485    2.54627   0.312 0.755007    
@@ -1890,7 +1942,7 @@ CountryBrazil         4.05979    3.37177   1.204 0.229054
 CountryBulgaria       4.40605    4.76874   0.924 0.355895    
 CountryCanada         4.83881    3.21326   1.506 0.132634    
 CountryChina          3.97326    2.39648   1.658 0.097861 .  
-CountryCosta          4.60605    4.76874   0.966 0.334500    
+CountryCosta Rica     4.60605    4.76874   0.966 0.334500    
 CountryFormer Serbia  5.61855    4.94786   1.136 0.256607    
 CountryFrance        13.55072    3.77898   3.586 0.000364 ***
 CountryGeorgia        7.51886    3.77029   1.994 0.046588 *  
@@ -1983,7 +2035,7 @@ CountryBrazil         2.11058    1.72389   1.224 0.221224
 CountryBulgaria       1.62726    2.59603   0.627 0.530967    
 CountryCanada         2.82941    1.61918   1.747 0.080979 .  
 CountryChina          1.52124    1.30325   1.167 0.243480    
-CountryCosta          3.52726    2.59603   1.359 0.174654    
+CountryCosta Rica     3.52726    2.59603   1.359 0.174654    
 CountryFormer Serbia  3.06876    2.66808   1.150 0.250445    
 CountryFrance         2.91137    1.71690   1.696 0.090363 .  
 CountryGeorgia        0.94172    2.05246   0.459 0.646493    
@@ -2577,7 +2629,7 @@ Country [China]
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-Country [Costa]
+Country [Costa Rica]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 0.781
@@ -3900,7 +3952,7 @@ CountryBrazil        -0.8234953  0.8391759  -0.981 0.326782
 CountryBulgaria      -0.3590849  0.8390472  -0.428 0.668809    
 CountryCanada        -0.1765815  0.5604944  -0.315 0.752822    
 CountryChina         -0.0722465  0.4211295  -0.172 0.863838    
-CountryCosta          0.8302041  0.8401223   0.988 0.323404    
+CountryCosta Rica     0.8302041  0.8401223   0.988 0.323404    
 CountryFormer Serbia  1.0045079  0.8662586   1.160 0.246616    
 CountryFrance         0.2812639  0.5549986   0.507 0.612469    
 CountryGeorgia        0.8601321  0.6636565   1.296 0.195392    
@@ -4132,7 +4184,7 @@ Country [China]
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-Country [Costa]
+Country [Costa Rica]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 0.830
@@ -4582,7 +4634,7 @@ R<sup>2</sup> / R<sup>2</sup> adjusted
   Country2,
   levels = c(&#39;China&#39;, &#39;Japan&#39;, &#39;Korea&#39;, &#39;Russia&#39;, &#39;USA&#39;, &#39;Rest&#39;)
   )) %&gt;%
-  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  ggplot(aes(x = `All genes`/1000, y = pred, color = Country2)) +
   facet_wrap( ~ Group, nrow = 1) +  
   geom_point(aes(y = Yield, color = Country2),
     alpha = 0.8,
@@ -4601,9 +4653,9 @@ R<sup>2</sup> / R<sup>2</sup> adjusted
 <h2>Continents, not countries</h2>
 <pre class="r"><code>yield_country_nbs_joined_groups$continent &lt;- countrycode(sourcevar = yield_country_nbs_joined_groups$Country,
                                                          origin = &#39;country.name&#39;,
-                                                         destination = &#39;continent&#39;)</code></pre>
-<pre><code>Warning in countrycode(sourcevar = yield_country_nbs_joined_groups$Country, : Some values were not matched unambiguously: Costa</code></pre>
-<pre class="r"><code>yield_country_nbs_joined_groups &lt;- yield_country_nbs_joined_groups %&gt;% mutate(continent2 = case_when (
+                                                         destination = &#39;continent&#39;)
+
+yield_country_nbs_joined_groups &lt;- yield_country_nbs_joined_groups %&gt;% mutate(continent2 = case_when (
   Country == &#39;USA&#39; ~ &#39;North America&#39;,
   Country == &#39;Canada&#39; ~ &#39;North America&#39;,
   continent == &#39;Americas&#39; ~ &#39;South America&#39;,
@@ -4617,26 +4669,26 @@ lm(formula = Yield ~ Count + Group + continent2, data = yield_country_nbs_joined
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--2.16547 -0.49319  0.04099  0.53052  2.18719 
+-2.12554 -0.49587  0.03499  0.53143  2.18832 
 
 Coefficients:
                          Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)              9.372111   2.535097   3.697 0.000235 ***
-Count                   -0.016111   0.005656  -2.849 0.004515 ** 
-GroupOld cultivar       -0.297019   0.138254  -2.148 0.032018 *  
-GroupModern cultivar     0.799320   0.199245   4.012 6.66e-05 ***
-continent2Asia          -0.165547   0.338984  -0.488 0.625442    
-continent2Europe         0.359429   0.347911   1.033 0.301901    
-continent2North America  0.262194   0.370672   0.707 0.479579    
-continent2Oceania       -0.730581   0.822581  -0.888 0.374752    
-continent2South America -0.824268   0.506595  -1.627 0.104158    
+(Intercept)              9.547898   2.537519   3.763 0.000182 ***
+Count                   -0.016487   0.005661  -2.912 0.003699 ** 
+GroupOld cultivar       -0.301864   0.138459  -2.180 0.029568 *  
+GroupModern cultivar     0.755298   0.198140   3.812 0.000150 ***
+continent2Asia          -0.173531   0.339521  -0.511 0.609434    
+continent2Europe         0.351414   0.348463   1.008 0.313566    
+continent2North America  0.288662   0.371010   0.778 0.436799    
+continent2Oceania       -0.738182   0.823939  -0.896 0.370595    
+continent2South America -0.504629   0.476841  -1.058 0.290285    
 ---
 Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 
-Residual standard error: 0.7499 on 721 degrees of freedom
-  (11 observations deleted due to missingness)
-Multiple R-squared:  0.1904,    Adjusted R-squared:  0.1814 
-F-statistic:  21.2 on 8 and 721 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 0.7511 on 722 degrees of freedom
+  (10 observations deleted due to missingness)
+Multiple R-squared:  0.1878,    Adjusted R-squared:  0.1788 
+F-statistic: 20.87 on 8 and 722 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre class="r"><code>yield_country_nbs_joined_groups_nonacont &lt;- yield_country_nbs_joined_groups %&gt;% filter(!is.na(continent2))
 newdat &lt;- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm))</code></pre>
 <pre class="r"><code>newdat %&gt;% 
