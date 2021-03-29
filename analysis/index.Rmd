@@ -15,8 +15,9 @@ Welcome to the website summarising the soybean R-gene analysis.
 
 1. Plotting of NBS/RLK/RLP plots based on total numbers: [link](total_numbers.html). These results are the main part of the paper.
 
-3. Linking yield with NLR gene counts using regular lm(): [link](yield_lm_link.html). These results are the main part of the paper.
+2. Linking yield with NLR gene counts using regular lm(): [link](yield_lm_link.html). These results are the main part of the paper.
 
+3. GWAS using NLR genes [link](gwas.html)
 
 # DIRECTOR'S CUT
 
