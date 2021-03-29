@@ -34,33 +34,68 @@ genofile <- snpgdsOpen('data/snp.gds')
 
 # Let's prune the SNPs based on 0.2 LD
 
-snpset <- snpgdsLDpruning(genofile, ld.threshold=0.2)
+snpset <- snpgdsLDpruning(genofile, ld.threshold=0.2, autosome.only=F)
 snpset.id <- unlist(unname(snpset))
 
 # And now let's run the PCA
-pca <- snpgdsPCA(genofile, snp.id=snpset.id, num.thread=2)
+pca <- snpgdsPCA(genofile, snp.id=snpset.id, num.thread=2, autosome.only=F)
+
+saveRDS(pca, 'data/pca.rds')
 ```
 
 OK let's load the results I made on the remote server and saved in a file:
 
 ```{r}
 # load PCA
+pca <- readRDS('data/pca.rds')
 ```
 
 A quick diagnostic plot
 
 ```{r}
+tab <- data.frame(sample.id = pca$sample.id,
+    EV1 = pca$eigenvect[,1],    # the first eigenvector
+    EV2 = pca$eigenvect[,2],    # the second eigenvector
+    stringsAsFactors = FALSE)
 plot(tab$EV2, tab$EV1, xlab="eigenvector 2", ylab="eigenvector 1")
+```
+
+```{r}
+head(tab)
 ```
 
 Alright, now we have SNP-based principal components. We'll use the first two as our own covariates in GAPIT.
 
-
-
-
-Now we can delete the big vcf file and the big gds file
+I wrote a Python script which takes the NLR-only PAV table and turns that into HapMap format with fake SNPs, see `code/transformToGAPIT.py`.
 
 ```{r}
-file.remove(vcf.fn)
-file.remove('data/snp.gds')
+myY <- read.table('data/yield.txt', head = TRUE)
+myGD <- read.table('data/NLR_PAV_GD.txt', head = TRUE)
+myGM <- read.table('data/NLR_PAV_GM.txt', head = TRUE)
 ```
+
+```{r}
+myGAPIT <- GAPIT(
+  Y=myY[,c(1,2)],
+  CV = tab,
+  GD = myGD,
+  GM = myGM,
+  PCA.total = 0, # turn off PCA calculation
+  model = c('GLM', 'MLM','MLMM','FarmCPU'),
+  
+)
+```
+
+```{r}
+if (! dir.exists('output/GAPIT')){
+  dir.create('output/GAPIT')
+}
+```
+
+```{r}
+for(file in list.files('.', pattern='GAPIT*')) {
+  file.copy(file, 'output/GAPIT')
+  file.remove(file)
+}
+```
+
