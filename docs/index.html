@@ -333,7 +333,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-24
+<strong>Last updated:</strong> 2021-03-29
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -364,16 +364,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee747dc62c641928547b80e25e004af5fa60080f2targetblanke747dc6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/e747dc62c641928547b80e25e004af5fa60080f2" target="_blank">e747dc6</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreed371690b418e55f2a73932780b7c74b7a7836904targetblankd371690a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/d371690b418e55f2a73932780b7c74b7a7836904" target="_blank">d371690</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee747dc62c641928547b80e25e004af5fa60080f2targetblanke747dc6a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreed371690b418e55f2a73932780b7c74b7a7836904targetblankd371690a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/e747dc62c641928547b80e25e004af5fa60080f2" target="_blank">e747dc6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/d371690b418e55f2a73932780b7c74b7a7836904" target="_blank">d371690</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -382,7 +382,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/Brec_R1.txt
@@ -461,6 +460,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/d371690b418e55f2a73932780b7c74b7a7836904/analysis/index.Rmd" target="_blank">d371690</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-29
+</td>
+<td>
+wflow_publish(“analysis/index.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/096136617ab7f6a4c74bb91118d1d4ea8a1c22c2/docs/index.html" target="_blank">0961366</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-24
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -930,11 +963,16 @@ Start workflowr project.
 <p>Welcome to the website summarising the soybean R-gene analysis.</p>
 <ol start="0" style="list-style-type: decimal">
 <li><p>EDA of PAV and different classes: <a href="eda.html">link</a></p></li>
-<li><p>Plotting of NBS/RLK/RLP plots based on percentage lost: <a href="first-analysis.html">link</a>. These results are mostly not in the paper.</p></li>
 <li><p>Plotting of NBS/RLK/RLP plots based on total numbers: <a href="total_numbers.html">link</a>. These results are the main part of the paper.</p></li>
-<li><p>Linking yield with NLR gene counts using lme4: <a href="yield_link.html">link</a>. These results are not in the paper, but informed the main part.</p></li>
 <li><p>Linking yield with NLR gene counts using regular lm(): <a href="yield_lm_link.html">link</a>. These results are the main part of the paper.</p></li>
 </ol>
+<div id="directors-cut" class="section level1">
+<h1>DIRECTOR’S CUT</h1>
+<ol style="list-style-type: decimal">
+<li><p>Plotting of NBS/RLK/RLP plots based on percentage lost: <a href="first-analysis.html">link</a>. These results are mostly not in the paper.</p></li>
+<li><p>Linking yield with NLR gene counts using lme4: <a href="yield_link.html">link</a>. These results are not in the paper, but informed the main part.</p></li>
+</ol>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
