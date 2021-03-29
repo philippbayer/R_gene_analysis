@@ -51,6 +51,156 @@ nbs$Name <- gsub('.t1','', nbs$Name)
 nbs_pav_table <- pav_table %>% filter(Individual %in% nbs$Name)
 write_delim(nbs_pav_table, 'data/NBS_PAV.txt.gz', delim='\t')
 ```
+
+## Are NLR genes more likely to be lost?
+
+```{r}
+not_nbs_pav_table <- pav_table %>% filter(! Individual %in% nbs$Name)
+```
+```{r}
+not_nbs_pav_table
+```
+
+Chisquare test - I need the number of non-NBS genes core + variable, and the number of NBS genes core + variable
+
+```{r}
+not_nbs_pav_table$Individual <- NULL
+var <- 0
+core <- 0
+for (row in 1:nrow(not_nbs_pav_table)) {
+  if (0 %in% not_nbs_pav_table[row,]) {
+    var <- var + 1
+  } else {
+    core <- core + 1
+  }
+
+}
+
+```
+There are `var` variable genes in the non-NBS genes, and `core` core genes in the non-NBS genes.
+
+```{r}
+backup <- nbs_pav_table
+nbs_pav_table$Individual <- NULL
+nbsvar <- 0
+nbscore <- 0
+for (row in 1:nrow(nbs_pav_table)) {
+  if (0 %in% nbs_pav_table[row,]) {
+    nbsvar <- nbsvar + 1
+  } else {
+    nbscore <- nbscore + 1
+  }
+
+}
+nbs_pav_table <- backup
+```
+There are `r nbsvar` variable genes in the NBS genes, and `r nbscore` core genes in the NBS genes.
+
+```{r}
+test_df <- data.frame(nonnbs=c(var, core), nbs=c(nbsvar, nbscore))
+test_df
+```
+
+```{r}
+chisq.test(test_df)
+```
+OK, so there's a statistically significant association between variable genes and NBS genes.
+
+```{r}
+test_df$nbs <- test_df$nbs/sum(test_df$nbs)
+test_df$nonnbs <- test_df$nonnbs/sum(test_df$nonnbs)
+test_df
+```
+### The same with RLPs
+
+```{r}
+rlp <- read_tsv('./data/Lee.RLP.candidates.lst', col_names = c('Name', 'Class', 'Subtype'))
+# have to remove the .t1s 
+rlp$Name <- gsub('.t1','', rlp$Name)
+```
+
+```{r}
+rlp_pav_table <- pav_table %>% filter(Individual %in% rlp$Name)
+```
+
+```{r}
+backup <- rlp_pav_table
+rlp_pav_table$Individual <- NULL
+rlpvar <- 0
+rlpcore <- 0
+for (row in 1:nrow(rlp_pav_table)) {
+  if (0 %in% rlp_pav_table[row,]) {
+    rlpvar <- rlpvar + 1
+  } else {
+    rlpcore <- rlpcore + 1
+  }
+
+}
+rlp_pav_table <- backup
+```
+There are `r rlpvar` variable genes in the RLP genes, and `r rlpcore` core genes in the RLP genes.
+
+```{r}
+test_df <- data.frame(nonrlp=c(var, core), rlp=c(rlpvar, rlpcore))
+test_df
+```
+
+```{r}
+chisq.test(test_df)
+```
+
+```{r}
+test_df$rlp <- test_df$rlp/sum(test_df$rlp)
+test_df$nonrlp <- test_df$nonrlp/sum(test_df$nonrlp)
+test_df
+```
+
+### The same with RLKs
+
+
+```{r}
+rlk <- read_tsv('./data/Lee.RLK.candidates.lst', col_names = c('Name', 'Class', 'Subtype'))
+rlk
+# have to remove the .t1s 
+rlk$Name <- gsub('.t1','', rlk$Name)
+```
+
+```{r}
+rlk_pav_table <- pav_table %>% filter(Individual %in% rlk$Name)
+```
+
+```{r}
+backup <- rlk_pav_table
+rlk_pav_table$Individual <- NULL
+rlkvar <- 0
+rlkcore <- 0
+for (row in 1:nrow(rlk_pav_table)) {
+  if (0 %in% rlk_pav_table[row,]) {
+    rlkvar <- rlkvar + 1
+  } else {
+    rlkcore <- rlkcore + 1
+  }
+
+}
+rlk_pav_table <- backup
+```
+There are `r rlkvar` variable genes in the RLK genes, and `r rlkcore` core genes in the RLK genes.
+
+
+```{r}
+test_df <- data.frame(nonrlk=c(var, core), rlk=c(rlkvar, rlkcore))
+```
+
+```{r}
+chisq.test(test_df)
+```
+
+```{r}
+test_df$rlk <- test_df$rlk/sum(test_df$rlk)
+test_df$nonrlk <- test_df$nonrlk/sum(test_df$nonrlk)
+test_df
+```
+
 ## Modern vs Old gene loss
 
 ```{r}
@@ -268,18 +418,6 @@ Let's do the  same plot with RLKs
 
 
 ```{r}
-rlk <- read_tsv('./data/Lee.RLK.candidates.lst', col_names = c('Name', 'Class', 'Subtype'))
-rlk
-# have to remove the .t1s 
-rlk$Name <- gsub('.t1','', rlk$Name)
-```
-
-```{r}
-rlk_pav_table <- pav_table %>% filter(Individual %in% rlk$Name)
-rlk_pav_table
-```
-
-```{r}
 names <- c()
 presences <- c()
 
@@ -345,15 +483,6 @@ And now with RLPs
 
 
 
-```{r}
-rlp <- read_tsv('./data/Lee.RLP.candidates.lst', col_names = c('Name', 'Class', 'Subtype'))
-# have to remove the .t1s 
-rlp$Name <- gsub('.t1','', rlp$Name)
-```
-
-```{r}
-rlp_pav_table <- pav_table %>% filter(Individual %in% rlp$Name)
-```
 
 ```{r}
 names <- c()
