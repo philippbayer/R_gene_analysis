@@ -14,7 +14,7 @@ with gzip.open('./data/NBS_PAV.txt.gz', mode='rt') as fh:
                 # 1 is heterozygous in GAPIT
                 allele = '2'
             ind_dict[ind].append(allele)
-  
+
 # We also need the genes' positions, for now I'll just take the middle of the gene model
 gene_set = set(genes)
 # GlymaLee.18G225400.1.p
