@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree68ed88d5d46274624afa6c91a3685bd2a5fe985etargetblank68ed88da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/68ed88d5d46274624afa6c91a3685bd2a5fe985e" target="_blank">68ed88d</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree22ac14c93aeab6690cd68df289ca73fa80cf3e86targetblank22ac14ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/22ac14c93aeab6690cd68df289ca73fa80cf3e86" target="_blank">22ac14c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree68ed88d5d46274624afa6c91a3685bd2a5fe985etargetblank68ed88da" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree22ac14c93aeab6690cd68df289ca73fa80cf3e86targetblank22ac14ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/68ed88d5d46274624afa6c91a3685bd2a5fe985e" target="_blank">68ed88d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/22ac14c93aeab6690cd68df289ca73fa80cf3e86" target="_blank">22ac14c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -564,6 +564,7 @@ Untracked files:
     Untracked:  data/virus.txt
 
 Unstaged changes:
+    Modified:   analysis/gwas.Rmd
     Modified:   analysis/index.Rmd
 
 </code></pre>
@@ -603,6 +604,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/22ac14c93aeab6690cd68df289ca73fa80cf3e86/analysis/total_numbers.Rmd" target="_blank">22ac14c</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-29
+</td>
+<td>
+wflow_publish(“analysis/total_numbers.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/7bd9ed58da1e652be13105645c86c1260a8eed0c/docs/total_numbers.html" target="_blank">7bd9ed5</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-29
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1216,6 +1251,38 @@ test_df</code></pre>
 1 0.1294769 0.08354646
 2 0.8705231 0.91645354</code></pre>
 </div>
+<div id="the-correct-test---non-rga-vs-nlr-rlp-rlk" class="section level3">
+<h3>The correct test - non-RGA vs NLR, RLP, RLK</h3>
+<p>The problem in the above calculations is that I still include the counts of NLR in the non-RPK genes, for example. Do the chisquare-tests come out differently if I remove the NLR/RLK/RLP counts from the non-RGA counts?</p>
+<pre class="r"><code>truecore &lt;-  core - (rlkcore + rlpcore + nbscore)
+truevar &lt;- var - (rlkvar + rlpvar + nbsvar)</code></pre>
+<pre class="r"><code>rlk_test_df &lt;- data.frame(var = c(rlkvar, truevar), core = c(rlkcore, truecore))
+chisq.test(rlk_test_df)</code></pre>
+<pre><code>
+    Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+
+data:  rlk_test_df
+X-squared = 19.892, df = 1, p-value = 8.193e-06</code></pre>
+<pre class="r"><code>rlp_test_df &lt;- data.frame(var = c(rlpvar, truevar), core = c(rlpcore, truecore))
+chisq.test(rlp_test_df)</code></pre>
+<pre><code>
+    Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+
+data:  rlp_test_df
+X-squared = 49.017, df = 1, p-value = 2.538e-12</code></pre>
+<pre class="r"><code>nlr_test_df &lt;- data.frame(var = c(nbsvar, truevar), core = c(nbscore, truecore))
+chisq.test(nlr_test_df)</code></pre>
+<pre><code>
+    Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+
+data:  nlr_test_df
+X-squared = 192.59, df = 1, p-value &lt; 2.2e-16</code></pre>
+<p>OK - they’re still p &lt; 0.05</p>
+<p>A quick check since we ran three tests:</p>
+<pre class="r"><code>p.adjust(c(8.193e-06,  2.538e-12,  2.2e-16), method = &#39;bonferroni&#39;)</code></pre>
+<pre><code>[1] 2.4579e-05 7.6140e-12 6.6000e-16</code></pre>
+<p>Still p &lt; 0.05 in all cases</p>
+</div>
 </div>
 <div id="modern-vs-old-gene-loss" class="section level2">
 <h2>Modern vs Old gene loss</h2>
@@ -1716,7 +1783,7 @@ var_norm_count$Mod_minus_Old &lt;- var_norm_count$Modern_cultivar - var_norm_cou
   xlab(&#39;Group&#39;) +
   ylab(&#39;Percentage presence of gene in group&#39;) +
   scale_color_brewer(palette = &#39;Dark2&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The top 20 genes increased the most in modern cultivars:</p>
 <pre class="r"><code>var_norm_count %&gt;% 
   arrange(desc(Mod_minus_Old)) %&gt;% 
@@ -1934,7 +2001,7 @@ var_norm_count$Mod_minus_Old &lt;- var_norm_count$Modern_cultivar - var_norm_cou
   xlab(&#39;Group&#39;) +
   ylab(&#39;Percentage presence of gene in group&#39;) +
   scale_color_brewer(palette = &#39;Dark2&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="presence-plotting-per-individual" class="section level2">
 <h2>Presence plotting per individual</h2>
@@ -1952,7 +2019,7 @@ for (i in seq_along(nbs_pav_table)){
 nbs_res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
 <p>OK what do these presence percentages look like?</p>
 <pre class="r"><code>ggplot(data=nbs_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>On average, 446.0027027 of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
 <pre class="r"><code>nbs_joined_groups &lt;- left_join(nbs_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
@@ -1971,14 +2038,14 @@ nbs_joined_groups$`Group in violin table` &lt;- factor(nbs_joined_groups$`Group 
   guides(fill = FALSE)
 
 nbs_vio</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>nbs_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
   ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_smooth(aes(group=1), method=&#39;lm&#39;, se = FALSE) +
   geom_jitter() +
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>nbs_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
   summarise(min_present = min(presences),
@@ -2075,7 +2142,7 @@ rlk_res_tibb</code></pre>
 # ... with 1,100 more rows</code></pre>
 <p>OK what do these presence percentages look like?</p>
 <pre class="r"><code>ggplot(data=rlk_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>On average, 1163.5036036% of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
 <pre class="r"><code>rlk_joined_groups &lt;- left_join(rlk_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
@@ -2094,7 +2161,7 @@ rlk_joined_groups$`Group in violin table` &lt;- factor(rlk_joined_groups$`Group 
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE)
 rlk_vio</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlk_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
   summarise(min_present = min(presences),
@@ -2175,7 +2242,7 @@ for (i in seq_along(rlp_pav_table)){
 rlp_res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
 <p>OK what do these presence percentages look like?</p>
 <pre class="r"><code>ggplot(data=rlp_res_tibb, aes(x=presences)) + geom_histogram(bins=25) </code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>On average, 172.1693694% of NBS genes are present in each individual.</p>
 <p>Now let’s join the table of presences to the four different types so we can group these numbers.</p>
 <pre class="r"><code>rlp_joined_groups &lt;- left_join(rlp_res_tibb, groups, by = c(&#39;names&#39;=&#39;Data-storage-ID&#39;))</code></pre>
@@ -2193,7 +2260,7 @@ rlp_joined_groups$`Group in violin table` &lt;- factor(rlp_joined_groups$`Group 
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE)
 rlp_vio</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlp_joined_groups %&gt;% filter(`Group in violin table` != &#39;NA&#39;) %&gt;% 
   ggplot(aes(y=presences, x=`Group in violin table`, fill=`Group in violin table`)) + 
   geom_jitter() +
@@ -2201,7 +2268,7 @@ rlp_vio</code></pre>
   scale_fill_manual(values=col_list)+
   guides(fill = FALSE) +
   ylim(c(87, 100))</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>rlp_joined_groups %&gt;% filter(!is.na(`PI-ID`)) %&gt;% 
   group_by(`Group in violin table`) %&gt;% 
   summarise(min_present = min(presences),
@@ -2268,7 +2335,7 @@ rlp_vio</code></pre>
 <div id="plotting-together" class="section level1">
 <h1>Plotting together</h1>
 <pre class="r"><code>nbs_vio + rlk_vio + rlp_vio</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-55-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="stats---dabayes" class="section level1">
 <h1>Stats - Dabayes</h1>
@@ -2287,7 +2354,7 @@ nbs_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good evening!
-The current time is 20:31 PM on Monday March 29, 2021.
+The current time is 21:50 PM on Monday March 29, 2021.
 
 Dataset    :  .
 The first five rows are:
@@ -2312,7 +2379,7 @@ nbs_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good evening!
-The current time is 20:31 PM on Monday March 29, 2021.
+The current time is 21:50 PM on Monday March 29, 2021.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -2329,7 +2396,7 @@ Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(nbs_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-58-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlk" class="section level2">
 <h2>RLK</h2>
@@ -2344,7 +2411,7 @@ rlk_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good evening!
-The current time is 20:31 PM on Monday March 29, 2021.
+The current time is 21:51 PM on Monday March 29, 2021.
 
 Dataset    :  .
 The first five rows are:
@@ -2369,7 +2436,7 @@ rlk_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good evening!
-The current time is 20:31 PM on Monday March 29, 2021.
+The current time is 21:51 PM on Monday March 29, 2021.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -2386,7 +2453,7 @@ Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(rlk_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-61-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>No difference between old and modern cultivars!</p>
 </div>
 <div id="rlp" class="section level2">
@@ -2402,7 +2469,7 @@ rlp_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good evening!
-The current time is 20:31 PM on Monday March 29, 2021.
+The current time is 21:51 PM on Monday March 29, 2021.
 
 Dataset    :  .
 The first five rows are:
@@ -2427,7 +2494,7 @@ rlp_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good evening!
-The current time is 20:31 PM on Monday March 29, 2021.
+The current time is 21:51 PM on Monday March 29, 2021.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -2444,7 +2511,7 @@ Unpaired mean difference of Modern cultivar (n = 143) minus Old cultivar (n = 46
 All confidence intervals are bias-corrected and accelerated.</code></pre>
 <pre class="r"><code>plot(rlp_multi.two.group.unpaired.meandiff, color.column=`Group in violin table`,
      rawplot.ylabel = &#39;Presence (%)&#39;, show.legend=FALSE)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-59-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-64-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Again, no difference between old and modern cultivars!</p>
 </div>
 </div>
@@ -2467,7 +2534,7 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
   guides(fill=FALSE) +
   ylab(&#39;Number of NLR genes&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-65-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlp-1" class="section level2">
 <h2>RLP</h2>
@@ -2486,7 +2553,7 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
   guides(fill=FALSE) +
   ylab(&#39;Number of RLP genes&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-61-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-66-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="rlk-1" class="section level2">
 <h2>RLK</h2>
@@ -2505,7 +2572,7 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
   guides(fill=FALSE) +
   ylab(&#39;Number of RLK genes&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-67-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="ratio-of-nlrrlk-plot" class="section level2">
 <h2>Ratio of NLR/RLK plot</h2>
@@ -2526,7 +2593,7 @@ rlk_nbs_joined_groups %&gt;%
   guides(fill=FALSE) +
   ylab(&#39;Number of RLK divided by NLR&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-63-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-68-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="ratio-of-nlrrlp-plot" class="section level2">
 <h2>Ratio of NLR/RLP plot</h2>
@@ -2547,7 +2614,7 @@ rlp_nbs_joined_groups %&gt;%
   guides(fill=FALSE) +
   ylab(&#39;Number of RLP divided by NLR&#39;) +
   xlab(&#39;Accession group&#39;)</code></pre>
-<p><img src="figure/total_numbers.Rmd/unnamed-chunk-64-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/total_numbers.Rmd/unnamed-chunk-69-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
