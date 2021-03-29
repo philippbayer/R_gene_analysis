@@ -201,6 +201,41 @@ test_df$nonrlk <- test_df$nonrlk/sum(test_df$nonrlk)
 test_df
 ```
 
+
+### The correct test - non-RGA vs NLR, RLP, RLK
+
+The problem in the above calculations is that I still include the counts of NLR in the non-RPK genes, for example. Do the chisquare-tests come out differently if I remove the NLR/RLK/RLP counts from the non-RGA counts?
+
+
+```{r}
+truecore <-  core - (rlkcore + rlpcore + nbscore)
+truevar <- var - (rlkvar + rlpvar + nbsvar)
+```
+
+```{r}
+rlk_test_df <- data.frame(var = c(rlkvar, truevar), core = c(rlkcore, truecore))
+chisq.test(rlk_test_df)
+```
+
+```{r}
+rlp_test_df <- data.frame(var = c(rlpvar, truevar), core = c(rlpcore, truecore))
+chisq.test(rlp_test_df)
+```
+
+```{r}
+nlr_test_df <- data.frame(var = c(nbsvar, truevar), core = c(nbscore, truecore))
+chisq.test(nlr_test_df)
+```
+
+OK - they're still p < 0.05
+
+A quick check since we ran three tests:
+```{r}
+p.adjust(c(8.193e-06,  2.538e-12,  2.2e-16), method = 'bonferroni')
+```
+
+Still p < 0.05 in all cases
+
 ## Modern vs Old gene loss
 
 ```{r}
