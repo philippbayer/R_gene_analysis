@@ -129,7 +129,7 @@ for(i in seq_along(results_files)) {
     results_df <- rbind(results_df, filt_df)
   }
 }
-results_df
+results_df %>% knitr::kable()
 ```
 
 Ah beautiful, one NLR gene found by all methods, and a bunch of extra pangenome genes found by FarmCPU/GLM. However the one gene found by all methods has a horrible MAF so we'll probably end up ignoring that.
