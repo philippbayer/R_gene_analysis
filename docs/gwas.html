@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebc094e2fe0835d4a6547c8b44ca733ecbb8bcfe7targetblankbc094e2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/bc094e2fe0835d4a6547c8b44ca733ecbb8bcfe7" target="_blank">bc094e2</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreede49b616945488afddd8d6ef76a33f98942cd3c4targetblankde49b61a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/de49b616945488afddd8d6ef76a33f98942cd3c4" target="_blank">de49b61</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebc094e2fe0835d4a6547c8b44ca733ecbb8bcfe7targetblankbc094e2a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreede49b616945488afddd8d6ef76a33f98942cd3c4targetblankde49b61a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/bc094e2fe0835d4a6547c8b44ca733ecbb8bcfe7" target="_blank">bc094e2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/de49b616945488afddd8d6ef76a33f98942cd3c4" target="_blank">de49b61</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -522,7 +522,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/Brec_R1.txt
@@ -601,6 +600,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/de49b616945488afddd8d6ef76a33f98942cd3c4/analysis/gwas.Rmd" target="_blank">de49b61</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-30
+</td>
+<td>
+wflow_publish(“analysis/gwas.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/14c7314e5547d460e3e18fc43de862829a4a7f2e/docs/gwas.html" target="_blank">14c7314</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1290,7 +1323,34 @@ cols(
 <p>At least this particular line with the lost gene has slightly higher yield than the median? but soooo many different reasons… Let’s remove this gene as MAF &lt; 5%.</p>
 <p>Let’s check the other genes.</p>
 <pre class="r"><code>candidates &lt;- candidates %&gt;% 
-  filter(SNP != &#39;GlymaLee.02G228600.1.p&#39;)</code></pre>
+  filter(SNP != &#39;GlymaLee.02G228600.1.p&#39;)
+candidates %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SNP</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00316</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00772</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan04354</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>plots &lt;- list()
 for(i in 1:nrow(candidates)) {
   this_cand = candidates[i,]
@@ -1401,6 +1461,93 @@ big_t %&gt;% group_by(name) %&gt;%
 <td align="right">1</td>
 <td align="right">161</td>
 <td align="right">14.50450</td>
+</tr>
+</tbody>
+</table>
+<p>and let’s also get the per-gene mean and median yield</p>
+<pre class="r"><code>yields &lt;- NULL
+for(i in 1:nrow(candidates)) {
+  this_cand = candidates[i,]
+  this_t &lt;- pav_table %&gt;% 
+    filter(Individual == this_cand$SNP) %&gt;% 
+    pivot_longer(!Individual, names_to = &#39;Line&#39;, values_to = &#39;Presence&#39;) %&gt;% 
+    inner_join(yield) %&gt;% 
+    group_by(Presence) %&gt;% 
+    summarise(mean_y = mean(Yield),
+              median_y = median(Yield)) %&gt;% 
+    add_column(Gene=c(this_cand$SNP, this_cand$SNP), .before=&#39;Presence&#39;)
+  if (is.null(yields)) {
+    yields &lt;- this_t
+  } else {
+    yields &lt;- rbind(yields, this_t)
+  }
+}</code></pre>
+<pre><code>Joining, by = &quot;Line&quot;</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>Joining, by = &quot;Line&quot;</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>Joining, by = &quot;Line&quot;</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>Joining, by = &quot;Line&quot;</code></pre>
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>yields %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Gene</th>
+<th align="right">Presence</th>
+<th align="right">mean_y</th>
+<th align="right">median_y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="right">0</td>
+<td align="right">2.032084</td>
+<td align="right">2.050</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="right">1</td>
+<td align="right">2.339539</td>
+<td align="right">2.320</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00316</td>
+<td align="right">0</td>
+<td align="right">2.573263</td>
+<td align="right">2.640</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00316</td>
+<td align="right">1</td>
+<td align="right">2.133709</td>
+<td align="right">2.165</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00772</td>
+<td align="right">0</td>
+<td align="right">2.158039</td>
+<td align="right">2.170</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00772</td>
+<td align="right">1</td>
+<td align="right">2.309671</td>
+<td align="right">2.225</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan04354</td>
+<td align="right">0</td>
+<td align="right">2.179086</td>
+<td align="right">2.170</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan04354</td>
+<td align="right">1</td>
+<td align="right">2.264875</td>
+<td align="right">2.405</td>
 </tr>
 </tbody>
 </table>
