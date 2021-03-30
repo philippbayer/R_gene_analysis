@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("769", "2")
+group.by ,20
+Trait name ,MLM.Yield
+Kinship,1110:1111
+Z Matrix,c(770, 770)
+Covariate,c(769, 3)
+SNP.P3D,TRUE
+Clustering algorithms,average
+Group kinship,Mean
+group.from ,1110
+group.to ,1110
