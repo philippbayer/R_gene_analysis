@@ -12,6 +12,10 @@ Let's run a GWAS via GAPIT using the NLR genes as input, and the PCs calculated 
 ```{r setup, warning=FALSE, message=FALSE}
 library(GAPIT3)
 library(SNPRelate)
+library(tidyverse)
+library(ggsignif)
+library(cowplot)
+library(patchwork)
 ```
 
 First, we have to make the principal components - making them based on NLR genes alone is probably garbage. Let's make them based on all publicly available SNPs from [here](https://research-repository.uwa.edu.au/en/datasets/soybean-pangenome-snps-assembly-annotation-pav).
@@ -74,15 +78,16 @@ myGD <- read.table('data/NLR_PAV_GD.txt', head = TRUE)
 myGM <- read.table('data/NLR_PAV_GM.txt', head = TRUE)
 ```
 
-```{r}
+GAPIT prints a LOT of stuff so I turn that off here, what's important are all the output files.
+
+```{r, evval=FALSE, message=FALSE, warning=FALSE, results=FALSE}
 myGAPIT <- GAPIT(
   Y=myY[,c(1,2)],
   CV = tab,
   GD = myGD,
   GM = myGM,
-  PCA.total = 0, # turn off PCA calculation
-  model = c('GLM', 'MLM','MLMM','FarmCPU'),
-  
+  PCA.total = 0, # turn off PCA calculation as I use my own based on SNPs
+  model = c('GLM', 'MLM', 'MLMM', 'FarmCPU')
 )
 ```
 
@@ -92,6 +97,8 @@ if (! dir.exists('output/GAPIT')){
 }
 ```
 
+R doesn't have an in-built function to move files, so I copy and delete the output files here. There's a package which adds file-moving but I'm not adding a whole dependency just for one convenience function, I'm not a Node.js person ;) 
+
 ```{r}
 for(file in list.files('.', pattern='GAPIT*')) {
   file.copy(file, 'output/GAPIT')
@@ -99,3 +106,101 @@ for(file in list.files('.', pattern='GAPIT*')) {
 }
 ```
 
+Let's make a table of the statistically significantly associated SNPs.
+
+```{r}
+results_files <- list.files('output/GAPIT/', pattern='*GWAS.Results.csv', full.names = T)
+```
+
+Let's use FDR < 0.05 as cutoff
+
+```{r}
+results_df <- NULL
+for(i in seq_along(results_files)) {
+  this_df <- read_csv(results_files[i])
+  filt_df <- this_df %>% filter(`FDR_Adjusted_P-values` < 0.05)
+  
+  # pull the method name out and add to dataframe
+  this_method <- str_split(results_files[i], "\\.")[[1]][2]
+  filt_df <- filt_df %>% add_column(Method = this_method, .before = 'SNP')
+  if (is.null(results_df)) {
+    results_df <- filt_df
+  } else {
+    results_df <- rbind(results_df, filt_df)
+  }
+}
+results_df
+```
+
+Ah beautiful, one NLR gene found by all methods, and a bunch of extra pangenome genes found by FarmCPU/GLM. However the one gene found by all methods has a horrible MAF so we'll probably end up ignoring that.
+
+```{r}
+results_df %>% group_by(SNP) %>% count() %>% arrange(n)
+candidates <- results_df %>% group_by(SNP) %>% count() %>% filter(n >= 2)
+candidates
+```
+
+Let's focus on genes found by more than one method.
+
+This particular R-gene GlymaLee.02G228600.1.p seems to have a strong negative impact on yield (effect -1.69 in MLM, -1.94 in GLM, -1.72 in FarmCPU) but it also has a horrible MAF, normally this would get filtered in SNPs but we don't have SNPs here.  Let's plot the yield for individuals who have vs those who don't have those genes that appear in more than one method.
+
+```{r}
+pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt.gz')
+```
+
+```{r}
+yield <- read_tsv('./data/yield.txt')
+```
+
+```{r}
+pav_table %>% 
+  filter(Individual == 'GlymaLee.02G228600.1.p') %>% 
+  pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
+  inner_join(yield) %>% arrange(Presence) %>% head()
+```
+
+OK this gene is 'boring' - it's lost only in a single line, and we can't trust that. We'll remove it.
+
+```{r}
+pav_table %>% 
+  filter(Individual == 'GlymaLee.02G228600.1.p') %>% 
+  pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
+  inner_join(yield) %>% summarise(median_y= median(Yield))
+```
+
+At least this particular line with the lost gene has slightly higher yield than the median? but soooo many different reasons... Let's remove this gene as MAF < 5%.
+
+Let's check the other genes.
+
+```{r}
+candidates <- candidates %>% filter(SNP != 'GlymaLee.02G228600.1.p')
+```
+
+```{r fig.height=8, fig.width=8}
+plots <- list()
+for(i in 1:nrow(candidates)) {
+  this_cand = candidates[i,]
+  p <- pav_table %>% 
+    filter(Individual == this_cand$SNP) %>% 
+    pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
+    inner_join(yield) %>% 
+    mutate(Presence = case_when(
+      Presence == 0.0 ~ 'Lost',
+      Presence == 1.0 ~ 'Present'
+    )) %>% 
+    ggplot(aes(x=Presence, y = Yield, group=Presence)) + 
+    geom_boxplot() + 
+    geom_jitter(alpha=0.9, size=0.4) + 
+    geom_signif(comparisons = list(c('Lost', 'Present')), 
+              map_signif_level = T) +
+    theme_minimal_hgrid()
+    #xlab(paste('Presence', str_replace(this_cand$SNP, '.1.p',''))) # make the gene name a bit nicer
+  plots[[i]] <- p
+}
+
+wrap_plots(plots) + plot_annotation(tag_levels = 'A')
+```
+
+Four nice plots we have now, we'll use those as supplementary. It's interesting how the reference gene has a positive impact on yield, the pangenome extra gene has a negative impact, and the other two don't do much. Then again there are many reasons why we see this outcome.
+
+For myself, the four labels: `r candidates$SNP`
