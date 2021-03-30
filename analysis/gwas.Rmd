@@ -180,6 +180,7 @@ Let's check the other genes.
 ```{r}
 candidates <- candidates %>% 
   filter(SNP != 'GlymaLee.02G228600.1.p')
+candidates %>% knitr::kable()
 ```
 
 ```{r fig.height=8, fig.width=8}
@@ -238,5 +239,29 @@ big_t %>% group_by(name) %>%
   mutate(Count = as.integer(Count)) %>% 
   mutate(perc_Count = Count/1110*100 ) %>%
   knitr::kable()
+```
+
+
+and let's also get the per-gene mean and median yield
+
+```{r}
+yields <- NULL
+for(i in 1:nrow(candidates)) {
+  this_cand = candidates[i,]
+  this_t <- pav_table %>% 
+    filter(Individual == this_cand$SNP) %>% 
+    pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
+    inner_join(yield) %>% 
+    group_by(Presence) %>% 
+    summarise(mean_y = mean(Yield),
+              median_y = median(Yield)) %>% 
+    add_column(Gene=c(this_cand$SNP, this_cand$SNP), .before='Presence')
+  if (is.null(yields)) {
+    yields <- this_t
+  } else {
+    yields <- rbind(yields, this_t)
+  }
+}
+yields %>% knitr::kable()
 ```
 
