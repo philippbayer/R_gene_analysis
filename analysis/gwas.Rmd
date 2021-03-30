@@ -136,8 +136,12 @@ Ah beautiful, one NLR gene found by all methods, and a bunch of extra pangenome 
 
 ```{r}
 results_df %>% group_by(SNP) %>% count() %>% arrange(n)
-candidates <- results_df %>% group_by(SNP) %>% count() %>% filter(n >= 2)
-candidates
+candidates <- results_df %>% 
+  group_by(SNP) %>% 
+  count() %>% 
+  filter(n >= 2)
+
+candidates %>% knitr::kable()
 ```
 
 Let's focus on genes found by more than one method.
@@ -165,7 +169,8 @@ OK this gene is 'boring' - it's lost only in a single line, and we can't trust t
 pav_table %>% 
   filter(Individual == 'GlymaLee.02G228600.1.p') %>% 
   pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
-  inner_join(yield) %>% summarise(median_y= median(Yield))
+  inner_join(yield) %>% 
+  summarise(median_y= median(Yield))
 ```
 
 At least this particular line with the lost gene has slightly higher yield than the median? but soooo many different reasons... Let's remove this gene as MAF < 5%.
@@ -173,7 +178,8 @@ At least this particular line with the lost gene has slightly higher yield than 
 Let's check the other genes.
 
 ```{r}
-candidates <- candidates %>% filter(SNP != 'GlymaLee.02G228600.1.p')
+candidates <- candidates %>% 
+  filter(SNP != 'GlymaLee.02G228600.1.p')
 ```
 
 ```{r fig.height=8, fig.width=8}
@@ -198,9 +204,39 @@ for(i in 1:nrow(candidates)) {
   plots[[i]] <- p
 }
 
-wrap_plots(plots) + plot_annotation(tag_levels = 'A')
+wrap_plots(plots) + 
+  plot_annotation(tag_levels = 'A')
 ```
 
 Four nice plots we have now, we'll use those as supplementary. It's interesting how the reference gene has a positive impact on yield, the pangenome extra gene has a negative impact, and the other two don't do much. Then again there are many reasons why we see this outcome.
 
 For myself, the four labels: `r candidates$SNP`
+
+I also need a presence/absence percentage for all candidates
+
+```{r}
+big_t <- NULL
+for(i in 1:nrow(candidates)) {
+  this_cand = candidates[i,]
+  t <- pav_table %>% 
+    filter(Individual == this_cand$SNP) %>% 
+    pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>%
+    dplyr::select(Presence) %>% 
+    table() %>% tibble()
+  t <- t %>% add_column(Presence=c(0,1), .before = '.')
+  names(t) <- c('Presence', this_cand$SNP)
+  t <- pivot_longer(t, -Presence, values_to = 'Count')
+  t <- t[,c('name', 'Presence', 'Count')]
+  if(is.null(big_t)) {
+    big_t <- t
+  } else {
+    big_t <- rbind(big_t, t)
+  }
+}
+
+big_t %>% group_by(name) %>% 
+  mutate(Count = as.integer(Count)) %>% 
+  mutate(perc_Count = Count/1110*100 ) %>%
+  knitr::kable()
+```
+
