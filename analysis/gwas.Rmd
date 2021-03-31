@@ -307,7 +307,7 @@ big_t %>% group_by(Group, Gene) %>% mutate(group_sum = sum(n)) %>%
 
 ```
 
-```{r fig.height=6, fig.width=6}
+```{r fig.height=7, fig.width=7}
 big_t %>% group_by(Group, Gene) %>% mutate(group_sum = sum(n)) %>%
   mutate(Gene = str_replace_all(Gene, '.1.p','')) %>% 
   mutate(`Percentage` = n/group_sum*100) %>% 
