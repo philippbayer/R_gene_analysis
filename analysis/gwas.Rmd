@@ -15,6 +15,7 @@ library(SNPRelate)
 library(tidyverse)
 library(ggsignif)
 library(cowplot)
+library(ggsci)
 library(patchwork)
 ```
 
@@ -212,6 +213,67 @@ wrap_plots(plots) +
 Four nice plots we have now, we'll use those as supplementary. It's interesting how the reference gene has a positive impact on yield, the pangenome extra gene has a negative impact, and the other two don't do much. Then again there are many reasons why we see this outcome.
 
 For myself, the four labels: `r candidates$SNP`
+
+Let's also make those plots, grouped by breeding group
+```{r}
+groups <- read_csv('./data/Table_of_cultivar_groups.csv')
+groups <- groups %>% dplyr::rename(Group = `Group in violin table`)
+groups <- groups %>% 
+  mutate(Group = str_replace_all(Group, 'landrace', 'Landrace')) %>%
+  mutate(Group = str_replace_all(Group, 'Old_cultivar', 'Old cultivar')) %>%
+  mutate(Group = str_replace_all(Group, 'Modern_cultivar', 'Modern cultivar')) %>%
+  mutate(Group = str_replace_all(Group, 'Wild-type', 'Wild'))
+
+groups$Group <-
+  factor(
+    groups$Group,
+    levels = c('Wild',
+               'Landrace',
+               'Old cultivar',
+               'Modern cultivar')
+  )
+
+```
+
+```{r fig.height=8, fig.width=8}
+
+npg_col = pal_npg("nrc")(9)
+
+col_list <- c(`Wild`=npg_col[8],
+   Landrace = npg_col[3],
+  `Old cultivar`=npg_col[2],
+  `Modern cultivar`=npg_col[4])
+
+
+plots <- list()
+for(i in 1:nrow(candidates)) {
+  this_cand = candidates[i,]
+  p <- pav_table %>% 
+    filter(Individual == this_cand$SNP) %>% 
+    pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
+    inner_join(yield) %>% 
+    inner_join(groups, by = c('Line'='Data-storage-ID')) %>% 
+    mutate(Presence = case_when(
+      Presence == 0.0 ~ 'Lost',
+      Presence == 1.0 ~ 'Present'
+    )) %>% 
+    ggplot(aes(x=Presence, y = Yield, group=Presence, color=Group)) + 
+    geom_boxplot() + 
+    geom_jitter(alpha=0.9, size=0.4) + 
+    facet_wrap(~Group) +
+    geom_signif(comparisons = list(c('Lost', 'Present')), 
+              map_signif_level = T) +
+    theme_minimal_hgrid() +
+    ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+    scale_color_manual(values = col_list)
+
+  plots[[i]] <- p
+}
+
+wrap_plots(plots) + 
+  plot_annotation(tag_levels = 'A') +
+  plot_layout(guides='collect')
+```
 
 I also need a presence/absence percentage for all candidates
 
