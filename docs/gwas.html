@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreedd3ab217df16d239af99a8e468e6f5052f5dd070targetblankdd3ab21a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/dd3ab217df16d239af99a8e468e6f5052f5dd070" target="_blank">dd3ab21</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree6a6bd446dccc5d4634269d5ce0e147c0c71d5bc9targetblank6a6bd44a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/6a6bd446dccc5d4634269d5ce0e147c0c71d5bc9" target="_blank">6a6bd44</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreedd3ab217df16d239af99a8e468e6f5052f5dd070targetblankdd3ab21a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree6a6bd446dccc5d4634269d5ce0e147c0c71d5bc9targetblank6a6bd44a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/dd3ab217df16d239af99a8e468e6f5052f5dd070" target="_blank">dd3ab21</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/6a6bd446dccc5d4634269d5ce0e147c0c71d5bc9" target="_blank">6a6bd44</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -600,6 +600,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/6a6bd446dccc5d4634269d5ce0e147c0c71d5bc9/analysis/gwas.Rmd" target="_blank">6a6bd44</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-31
+</td>
+<td>
+wflow_publish(“analysis/gwas.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/e7393914b5ed7c585ffd1029e243b56a28c22c47/docs/gwas.html" target="_blank">e739391</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1938,7 +1972,7 @@ big_t %&gt;% group_by(Group, Gene) %&gt;% mutate(group_sum = sum(n)) %&gt;%
   theme_minimal_hgrid() +
   ylab(&#39;Percentage present&#39;) +
   scale_color_brewer(palette = &#39;Dark2&#39;) </code></pre>
-<p><img src="figure/gwas.Rmd/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="figure/gwas.Rmd/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>and let’s also get the per-gene mean and median yield</p>
 <pre class="r"><code>yields &lt;- NULL
 for(i in 1:nrow(candidates)) {
