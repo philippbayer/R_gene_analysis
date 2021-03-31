@@ -307,6 +307,20 @@ big_t %>% group_by(Group, Gene) %>% mutate(group_sum = sum(n)) %>%
 
 ```
 
+```{r}
+big_t %>% group_by(Group, Gene) %>% mutate(group_sum = sum(n)) %>%
+  mutate(Gene = str_replace_all(Gene, '.1.p','')) %>% 
+  mutate(`Percentage` = n/group_sum*100) %>% 
+  dplyr::select(-group_sum) %>% 
+  filter(Presence == '1') %>% 
+  mutate(Group = factor(Group, levels=c('Wild', 'Landrace', 'Old cultivar', 'Modern cultivar'))) %>% 
+  ggplot(aes(x = Group, y = Percentage, group=Gene, color=Gene)) + 
+  geom_line(size=1.5) +
+  theme_minimal_hgrid() +
+  ylab('Percentage present') +
+  scale_color_brewer(palette = 'Dark2') 
+```
+
 and let's also get the per-gene mean and median yield
 
 ```{r}
