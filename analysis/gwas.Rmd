@@ -283,12 +283,11 @@ for(i in 1:nrow(candidates)) {
   t <- pav_table %>% 
     filter(Individual == this_cand$SNP) %>% 
     pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>%
-    dplyr::select(Presence) %>% 
-    table() %>% tibble()
-  t <- t %>% add_column(Presence=c(0,1), .before = '.')
-  names(t) <- c('Presence', this_cand$SNP)
-  t <- pivot_longer(t, -Presence, values_to = 'Count')
-  t <- t[,c('name', 'Presence', 'Count')]
+    inner_join(groups, by = c('Line'='Data-storage-ID')) %>% group_by(Group) %>% 
+    dplyr::select(Presence, Group) %>% 
+    table() %>% as_tibble()
+  #t <- t %>% add_column(Presence=c(0,1), .before = '.')
+  t<- t %>% add_column(Gene=this_cand$SNP, .before='Presence')
   if(is.null(big_t)) {
     big_t <- t
   } else {
@@ -296,10 +295,16 @@ for(i in 1:nrow(candidates)) {
   }
 }
 
-big_t %>% group_by(name) %>% 
-  mutate(Count = as.integer(Count)) %>% 
-  mutate(Percentage = Count/1110*100 ) %>%
+big_t %>% group_by(Group, Gene) %>% mutate(group_sum = sum(n)) %>% 
+  mutate(`Percentage` = n/group_sum*100) %>% 
+  dplyr::select(-group_sum) %>% 
+  rename(Count=n) %>% 
+  mutate(Presence = case_when(
+      Presence == 0.0 ~ 'Lost',
+      Presence == 1.0 ~ 'Present'
+    ))  %>%
   knitr::kable(digits=2)
+
 ```
 
 and let's also get the per-gene mean and median yield
@@ -314,8 +319,7 @@ for(i in 1:nrow(candidates)) {
     inner_join(yield) %>%
     inner_join(groups, by = c('Line'='Data-storage-ID')) %>% 
     group_by(Presence, Group) %>% 
-    summarise(`Mean yield` = mean(Yield),
-              `Median yield` = median(Yield)) %>% 
+    summarise(`Mean yield` = mean(Yield)) %>% 
     add_column(Gene=this_cand$SNP, .before='Presence') %>% 
     arrange(Group)
   if (is.null(yields)) {
