@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree8c196dcbed0ade694df8d52a6f2f78277d023fa8targetblank8c196dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/8c196dcbed0ade694df8d52a6f2f78277d023fa8" target="_blank">8c196dc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreec2ccdb99ecd3a3a295c3f269c67a7acb39eeec67targetblankc2ccdb9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/c2ccdb99ecd3a3a295c3f269c67a7acb39eeec67" target="_blank">c2ccdb9</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree8c196dcbed0ade694df8d52a6f2f78277d023fa8targetblank8c196dca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreec2ccdb99ecd3a3a295c3f269c67a7acb39eeec67targetblankc2ccdb9a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/8c196dcbed0ade694df8d52a6f2f78277d023fa8" target="_blank">8c196dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/c2ccdb99ecd3a3a295c3f269c67a7acb39eeec67" target="_blank">c2ccdb9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -600,6 +600,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/c2ccdb99ecd3a3a295c3f269c67a7acb39eeec67/analysis/gwas.Rmd" target="_blank">c2ccdb9</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-31
+</td>
+<td>
+wflow_publish(“analysis/gwas.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/e103452ebc3c11454b7e2376da4d33479087169f/docs/gwas.html" target="_blank">e103452</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1476,7 +1510,7 @@ Joining, by = &quot;Line&quot;
 Joining, by = &quot;Line&quot;</code></pre>
 <pre class="r"><code>wrap_plots(plots) + 
   plot_annotation(tag_levels = &#39;A&#39;) +
-  plot_layout(guides=&#39;collect&#39;)</code></pre>
+  plot_layout(guides=&#39;collect&#39;) &amp; theme(legend.position = &#39;none&#39;)</code></pre>
 <pre><code>Warning in wilcox.test.default(c(2.19, 2.6, 2.74, 1.63, 1.61, 2.45, 1.21, :
 cannot compute exact p-value with ties</code></pre>
 <pre><code>Warning in wilcox.test.default(c(4, 2.66, 1.52, 2.47, 4.34, 2.21, 3.23, : cannot
@@ -1514,15 +1548,15 @@ for(i in 1:nrow(candidates)) {
 
 big_t %&gt;% group_by(name) %&gt;% 
   mutate(Count = as.integer(Count)) %&gt;% 
-  mutate(perc_Count = Count/1110*100 ) %&gt;%
-  knitr::kable()</code></pre>
+  mutate(Percentage = Count/1110*100 ) %&gt;%
+  knitr::kable(digits=2)</code></pre>
 <table>
 <thead>
 <tr class="header">
 <th align="left">name</th>
 <th align="right">Presence</th>
 <th align="right">Count</th>
-<th align="right">perc_Count</th>
+<th align="right">Percentage</th>
 </tr>
 </thead>
 <tbody>
@@ -1530,49 +1564,49 @@ big_t %&gt;% group_by(name) %&gt;%
 <td align="left">GlymaLee.01G030900.1.p</td>
 <td align="right">0</td>
 <td align="right">462</td>
-<td align="right">41.62162</td>
+<td align="right">41.62</td>
 </tr>
 <tr class="even">
 <td align="left">GlymaLee.01G030900.1.p</td>
 <td align="right">1</td>
 <td align="right">648</td>
-<td align="right">58.37838</td>
+<td align="right">58.38</td>
 </tr>
 <tr class="odd">
 <td align="left">UWASoyPan00316</td>
 <td align="right">0</td>
 <td align="right">166</td>
-<td align="right">14.95495</td>
+<td align="right">14.95</td>
 </tr>
 <tr class="even">
 <td align="left">UWASoyPan00316</td>
 <td align="right">1</td>
 <td align="right">944</td>
-<td align="right">85.04505</td>
+<td align="right">85.05</td>
 </tr>
 <tr class="odd">
 <td align="left">UWASoyPan00772</td>
 <td align="right">0</td>
 <td align="right">829</td>
-<td align="right">74.68468</td>
+<td align="right">74.68</td>
 </tr>
 <tr class="even">
 <td align="left">UWASoyPan00772</td>
 <td align="right">1</td>
 <td align="right">281</td>
-<td align="right">25.31532</td>
+<td align="right">25.32</td>
 </tr>
 <tr class="odd">
 <td align="left">UWASoyPan04354</td>
 <td align="right">0</td>
 <td align="right">949</td>
-<td align="right">85.49550</td>
+<td align="right">85.50</td>
 </tr>
 <tr class="even">
 <td align="left">UWASoyPan04354</td>
 <td align="right">1</td>
 <td align="right">161</td>
-<td align="right">14.50450</td>
+<td align="right">14.50</td>
 </tr>
 </tbody>
 </table>
@@ -1583,11 +1617,13 @@ for(i in 1:nrow(candidates)) {
   this_t &lt;- pav_table %&gt;% 
     filter(Individual == this_cand$SNP) %&gt;% 
     pivot_longer(!Individual, names_to = &#39;Line&#39;, values_to = &#39;Presence&#39;) %&gt;% 
-    inner_join(yield) %&gt;% 
-    group_by(Presence) %&gt;% 
-    summarise(mean_y = mean(Yield),
-              median_y = median(Yield)) %&gt;% 
-    add_column(Gene=c(this_cand$SNP, this_cand$SNP), .before=&#39;Presence&#39;)
+    inner_join(yield) %&gt;%
+    inner_join(groups, by = c(&#39;Line&#39;=&#39;Data-storage-ID&#39;)) %&gt;% 
+    group_by(Presence, Group) %&gt;% 
+    summarise(`Mean yield` = mean(Yield),
+              `Median yield` = median(Yield)) %&gt;% 
+    add_column(Gene=this_cand$SNP, .before=&#39;Presence&#39;) %&gt;% 
+    arrange(Group)
   if (is.null(yields)) {
     yields &lt;- this_t
   } else {
@@ -1595,71 +1631,268 @@ for(i in 1:nrow(candidates)) {
   }
 }</code></pre>
 <pre><code>Joining, by = &quot;Line&quot;</code></pre>
-<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Presence&#39; (override with `.groups` argument)</code></pre>
 <pre><code>Joining, by = &quot;Line&quot;</code></pre>
-<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Presence&#39; (override with `.groups` argument)</code></pre>
 <pre><code>Joining, by = &quot;Line&quot;</code></pre>
-<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Presence&#39; (override with `.groups` argument)</code></pre>
 <pre><code>Joining, by = &quot;Line&quot;</code></pre>
-<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre class="r"><code>yields %&gt;% knitr::kable()</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Presence&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code>yields %&gt;% knitr::kable(digits=2)</code></pre>
 <table>
 <thead>
 <tr class="header">
 <th align="left">Gene</th>
 <th align="right">Presence</th>
-<th align="right">mean_y</th>
-<th align="right">median_y</th>
+<th align="left">Group</th>
+<th align="right">Mean yield</th>
+<th align="right">Median yield</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">GlymaLee.01G030900.1.p</td>
 <td align="right">0</td>
-<td align="right">2.032084</td>
-<td align="right">2.050</td>
+<td align="left">Landrace</td>
+<td align="right">2.00</td>
+<td align="right">2.00</td>
 </tr>
 <tr class="even">
 <td align="left">GlymaLee.01G030900.1.p</td>
 <td align="right">1</td>
-<td align="right">2.339539</td>
-<td align="right">2.320</td>
+<td align="left">Landrace</td>
+<td align="right">2.22</td>
+<td align="right">2.21</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="right">0</td>
+<td align="left">Old cultivar</td>
+<td align="right">1.73</td>
+<td align="right">1.63</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="right">1</td>
+<td align="left">Old cultivar</td>
+<td align="right">2.27</td>
+<td align="right">2.32</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="right">0</td>
+<td align="left">Modern cultivar</td>
+<td align="right">3.06</td>
+<td align="right">3.08</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="right">1</td>
+<td align="left">Modern cultivar</td>
+<td align="right">3.28</td>
+<td align="right">3.37</td>
 </tr>
 <tr class="odd">
 <td align="left">UWASoyPan00316</td>
 <td align="right">0</td>
-<td align="right">2.573263</td>
-<td align="right">2.640</td>
+<td align="left">Landrace</td>
+<td align="right">2.29</td>
+<td align="right">2.31</td>
 </tr>
 <tr class="even">
 <td align="left">UWASoyPan00316</td>
 <td align="right">1</td>
-<td align="right">2.133709</td>
-<td align="right">2.165</td>
+<td align="left">Landrace</td>
+<td align="right">2.09</td>
+<td align="right">2.14</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00316</td>
+<td align="right">0</td>
+<td align="left">Old cultivar</td>
+<td align="right">1.92</td>
+<td align="right">2.21</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00316</td>
+<td align="right">1</td>
+<td align="left">Old cultivar</td>
+<td align="right">1.90</td>
+<td align="right">2.04</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00316</td>
+<td align="right">0</td>
+<td align="left">Modern cultivar</td>
+<td align="right">3.42</td>
+<td align="right">3.36</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00316</td>
+<td align="right">1</td>
+<td align="left">Modern cultivar</td>
+<td align="right">3.06</td>
+<td align="right">3.22</td>
 </tr>
 <tr class="odd">
 <td align="left">UWASoyPan00772</td>
 <td align="right">0</td>
-<td align="right">2.158039</td>
-<td align="right">2.170</td>
+<td align="left">Landrace</td>
+<td align="right">2.06</td>
+<td align="right">2.12</td>
 </tr>
 <tr class="even">
 <td align="left">UWASoyPan00772</td>
 <td align="right">1</td>
-<td align="right">2.309671</td>
-<td align="right">2.225</td>
+<td align="left">Landrace</td>
+<td align="right">2.30</td>
+<td align="right">2.21</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00772</td>
+<td align="right">0</td>
+<td align="left">Old cultivar</td>
+<td align="right">1.97</td>
+<td align="right">2.17</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00772</td>
+<td align="right">1</td>
+<td align="left">Old cultivar</td>
+<td align="right">1.74</td>
+<td align="right">1.61</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00772</td>
+<td align="right">0</td>
+<td align="left">Modern cultivar</td>
+<td align="right">3.27</td>
+<td align="right">3.37</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00772</td>
+<td align="right">1</td>
+<td align="left">Modern cultivar</td>
+<td align="right">2.89</td>
+<td align="right">3.00</td>
 </tr>
 <tr class="odd">
 <td align="left">UWASoyPan04354</td>
 <td align="right">0</td>
-<td align="right">2.179086</td>
-<td align="right">2.170</td>
+<td align="left">Landrace</td>
+<td align="right">2.09</td>
+<td align="right">2.13</td>
 </tr>
 <tr class="even">
 <td align="left">UWASoyPan04354</td>
 <td align="right">1</td>
-<td align="right">2.264875</td>
-<td align="right">2.405</td>
+<td align="left">Landrace</td>
+<td align="right">2.24</td>
+<td align="right">2.40</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan04354</td>
+<td align="right">0</td>
+<td align="left">Old cultivar</td>
+<td align="right">1.88</td>
+<td align="right">2.00</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan04354</td>
+<td align="right">1</td>
+<td align="left">Old cultivar</td>
+<td align="right">2.31</td>
+<td align="right">2.31</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan04354</td>
+<td align="right">0</td>
+<td align="left">Modern cultivar</td>
+<td align="right">3.20</td>
+<td align="right">3.34</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan04354</td>
+<td align="right">1</td>
+<td align="left">Modern cultivar</td>
+<td align="right">4.34</td>
+<td align="right">4.34</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>yields %&gt;% 
+  group_by(Gene, Group) %&gt;% 
+  summarise(&#39;Yield difference when gene present&#39; = diff(`Mean yield`)) %&gt;% 
+  knitr::kable(digits=2)</code></pre>
+<pre><code>`summarise()` regrouping output by &#39;Gene&#39; (override with `.groups` argument)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Gene</th>
+<th align="left">Group</th>
+<th align="right">Yield difference when gene present</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="left">Landrace</td>
+<td align="right">0.21</td>
+</tr>
+<tr class="even">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="left">Old cultivar</td>
+<td align="right">0.54</td>
+</tr>
+<tr class="odd">
+<td align="left">GlymaLee.01G030900.1.p</td>
+<td align="left">Modern cultivar</td>
+<td align="right">0.22</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00316</td>
+<td align="left">Landrace</td>
+<td align="right">-0.20</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00316</td>
+<td align="left">Old cultivar</td>
+<td align="right">-0.01</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00316</td>
+<td align="left">Modern cultivar</td>
+<td align="right">-0.36</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00772</td>
+<td align="left">Landrace</td>
+<td align="right">0.24</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan00772</td>
+<td align="left">Old cultivar</td>
+<td align="right">-0.23</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan00772</td>
+<td align="left">Modern cultivar</td>
+<td align="right">-0.39</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan04354</td>
+<td align="left">Landrace</td>
+<td align="right">0.15</td>
+</tr>
+<tr class="odd">
+<td align="left">UWASoyPan04354</td>
+<td align="left">Old cultivar</td>
+<td align="right">0.43</td>
+</tr>
+<tr class="even">
+<td align="left">UWASoyPan04354</td>
+<td align="left">Modern cultivar</td>
+<td align="right">1.14</td>
 </tr>
 </tbody>
 </table>
