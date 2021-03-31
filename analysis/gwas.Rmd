@@ -307,7 +307,7 @@ big_t %>% group_by(Group, Gene) %>% mutate(group_sum = sum(n)) %>%
 
 ```
 
-```{r fig.height=7, fig.width=7}
+```{r}
 big_t %>% group_by(Group, Gene) %>% mutate(group_sum = sum(n)) %>%
   mutate(Gene = str_replace_all(Gene, '.1.p','')) %>% 
   mutate(`Percentage` = n/group_sum*100) %>% 
@@ -318,7 +318,8 @@ big_t %>% group_by(Group, Gene) %>% mutate(group_sum = sum(n)) %>%
   geom_line(size=1.5) +
   theme_minimal_hgrid() +
   ylab('Percentage present') +
-  scale_color_brewer(palette = 'Dark2') 
+  scale_color_brewer(palette = 'Dark2') +
+  theme(axis.text.x = element_text(angle = -45, hjust=0))
 ```
 
 and let's also get the per-gene mean and median yield
