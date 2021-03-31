@@ -504,16 +504,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree6bd1532f54e33318c481736013bbf9335e7332e8targetblank6bd1532a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/6bd1532f54e33318c481736013bbf9335e7332e8" target="_blank">6bd1532</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree989263fe41b9063dfe6c36f53f235810a8f12240targetblank989263fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/989263fe41b9063dfe6c36f53f235810a8f12240" target="_blank">989263f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree6bd1532f54e33318c481736013bbf9335e7332e8targetblank6bd1532a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree989263fe41b9063dfe6c36f53f235810a8f12240targetblank989263fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/6bd1532f54e33318c481736013bbf9335e7332e8" target="_blank">6bd1532</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/989263fe41b9063dfe6c36f53f235810a8f12240" target="_blank">989263f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -522,7 +522,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/Brec_R1.txt
@@ -601,6 +600,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/989263fe41b9063dfe6c36f53f235810a8f12240/analysis/gwas.Rmd" target="_blank">989263f</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-31
+</td>
+<td>
+wflow_publish(“analysis/gwas.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/0a3fa5619a3166a94c9549becc796a6f6ee8a771/docs/gwas.html" target="_blank">0a3fa56</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1860,6 +1893,18 @@ big_t %&gt;% group_by(Group, Gene) %&gt;% mutate(group_sum = sum(n)) %&gt;%
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>big_t %&gt;% group_by(Group, Gene) %&gt;% mutate(group_sum = sum(n)) %&gt;%
+  mutate(Gene = str_replace_all(Gene, &#39;.1.p&#39;,&#39;&#39;)) %&gt;% 
+  mutate(`Percentage` = n/group_sum*100) %&gt;% 
+  dplyr::select(-group_sum) %&gt;% 
+  filter(Presence == &#39;1&#39;) %&gt;% 
+  mutate(Group = factor(Group, levels=c(&#39;Wild&#39;, &#39;Landrace&#39;, &#39;Old cultivar&#39;, &#39;Modern cultivar&#39;))) %&gt;% 
+  ggplot(aes(x = Group, y = Percentage, group=Gene, color=Gene)) + 
+  geom_line(size=1.5) +
+  theme_minimal_hgrid() +
+  ylab(&#39;Percentage present&#39;) +
+  scale_color_brewer(palette = &#39;Dark2&#39;) </code></pre>
+<p><img src="figure/gwas.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>and let’s also get the per-gene mean and median yield</p>
 <pre class="r"><code>yields &lt;- NULL
 for(i in 1:nrow(candidates)) {
@@ -2171,19 +2216,19 @@ loaded via a namespace (and not attached):
 [28] vctrs_0.3.1         nlme_3.1-148        iterators_1.0.12   
 [31] xfun_0.17           ps_1.3.4            rvest_0.3.5        
 [34] lifecycle_0.2.0     getPass_0.2-2       scales_1.1.1       
-[37] hms_0.5.3           promises_1.1.1      yaml_2.2.1         
-[40] stringi_1.5.3       highr_0.8           caTools_1.18.0     
-[43] rlang_0.4.7         pkgconfig_2.0.3     bitops_1.0-6       
-[46] evaluate_0.14       lattice_0.20-41     labeling_0.3       
-[49] processx_3.4.4      tidyselect_1.1.0    magrittr_1.5       
-[52] R6_2.4.1            generics_0.0.2      pillar_1.4.4       
-[55] haven_2.3.1         whisker_0.4         withr_2.2.0        
-[58] survival_3.2-3      modelr_0.1.8        crayon_1.3.4       
-[61] KernSmooth_2.23-17  utf8_1.1.4          rmarkdown_2.3      
-[64] grid_3.6.3          readxl_1.3.1        blob_1.2.1         
-[67] callr_3.4.4         git2r_0.27.1        reprex_0.3.0       
-[70] digest_0.6.25       httpuv_1.5.4        stats4_3.6.3       
-[73] munsell_0.5.0      </code></pre>
+[37] hms_0.5.3           promises_1.1.1      RColorBrewer_1.1-2 
+[40] yaml_2.2.1          stringi_1.5.3       highr_0.8          
+[43] caTools_1.18.0      rlang_0.4.7         pkgconfig_2.0.3    
+[46] bitops_1.0-6        evaluate_0.14       lattice_0.20-41    
+[49] labeling_0.3        processx_3.4.4      tidyselect_1.1.0   
+[52] magrittr_1.5        R6_2.4.1            generics_0.0.2     
+[55] pillar_1.4.4        haven_2.3.1         whisker_0.4        
+[58] withr_2.2.0         survival_3.2-3      modelr_0.1.8       
+[61] crayon_1.3.4        KernSmooth_2.23-17  utf8_1.1.4         
+[64] rmarkdown_2.3       grid_3.6.3          readxl_1.3.1       
+[67] blob_1.2.1          callr_3.4.4         git2r_0.27.1       
+[70] reprex_0.3.0        digest_0.6.25       httpuv_1.5.4       
+[73] stats4_3.6.3        munsell_0.5.0      </code></pre>
 </div>
 
 
