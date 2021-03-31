@@ -236,7 +236,6 @@ groups$Group <-
 ```
 
 ```{r fig.height=8, fig.width=8}
-
 npg_col = pal_npg("nrc")(9)
 
 col_list <- c(`Wild`=npg_col[8],
@@ -272,7 +271,7 @@ for(i in 1:nrow(candidates)) {
 
 wrap_plots(plots) + 
   plot_annotation(tag_levels = 'A') +
-  plot_layout(guides='collect')
+  plot_layout(guides='collect') & theme(legend.position = 'none')
 ```
 
 I also need a presence/absence percentage for all candidates
@@ -299,10 +298,9 @@ for(i in 1:nrow(candidates)) {
 
 big_t %>% group_by(name) %>% 
   mutate(Count = as.integer(Count)) %>% 
-  mutate(perc_Count = Count/1110*100 ) %>%
-  knitr::kable()
+  mutate(Percentage = Count/1110*100 ) %>%
+  knitr::kable(digits=2)
 ```
-
 
 and let's also get the per-gene mean and median yield
 
@@ -313,17 +311,26 @@ for(i in 1:nrow(candidates)) {
   this_t <- pav_table %>% 
     filter(Individual == this_cand$SNP) %>% 
     pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
-    inner_join(yield) %>% 
-    group_by(Presence) %>% 
-    summarise(mean_y = mean(Yield),
-              median_y = median(Yield)) %>% 
-    add_column(Gene=c(this_cand$SNP, this_cand$SNP), .before='Presence')
+    inner_join(yield) %>%
+    inner_join(groups, by = c('Line'='Data-storage-ID')) %>% 
+    group_by(Presence, Group) %>% 
+    summarise(`Mean yield` = mean(Yield),
+              `Median yield` = median(Yield)) %>% 
+    add_column(Gene=this_cand$SNP, .before='Presence') %>% 
+    arrange(Group)
   if (is.null(yields)) {
     yields <- this_t
   } else {
     yields <- rbind(yields, this_t)
   }
 }
-yields %>% knitr::kable()
+yields %>% knitr::kable(digits=2)
+```
+
+```{r}
+yields %>% 
+  group_by(Gene, Group) %>% 
+  summarise('Yield difference when gene present' = diff(`Mean yield`)) %>% 
+  knitr::kable(digits=2)
 ```
 
