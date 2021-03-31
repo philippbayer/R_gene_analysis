@@ -235,7 +235,7 @@ groups$Group <-
 
 ```
 
-```{r fig.height=8, fig.width=8}
+```{r fig.height=10, fig.width=10}
 npg_col = pal_npg("nrc")(9)
 
 col_list <- c(`Wild`=npg_col[8],
