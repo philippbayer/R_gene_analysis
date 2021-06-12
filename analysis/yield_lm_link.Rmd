@@ -9,17 +9,18 @@ editor_options:
 
 ```{r setup}
 knitr::opts_chunk$set(message = FALSE) 
+
 library(tidyverse)
 library(patchwork)
+library(modelr)
 library(sjPlot)
 library(ggsci)
 library(dabestr)
-library(dabestr)
+
 library(cowplot)
 library(ggsignif)
 library(ggforce)
 library(lme4)
-library(directlabels)
 library(lmerTest)
 library(dotwhisker)
 library(pals)
@@ -128,7 +129,6 @@ Can we link the trajectory of NLR genes with the trajectory of yield across the 
 ## Yield
 
 ```{r yield_join}
-
 yield <- read_tsv('./data/yield.txt')
 yield_join <- inner_join(nbs_res_tibb, yield, by=c('names'='Line'))
 ```
@@ -178,7 +178,7 @@ yield_country_all_joined_groups <- yield_all_joined_groups %>% inner_join(countr
 yield_country_nbs_joined_groups$Count <- yield_country_nbs_joined_groups$presences.y
 yield_country_all_joined_groups$Count <- yield_country_all_joined_groups$presences.y
 
-yield_country_all_joined_groups %>% count(Country)
+yield_country_all_joined_groups %>% dplyr::count(Country)
 ```
 
 ```{r}
@@ -227,7 +227,7 @@ newdat %>% mutate(
   levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
   )) %>%
   ggplot(aes(x = Count, y = pred, color = Country2)) +
-  facet_wrap( ~ Group, nrow = 1) +  
+  facet_wrap(~ Group, nrow = 1) +  
   geom_point(aes(y = Yield, color = Country2),
     alpha = 0.8,
     size = 2) +
@@ -239,7 +239,7 @@ newdat %>% mutate(
   #xlim(c(47.900, 49.700)) +
   labs(color = "Country") +
   theme(panel.spacing = unit(0.9, "lines"),
-  axis.text.x = element_text(size = 10))
+  axis.text.x = element_text(size = 10)) 
 ```
 
 Oh wow, that looks very similar.
@@ -281,6 +281,226 @@ plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, term
 Only countries and count:
 ```{r fig.height=8, fig.width=8}
 plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, terms=c(names(clm_model$coefficients)[2], names(clm_model$coefficients)[-1:-4]))
+```
+
+### Let's nest the countries and run one lm each
+
+First, let's look at the models
+
+```{r}
+ six_country_table <- newdat %>% mutate(
+  Country2 = case_when (
+  Country == 'USA' ~ 'USA',
+  Country == 'China' ~ 'China',
+  Country == 'Korea' ~ 'Korea',
+  Country == 'Japan' ~ 'Japan',
+  Country == 'Russia' ~ 'Russia',
+  TRUE ~ 'Rest'
+  )
+  )
+  
+models <- six_country_table %>% 
+  mutate(Country2 = factor(
+  Country2,
+  levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
+  )) %>% 
+  plyr::dlply(c('Country2'), function(df)  
+    lm(Yield ~ Count, data=df)
+  )
+
+model_tibble <- tibble(id = names(models), model=models)
+
+plot_models(models, m.labels = names(models), p.shape=TRUE) +
+  scale_colour_manual(values = mycol)
+```
+
+
+```{r}
+mymodel <-  function(df) { lm(Yield ~ Count, data=df) }
+
+results <- six_country_table %>% nest(data = -c(Group, Country2)) %>% 
+  mutate(model = map(data, mymodel)) %>% 
+  mutate(pred = map2(data, model, add_predictions))
+  
+results %>% 
+  unnest(pred) %>% 
+  select(-c(data, model)) %>% 
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10)) 
+```
+
+```{r}
+six_country_table %>% filter(Country2 == 'China') %>% 
+  add_predictions(models$China) %>% 
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10)) 
+```
+
+```{r}
+six_country_table %>% filter(Country2 == 'USA') %>% 
+  add_predictions(models$USA) %>% 
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country),colour=Country2), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10)) 
+```
+
+
+```{r}
+single_model <- lm(Yield ~ Count+Group, data = six_country_table)
+```
+```{r}
+plot_model(single_model, show.values = TRUE,)
+```
+
+```{r}
+six_country_table %>% 
+  add_predictions(single_model) %>% 
+  ggplot(aes(x = Count, y = pred)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country)), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10)) 
+```
+
+### FINALLY, let's make one model per breeding group:
+
+```{r}
+
+mymodel <-  function(df) { lm(Yield ~ Count, data=df) }
+
+results <- six_country_table %>% nest(data = -c(Group)) %>% 
+  mutate(model = map(data, mymodel)) %>% 
+  mutate(pred = map2(data, model, add_predictions))
+```
+
+```{r}
+
+results %>% 
+  unnest(pred) %>% 
+  select(-c(data, model)) %>% 
+  ggplot(aes(x = Count, y = pred, color=Group)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country)), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10)) 
+```
+
+```{r}
+plot_models(results$model, m.labels = results$Group, p.shape=TRUE) +
+  scale_colour_manual(values = mycol)
+```
+
+As a last check - what happens if I remove outliers from the moderns, do I then get an association?
+
+```{r}
+results <- six_country_table %>% filter(!(Group == 'Modern cultivar' & Yield < 2)) %>% 
+  nest(data = -c(Group)) %>% 
+  mutate(model = map(data, mymodel)) %>% 
+  mutate(pred = map2(data, model, add_predictions))
+
+
+results %>% 
+  unnest(pred) %>% 
+  select(-c(data, model)) %>% 
+  ggplot(aes(x = Count, y = pred, color=Group)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country)), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10)) 
+```
+
+```{r}
+plot_models(results$model, m.labels = results$Group, p.shape=TRUE) +
+  scale_colour_manual(values = mycol)
+```
+
+
+```{r}
+results <- six_country_table %>% filter(Group == 'Modern cultivar' & Yield >2) %>% 
+  nest(data = -c(Group)) %>% 
+  mutate(model = map(data, mymodel)) %>% 
+  mutate(pred = map2(data, model, add_predictions))
+
+
+results %>% 
+  unnest(pred) %>% 
+  select(-c(data, model)) %>% 
+  ggplot(aes(x = Count, y = pred, color=Group)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred, group=interaction(Group, Country)), size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10))
 ```
 
 ## Protein
