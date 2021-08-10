@@ -15,6 +15,7 @@
 
 <title>Linking yield with NLR PAV</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -46,6 +47,8 @@ div.section {
   padding-top: 12px;
 }
 </style>
+
+
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -364,7 +367,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -373,7 +376,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -382,10 +385,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-06-12
+<strong>Last updated:</strong> 2021-08-10
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>R_gene_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -401,12 +404,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -430,7 +433,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20200917code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -473,16 +476,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree33c71ae9321ad97d6d8980e4ca3ac3dc3003fa04targetblank33c71aea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/33c71ae9321ad97d6d8980e4ca3ac3dc3003fa04" target="_blank">33c71ae</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebda432c301b9937a3f854bee831741e7677c4174targetblankbda432ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/bda432c301b9937a3f854bee831741e7677c4174" target="_blank">bda432c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree33c71ae9321ad97d6d8980e4ca3ac3dc3003fa04targetblank33c71aea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebda432c301b9937a3f854bee831741e7677c4174targetblankbda432ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/33c71ae9321ad97d6d8980e4ca3ac3dc3003fa04" target="_blank">33c71ae</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/bda432c301b9937a3f854bee831741e7677c4174" target="_blank">bda432c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -491,7 +494,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
 
 Untracked files:
     Untracked:  data/Brec_R1.txt
@@ -533,9 +535,6 @@ Untracked files:
     Untracked:  data/sudden.txt
     Untracked:  data/virus.txt
 
-Unstaged changes:
-    Modified:   analysis/yield_lm_link.Rmd
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -575,6 +574,57 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/bda432c301b9937a3f854bee831741e7677c4174/analysis/yield_lm_link.Rmd" target="_blank">bda432c</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-08-10
+</td>
+<td>
+Add a new figure
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/b5235548f1ffd1d4a66c18bb534a604c96331156/analysis/yield_lm_link.Rmd" target="_blank">b523554</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-06-12
+</td>
+<td>
+Add more models
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/b5235548f1ffd1d4a66c18bb534a604c96331156/docs/yield_lm_link.html" target="_blank">b523554</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-06-12
+</td>
+<td>
+Add more models
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
@@ -604,7 +654,7 @@ Philipp Bayer
 2021-03-25
 </td>
 <td>
-wflow_publish(files = c(“analysis/yield_lm_link.Rmd”))
+wflow_publish(files = c("analysis/yield_lm_link.Rmd"))
 </td>
 </tr>
 <tr>
@@ -655,7 +705,7 @@ Philipp Bayer
 2021-03-24
 </td>
 <td>
-wflow_publish(files = c(“analysis/yield_lm_link.Rmd”))
+wflow_publish(files = c("analysis/yield_lm_link.Rmd"))
 </td>
 </tr>
 <tr>
@@ -689,7 +739,7 @@ Philipp Bayer
 2021-03-24
 </td>
 <td>
-wflow_publish(files = c(“analysis/yield_lm_link.Rmd”))
+wflow_publish(files = c("analysis/yield_lm_link.Rmd"))
 </td>
 </tr>
 <tr>
@@ -757,7 +807,7 @@ Philipp Bayer
 2021-03-24
 </td>
 <td>
-wflow_publish(files = c(“analysis/index.Rmd”, “analysis/yield_lm_link.Rmd”,
+wflow_publish(files = c("analysis/index.Rmd", "analysis/yield_lm_link.Rmd",
 </td>
 </tr>
 </tbody>
@@ -771,10 +821,13 @@ wflow_publish(files = c(“analysis/index.Rmd”, “analysis/yield_lm_link.Rmd�
 
 library(tidyverse)</code></pre>
 <pre><code>-- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
-<pre><code>v ggplot2 3.3.3     v purrr   0.3.4
-v tibble  3.1.1     v dplyr   1.0.5
+<pre><code>v ggplot2 3.3.5     v purrr   0.3.4
+v tibble  3.1.2     v dplyr   1.0.7
 v tidyr   1.1.3     v stringr 1.4.0
 v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 4.0.5</code></pre>
+<pre><code>Warning: package &#39;tibble&#39; was built under R version 4.0.5</code></pre>
+<pre><code>Warning: package &#39;dplyr&#39; was built under R version 4.0.5</code></pre>
 <pre><code>-- Conflicts ------------------------------------------ tidyverse_conflicts() --
 x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()</code></pre>
@@ -1769,7 +1822,7 @@ mycol &lt;- brewer.pal(n = 12, name = &quot;Paired&quot;)[seq(2, 12, 2)]</code><
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
 <p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Oh wow, that looks very similar.</p>
+<p>Oh wow, that looks very similar to the lme4 results.</p>
 <pre class="r"><code>plot_model(clm_model, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;)) +
   theme_minimal_hgrid() +
   #scale_fill_manual(values = col_list) +
@@ -1794,6 +1847,38 @@ qqline(resid(clm_model))</code></pre>
 <p>Only countries and count:</p>
 <pre class="r"><code>plot_model(clm_model, type = &quot;std&quot;, show.values = TRUE, value.offset = .3,, terms=c(names(clm_model$coefficients)[2], names(clm_model$coefficients)[-1:-4]))</code></pre>
 <p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Let’s plot while having no colors for the countries:</p>
+<pre class="r"><code>newdatlm &lt;-cbind(yield_country_nbs_joined_groups, pred = predict(lm_model))</code></pre>
+<pre class="r"><code>newdatlm %&gt;% mutate(
+  Country2 = case_when (
+  Country == &#39;USA&#39; ~ &#39;USA&#39;,
+  Country == &#39;China&#39; ~ &#39;China&#39;,
+  Country == &#39;Korea&#39; ~ &#39;Korea&#39;,
+  Country == &#39;Japan&#39; ~ &#39;Japan&#39;,
+  Country == &#39;Russia&#39; ~ &#39;Russia&#39;,
+  TRUE ~ &#39;Rest&#39;
+  )
+  ) %&gt;%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c(&#39;China&#39;, &#39;Japan&#39;, &#39;Korea&#39;, &#39;Russia&#39;, &#39;USA&#39;, &#39;Rest&#39;)
+  )) %&gt;%
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred), color=&#39;black&#39;, size=1.5)+
+  theme_minimal_hgrid() +
+  xlab(&#39;Gene count&#39;) +
+  ylab(expression(paste(&#39;Yield [Mg &#39;, ha ^ -1, &#39;]&#39;))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = &quot;Country&quot;) +
+  theme(panel.spacing = unit(0.9, &quot;lines&quot;),
+  axis.text.x = element_text(size = 10)) </code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Let’s use this as figure 1.</p>
 <div id="lets-nest-the-countries-and-run-one-lm-each" class="section level3">
 <h3>Let’s nest the countries and run one lm each</h3>
 <p>First, let’s look at the models</p>
@@ -1821,7 +1906,7 @@ model_tibble &lt;- tibble(id = names(models), model=models)
 
 plot_models(models, m.labels = names(models), p.shape=TRUE) +
   scale_colour_manual(values = mycol)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>mymodel &lt;-  function(df) { lm(Yield ~ Count, data=df) }
 
 results &lt;- six_country_table %&gt;% nest(data = -c(Group, Country2)) %&gt;% 
@@ -1849,7 +1934,7 @@ misleading</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>six_country_table %&gt;% filter(Country2 == &#39;China&#39;) %&gt;% 
   add_predictions(models$China) %&gt;% 
   ggplot(aes(x = Count, y = pred, color = Country2)) +
@@ -1866,7 +1951,7 @@ misleading</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>six_country_table %&gt;% filter(Country2 == &#39;USA&#39;) %&gt;% 
   add_predictions(models$USA) %&gt;% 
   ggplot(aes(x = Count, y = pred, color = Country2)) +
@@ -1883,10 +1968,10 @@ misleading</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>single_model &lt;- lm(Yield ~ Count+Group, data = six_country_table)</code></pre>
 <pre class="r"><code>plot_model(single_model, show.values = TRUE,)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>six_country_table %&gt;% 
   add_predictions(single_model) %&gt;% 
   ggplot(aes(x = Count, y = pred)) +
@@ -1903,7 +1988,7 @@ misleading</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="finally-lets-make-one-model-per-breeding-group" class="section level3">
 <h3>FINALLY, let’s make one model per breeding group:</h3>
@@ -1929,10 +2014,10 @@ results &lt;- six_country_table %&gt;% nest(data = -c(Group)) %&gt;%
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_models(results$model, m.labels = results$Group, p.shape=TRUE) +
   scale_colour_manual(values = mycol)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>As a last check - what happens if I remove outliers from the moderns, do I then get an association?</p>
 <pre class="r"><code>results &lt;- six_country_table %&gt;% filter(!(Group == &#39;Modern cultivar&#39; &amp; Yield &lt; 2)) %&gt;% 
   nest(data = -c(Group)) %&gt;% 
@@ -1957,10 +2042,10 @@ results %&gt;%
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_models(results$model, m.labels = results$Group, p.shape=TRUE) +
   scale_colour_manual(values = mycol)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>results &lt;- six_country_table %&gt;% filter(Group == &#39;Modern cultivar&#39; &amp; Yield &gt;2) %&gt;% 
   nest(data = -c(Group)) %&gt;% 
   mutate(model = map(data, mymodel)) %&gt;% 
@@ -1984,7 +2069,7 @@ results %&gt;%
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="protein-1" class="section level2">
@@ -4839,7 +4924,7 @@ R<sup>2</sup> / R<sup>2</sup> adjusted
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-50-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="continents-not-countries" class="section level2">
 <h2>Continents, not countries</h2>
@@ -4898,7 +4983,7 @@ newdat &lt;- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm)
   labs(color = &quot;Continent&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="finally-a-regression-by-continent" class="section level2">
 <h2>Finally, a regression by continent</h2>
@@ -4950,13 +5035,13 @@ newdat &lt;- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm)
 <p>I have no idea how to use standard facet_wrap with this.</p>
 <pre class="r"><code>print(plots$plots)</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-60-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-62-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[3]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-60-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-62-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plots %&gt;% unnest(data) %&gt;% group_by(continent2) %&gt;% 
   do(augment(.$models[[1]]))</code></pre>
 <pre><code># A tibble: 720 x 10
@@ -5001,38 +5086,38 @@ other attached packages:
  [5] dotwhisker_0.6.0   lmerTest_3.1-3     lme4_1.1-26        Matrix_1.3-2      
  [9] ggforce_0.3.3      ggsignif_0.6.1     cowplot_1.1.1      dabestr_0.3.0     
 [13] magrittr_2.0.1     ggsci_2.9          sjPlot_2.8.8       modelr_0.1.8      
-[17] patchwork_1.1.1    forcats_0.5.1      stringr_1.4.0      dplyr_1.0.5       
-[21] purrr_0.3.4        readr_1.4.0        tidyr_1.1.3        tibble_3.1.1      
-[25] ggplot2_3.3.3      tidyverse_1.3.1    workflowr_1.6.2   
+[17] patchwork_1.1.1    forcats_0.5.1      stringr_1.4.0      dplyr_1.0.7       
+[21] purrr_0.3.4        readr_1.4.0        tidyr_1.1.3        tibble_3.1.2      
+[25] ggplot2_3.3.5      tidyverse_1.3.1    workflowr_1.6.2   
 
 loaded via a namespace (and not attached):
- [1] minqa_1.2.4         colorspace_2.0-0    ellipsis_0.3.1     
- [4] sjlabelled_1.1.8    rprojroot_2.0.2     ggstance_0.3.5     
- [7] estimability_1.3    parameters_0.13.0   fs_1.5.0           
-[10] dichromat_2.0-0     rstudioapi_0.13     farver_2.1.0       
-[13] fansi_0.4.2         mvtnorm_1.1-1       lubridate_1.7.10   
-[16] xml2_1.3.2          splines_4.0.3       knitr_1.33         
-[19] sjmisc_2.8.6        polyclip_1.10-0     jsonlite_1.7.2     
-[22] nloptr_1.2.2.2      ggeffects_1.1.0     dbplyr_2.1.1       
-[25] broom.mixed_0.2.6   effectsize_0.4.4-1  mapproj_1.2.7      
-[28] compiler_4.0.3      httr_1.4.2          sjstats_0.18.1     
-[31] emmeans_1.6.0       backports_1.2.1     assertthat_0.2.1   
-[34] cli_2.5.0           later_1.2.0         tweenr_1.0.2       
-[37] htmltools_0.5.1.1   tools_4.0.3         coda_0.19-4        
-[40] gtable_0.3.0        glue_1.4.2          reshape2_1.4.4     
-[43] maps_3.3.0          Rcpp_1.0.6          broomExtra_4.2.1   
-[46] cellranger_1.1.0    jquerylib_0.1.4     vctrs_0.3.7        
-[49] nlme_3.1-152        insight_0.13.2      xfun_0.22          
-[52] ps_1.6.0            rvest_1.0.0         lifecycle_1.0.0    
+ [1] minqa_1.2.4         colorspace_2.0-2    ellipsis_0.3.2     
+ [4] sjlabelled_1.1.8    rprojroot_2.0.2     snakecase_0.11.0   
+ [7] ggstance_0.3.5      estimability_1.3    parameters_0.13.0  
+[10] fs_1.5.0            dichromat_2.0-0     rstudioapi_0.13    
+[13] farver_2.1.0        fansi_0.5.0         mvtnorm_1.1-1      
+[16] lubridate_1.7.10    xml2_1.3.2          splines_4.0.3      
+[19] knitr_1.33          sjmisc_2.8.6        polyclip_1.10-0    
+[22] jsonlite_1.7.2      nloptr_1.2.2.2      ggeffects_1.1.0    
+[25] dbplyr_2.1.1        broom.mixed_0.2.6   effectsize_0.4.4-1 
+[28] mapproj_1.2.7       compiler_4.0.3      httr_1.4.2         
+[31] sjstats_0.18.1      emmeans_1.6.0       backports_1.2.1    
+[34] assertthat_0.2.1    cli_3.0.0           later_1.2.0        
+[37] tweenr_1.0.2        htmltools_0.5.1.1   tools_4.0.3        
+[40] coda_0.19-4         gtable_0.3.0        glue_1.4.2         
+[43] reshape2_1.4.4      maps_3.3.0          Rcpp_1.0.6         
+[46] broomExtra_4.2.1    cellranger_1.1.0    jquerylib_0.1.4    
+[49] vctrs_0.3.8         nlme_3.1-152        insight_0.13.2     
+[52] xfun_0.22           rvest_1.0.0         lifecycle_1.0.0    
 [55] statmod_1.4.35      MASS_7.3-53.1       zoo_1.8-9          
 [58] scales_1.1.1        hms_1.0.0           promises_1.2.0.1   
 [61] sandwich_3.0-0      TMB_1.7.20          yaml_2.2.1         
-[64] sass_0.3.1          stringi_1.5.3       highr_0.9          
-[67] bayestestR_0.9.0    boot_1.3-28         rlang_0.4.10       
+[64] sass_0.3.1          stringi_1.6.2       highr_0.9          
+[67] bayestestR_0.9.0    boot_1.3-28         rlang_0.4.11       
 [70] pkgconfig_2.0.3     evaluate_0.14       lattice_0.20-41    
 [73] labeling_0.4.2      tidyselect_1.1.1    plyr_1.8.6         
 [76] R6_2.5.0            generics_0.1.0      DBI_1.1.1          
-[79] mgcv_1.8-35         pillar_1.6.0        haven_2.4.0        
+[79] mgcv_1.8-35         pillar_1.6.1        haven_2.4.0        
 [82] whisker_0.4         withr_2.4.2         survival_3.2-10    
 [85] performance_0.7.1   crayon_1.4.1        utf8_1.2.1         
 [88] rmarkdown_2.7       grid_4.0.3          readxl_1.3.1       
@@ -5055,6 +5140,8 @@ footer is added to webpages before the MathJax javascript. -->
     "HTML-CSS": { availableFonts: ["TeX"] }
   });
 </script>
+
+
 
 
 </div>
