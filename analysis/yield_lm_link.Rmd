@@ -244,9 +244,22 @@ newdat %>% mutate(
 
 Oh wow, that looks very similar to the lme4 results.
 
+By what percentage does the predicted yield change for each group?
 
 ```{r}
-plot_model(clm_model, type = "pred", terms = c("Count", "Group")) +
+plot_model(clm_model, type = "pred", terms = c("Count", "Group"))$data
+```
+
+```{r}
+ranges_pret <- list(land = c(1.79, 2.37), old = c(1.57, 2.15), modern = c(2.59, 3.17))
+sapply(ranges_pret, diff)
+```
+
+So the effect is around 0.58 per group
+
+
+```{r}
+plot_model(clm_model, type = "pred", terms = c("Count", "Group"), show.data=F) +
   theme_minimal_hgrid() +
   #scale_fill_manual(values = col_list) +
   #scale_color_manual(values = col_list) +
