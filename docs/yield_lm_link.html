@@ -476,16 +476,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebda432c301b9937a3f854bee831741e7677c4174targetblankbda432ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/bda432c301b9937a3f854bee831741e7677c4174" target="_blank">bda432c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree265efc1435fcc189f12177a8d3681cf9faa424ectargetblank265efc1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/265efc1435fcc189f12177a8d3681cf9faa424ec" target="_blank">265efc1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreebda432c301b9937a3f854bee831741e7677c4174targetblankbda432ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree265efc1435fcc189f12177a8d3681cf9faa424ectargetblank265efc1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/bda432c301b9937a3f854bee831741e7677c4174" target="_blank">bda432c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/265efc1435fcc189f12177a8d3681cf9faa424ec" target="_blank">265efc1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -572,6 +572,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/265efc1435fcc189f12177a8d3681cf9faa424ec/analysis/yield_lm_link.Rmd" target="_blank">265efc1</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-08-10
+</td>
+<td>
+Add a new figure
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/901040c963d2ad2797ca1874026f1074bc9b9c6a/docs/yield_lm_link.html" target="_blank">901040c</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-08-10
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1823,30 +1857,74 @@ mycol &lt;- brewer.pal(n = 12, name = &quot;Paired&quot;)[seq(2, 12, 2)]</code><
   axis.text.x = element_text(size = 10)) </code></pre>
 <p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Oh wow, that looks very similar to the lme4 results.</p>
-<pre class="r"><code>plot_model(clm_model, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;)) +
+<p>By what percentage does the predicted yield change for each group?</p>
+<pre class="r"><code>plot_model(clm_model, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;))$data</code></pre>
+<pre><code># Predicted values of Yield
+
+# Group = Landrace
+
+Count | Predicted | group_col |       95% CI
+--------------------------------------------
+  430 |      2.37 |  Landrace | [2.19, 2.55]
+  436 |      2.27 |  Landrace | [2.15, 2.39]
+  442 |      2.18 |  Landrace | [2.10, 2.25]
+  448 |      2.08 |  Landrace | [2.00, 2.16]
+  454 |      1.98 |  Landrace | [1.86, 2.11]
+  466 |      1.79 |  Landrace | [1.54, 2.04]
+
+# Group = Old cultivar
+
+Count | Predicted |    group_col |       95% CI
+-----------------------------------------------
+  430 |      2.15 | Old cultivar | [1.83, 2.47]
+  436 |      2.05 | Old cultivar | [1.77, 2.34]
+  442 |      1.96 | Old cultivar | [1.68, 2.23]
+  448 |      1.86 | Old cultivar | [1.59, 2.14]
+  454 |      1.77 | Old cultivar | [1.47, 2.06]
+  466 |      1.57 | Old cultivar | [1.21, 1.94]
+
+# Group = Modern cultivar
+
+Count | Predicted |       group_col |       95% CI
+--------------------------------------------------
+  430 |      3.17 | Modern cultivar | [2.72, 3.62]
+  436 |      3.07 | Modern cultivar | [2.64, 3.50]
+  442 |      2.98 | Modern cultivar | [2.55, 3.40]
+  448 |      2.88 | Modern cultivar | [2.45, 3.31]
+  454 |      2.78 | Modern cultivar | [2.34, 3.23]
+  466 |      2.59 | Modern cultivar | [2.09, 3.09]
+
+Adjusted for:
+* Country = China</code></pre>
+<pre class="r"><code>ranges_pret &lt;- list(land = c(1.79, 2.37), old = c(1.57, 2.15), modern = c(2.59, 3.17))
+sapply(ranges_pret, diff)</code></pre>
+<pre><code>  land    old modern 
+  0.58   0.58   0.58 </code></pre>
+<p>So the effect is around 0.58 per group</p>
+<pre class="r"><code>plot_model(clm_model, type = &quot;pred&quot;, terms = c(&quot;Count&quot;, &quot;Group&quot;), show.data=F) +
   theme_minimal_hgrid() +
   #scale_fill_manual(values = col_list) +
   #scale_color_manual(values = col_list) +
   xlab(&#39;NLR count&#39;) + 
   ylab((expression(paste(&#39;Yield [Mg &#39;, ha^-1, &#39;]&#39;)))) +
   theme(plot.title=element_blank())</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>qqnorm(resid(clm_model))
 qqline(resid(clm_model))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot(resid(clm_model))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c(&#39;GroupOld cultivar&#39;, &#39;Count&#39;, &#39;GroupModern cultivar&#39;))</code></pre>
 <p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(resid(clm_model))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c(&#39;GroupOld cultivar&#39;, &#39;Count&#39;, &#39;GroupModern cultivar&#39;))</code></pre>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>All terms in the model:</p>
 <pre class="r"><code>plot_model(clm_model, type = &quot;std&quot;, show.values = TRUE, value.offset = .3,)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-20-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Only groups and count:</p>
 <pre class="r"><code>plot_model(clm_model, type = &quot;std&quot;, show.values = TRUE, value.offset = .3,, terms=c(&#39;GroupOld cultivar&#39;, &#39;Count&#39;, &#39;GroupModern cultivar&#39;))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Only countries and count:</p>
 <pre class="r"><code>plot_model(clm_model, type = &quot;std&quot;, show.values = TRUE, value.offset = .3,, terms=c(names(clm_model$coefficients)[2], names(clm_model$coefficients)[-1:-4]))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-24-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Let’s plot while having no colors for the countries:</p>
 <pre class="r"><code>newdatlm &lt;-cbind(yield_country_nbs_joined_groups, pred = predict(lm_model))</code></pre>
 <pre class="r"><code>newdatlm %&gt;% mutate(
@@ -1877,7 +1955,7 @@ qqline(resid(clm_model))</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Let’s use this as figure 1.</p>
 <div id="lets-nest-the-countries-and-run-one-lm-each" class="section level3">
 <h3>Let’s nest the countries and run one lm each</h3>
@@ -1906,7 +1984,7 @@ model_tibble &lt;- tibble(id = names(models), model=models)
 
 plot_models(models, m.labels = names(models), p.shape=TRUE) +
   scale_colour_manual(values = mycol)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>mymodel &lt;-  function(df) { lm(Yield ~ Count, data=df) }
 
 results &lt;- six_country_table %&gt;% nest(data = -c(Group, Country2)) %&gt;% 
@@ -1934,7 +2012,7 @@ misleading</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>six_country_table %&gt;% filter(Country2 == &#39;China&#39;) %&gt;% 
   add_predictions(models$China) %&gt;% 
   ggplot(aes(x = Count, y = pred, color = Country2)) +
@@ -1951,7 +2029,7 @@ misleading</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>six_country_table %&gt;% filter(Country2 == &#39;USA&#39;) %&gt;% 
   add_predictions(models$USA) %&gt;% 
   ggplot(aes(x = Count, y = pred, color = Country2)) +
@@ -1968,10 +2046,10 @@ misleading</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>single_model &lt;- lm(Yield ~ Count+Group, data = six_country_table)</code></pre>
 <pre class="r"><code>plot_model(single_model, show.values = TRUE,)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>six_country_table %&gt;% 
   add_predictions(single_model) %&gt;% 
   ggplot(aes(x = Count, y = pred)) +
@@ -1988,7 +2066,7 @@ misleading</code></pre>
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-31-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="finally-lets-make-one-model-per-breeding-group" class="section level3">
 <h3>FINALLY, let’s make one model per breeding group:</h3>
@@ -2014,10 +2092,10 @@ results &lt;- six_country_table %&gt;% nest(data = -c(Group)) %&gt;%
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_models(results$model, m.labels = results$Group, p.shape=TRUE) +
   scale_colour_manual(values = mycol)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>As a last check - what happens if I remove outliers from the moderns, do I then get an association?</p>
 <pre class="r"><code>results &lt;- six_country_table %&gt;% filter(!(Group == &#39;Modern cultivar&#39; &amp; Yield &lt; 2)) %&gt;% 
   nest(data = -c(Group)) %&gt;% 
@@ -2042,10 +2120,10 @@ results %&gt;%
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10)) </code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot_models(results$model, m.labels = results$Group, p.shape=TRUE) +
   scale_colour_manual(values = mycol)</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>results &lt;- six_country_table %&gt;% filter(Group == &#39;Modern cultivar&#39; &amp; Yield &gt;2) %&gt;% 
   nest(data = -c(Group)) %&gt;% 
   mutate(model = map(data, mymodel)) %&gt;% 
@@ -2069,7 +2147,7 @@ results %&gt;%
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="protein-1" class="section level2">
@@ -4924,7 +5002,7 @@ R<sup>2</sup> / R<sup>2</sup> adjusted
   labs(color = &quot;Country&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="continents-not-countries" class="section level2">
 <h2>Continents, not countries</h2>
@@ -4983,7 +5061,7 @@ newdat &lt;- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm)
   labs(color = &quot;Continent&quot;) +
   theme(panel.spacing = unit(0.9, &quot;lines&quot;),
   axis.text.x = element_text(size = 10))</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-58-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="finally-a-regression-by-continent" class="section level2">
 <h2>Finally, a regression by continent</h2>
@@ -5035,13 +5113,13 @@ newdat &lt;- cbind(yield_country_nbs_joined_groups_nonacont, pred = predict(clm)
 <p>I have no idea how to use standard facet_wrap with this.</p>
 <pre class="r"><code>print(plots$plots)</code></pre>
 <pre><code>[[1]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-64-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[2]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-62-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-64-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>
 [[3]]</code></pre>
-<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-62-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/yield_lm_link.Rmd/unnamed-chunk-64-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plots %&gt;% unnest(data) %&gt;% group_by(continent2) %&gt;% 
   do(augment(.$models[[1]]))</code></pre>
 <pre><code># A tibble: 720 x 10
