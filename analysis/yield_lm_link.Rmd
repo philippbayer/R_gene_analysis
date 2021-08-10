@@ -242,7 +242,8 @@ newdat %>% mutate(
   axis.text.x = element_text(size = 10)) 
 ```
 
-Oh wow, that looks very similar.
+Oh wow, that looks very similar to the lme4 results.
+
 
 ```{r}
 plot_model(clm_model, type = "pred", terms = c("Count", "Group")) +
@@ -282,6 +283,48 @@ Only countries and count:
 ```{r fig.height=8, fig.width=8}
 plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, terms=c(names(clm_model$coefficients)[2], names(clm_model$coefficients)[-1:-4]))
 ```
+
+
+Let's plot while having no colors for the countries:
+
+
+```{r}
+newdatlm <-cbind(yield_country_nbs_joined_groups, pred = predict(lm_model))
+```
+
+
+```{r}
+newdatlm %>% mutate(
+  Country2 = case_when (
+  Country == 'USA' ~ 'USA',
+  Country == 'China' ~ 'China',
+  Country == 'Korea' ~ 'Korea',
+  Country == 'Japan' ~ 'Japan',
+  Country == 'Russia' ~ 'Russia',
+  TRUE ~ 'Rest'
+  )
+  ) %>%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
+  )) %>%
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred), color='black', size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10)) 
+```
+
+Let's use this as figure 1.
 
 ### Let's nest the countries and run one lm each
 
