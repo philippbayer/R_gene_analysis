@@ -84,19 +84,19 @@ res_tibb <- res_tibb %>% mutate(type = case_when(presences == 1110 ~ 'core',
 nbs_joined <- left_join(class_dict[['NBS']], res_tibb, by = c('Name'='names'))
 ```
 
-There are `nrow(nbs_joined)` NLR genes out of which `nbs_joined %>% filter(type == 'core') %>% nrow()` are core and `nbs_joined %>% filter(type == 'variable') %>% nrow()` are variable.
+There are `r nrow(nbs_joined)` NLR genes out of which `r nbs_joined %>% filter(type == 'core') %>% nrow()` are core and `r nbs_joined %>% filter(type == 'variable') %>% nrow()` are variable.
 
 
 ```{r}
 rlk_joined <- left_join(class_dict[['RLK']], res_tibb, by = c('Name'='names'))
 ```
 
-There are `nrow(rlk_joined)` RLK genes out of which `rlk_joined %>% filter(type == 'core') %>% nrow()` are core and `rlk_joined %>% filter(type == 'variable') %>% nrow()` are variable.
+There are `r nrow(rlk_joined)` RLK genes out of which `r rlk_joined %>% filter(type == 'core') %>% nrow()` are core and `r rlk_joined %>% filter(type == 'variable') %>% nrow()` are variable.
 
 
 ```{r}
 rlp_joined <- left_join(class_dict[['RLP']], res_tibb, by = c('Name'='names'))
 ```
 
-There are `nrow(rlp_joined)` RLK genes out of which `rlp_joined %>% filter(type == 'core') %>% nrow()` are core and `rlp_joined %>% filter(type == 'variable') %>% nrow()` are variable.
+There are `r `nrow(rlp_joined)` RLK genes out of which `r rlp_joined %>% filter(type == 'core') %>% nrow()` are core and `r  rlp_joined %>% filter(type == 'variable') %>% nrow()` are variable.
 
