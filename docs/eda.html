@@ -15,12 +15,22 @@
 
 <title>Explorative data analysis - let’s play around a bit</title>
 
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -38,12 +48,18 @@ div.section {
 }
 </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +72,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -91,10 +82,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +98,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +132,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +144,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +155,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +183,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,13 +308,13 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
-<div class="col-xs-12 col-sm-4 col-md-3">
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
 
 
 
@@ -372,7 +344,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/philippbayer/R_gene_analysis">
-    <span class="fa fa-github"></span>
+    <span class="fas fa-github"></span>
      
     Source code
   </a>
@@ -382,7 +354,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -413,7 +385,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-12-11
+<strong>Last updated:</strong> 2021-09-23
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -423,7 +395,7 @@ div.tocify {
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2.9000). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
@@ -461,7 +433,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20200917code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -504,16 +476,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree83dc49a3c8bdb0399ad0004ee65fedea770055b2targetblank83dc49aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/83dc49a3c8bdb0399ad0004ee65fedea770055b2" target="_blank">83dc49a</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree1c4600700f43c1358a17eb74821010b9b952adf4targetblank1c46007a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/1c4600700f43c1358a17eb74821010b9b952adf4" target="_blank">1c46007</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree83dc49a3c8bdb0399ad0004ee65fedea770055b2targetblank83dc49aa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree1c4600700f43c1358a17eb74821010b9b952adf4targetblank1c46007a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/83dc49a3c8bdb0399ad0004ee65fedea770055b2" target="_blank">83dc49a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/1c4600700f43c1358a17eb74821010b9b952adf4" target="_blank">1c46007</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -562,7 +534,9 @@ Untracked files:
     Untracked:  data/stem_termination.txt
     Untracked:  data/sudden.txt
     Untracked:  data/virus.txt
-    Untracked:  data/yield.txt
+
+Unstaged changes:
+    Modified:   analysis/yield_lm_link.Rmd
 
 </code></pre>
 <p>
@@ -601,6 +575,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/1c4600700f43c1358a17eb74821010b9b952adf4/analysis/eda.Rmd" target="_blank">1c46007</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-09-23
+</td>
+<td>
+add more EDA
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/2844fd34451df722463e34e8be8d95a79e0ef747/docs/eda.html" target="_blank">2844fd3</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-02-09
+</td>
+<td>
+Add changes, add missing yield
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/e5191225ceaf2f4c7e8136b5af7d4385964814cc/docs/eda.html" target="_blank">e519122</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2020-12-11
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -734,7 +759,7 @@ Philipp Bayer
 2020-09-21
 </td>
 <td>
-wflow_publish(&quot;analysis/*&quot;)
+wflow_publish("analysis/*")
 </td>
 </tr>
 <tr>
@@ -847,855 +872,153 @@ wflow_git_commit(all = T)
 </div>
 </div>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>-- Attaching packages ------------------------------------------------------------------------------------------------------------------- tidyverse 1.3.0 --</code></pre>
-<pre><code>v ggplot2 3.3.2     v purrr   0.3.4
-v tibble  3.0.2     v dplyr   1.0.0
-v tidyr   1.1.0     v stringr 1.4.0
-v readr   1.3.1     v forcats 0.5.0</code></pre>
-<pre><code>-- Conflicts ---------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+<pre><code>-- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>v ggplot2 3.3.5     v purrr   0.3.4
+v tibble  3.1.2     v dplyr   1.0.7
+v tidyr   1.1.3     v stringr 1.4.0
+v readr   1.4.0     v forcats 0.5.1</code></pre>
+<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 4.0.5</code></pre>
+<pre><code>Warning: package &#39;tibble&#39; was built under R version 4.0.5</code></pre>
+<pre><code>Warning: package &#39;dplyr&#39; was built under R version 4.0.5</code></pre>
+<pre><code>-- Conflicts ------------------------------------------ tidyverse_conflicts() --
 x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(knitr)</code></pre>
+<pre><code>Warning: package &#39;knitr&#39; was built under R version 4.0.5</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>Here i make some of the tables for the manuscript.</p>
-<pre class="r"><code>files_to_make_tables_for &lt;- list.files(path = &#39;./data&#39;, pattern = &#39;*lst&#39;)
-files_to_make_tables_for</code></pre>
-<pre><code>[1] &quot;Lee.NBS.candidates.lst&quot;             &quot;Lee.preRGA.candidates.by.Blast.lst&quot;
-[3] &quot;Lee.RGA.candidates.lst&quot;             &quot;Lee.RLK.candidates.lst&quot;            
-[5] &quot;Lee.RLP.candidates.lst&quot;             &quot;Lee.TMCC.candidates.lst&quot;           </code></pre>
+<pre class="r"><code>files_to_make_tables_for &lt;- list.files(path = &#39;./data&#39;, pattern = &#39;*lst&#39;)</code></pre>
 <p>Let’s print the counts of R-gene classes for each type, that will be table 1:</p>
-<pre class="r"><code>for(i in seq_along(files_to_make_tables_for)) {
+<pre class="r"><code>all_results &lt;- c()
+class_dict &lt;- list()
+
+for(i in seq_along(files_to_make_tables_for)) {
+  
   f &lt;- files_to_make_tables_for[i]
+  if (f == &#39;preRGA.candidates.by.Blast.lst&#39; ) {next}
+  if (f == &#39;Lee.RGA.candidates.lst&#39;) {next}
+  print(f)
   fh &lt;- read_tsv(paste(&#39;./data/&#39;, f, sep=&#39;&#39;), col_names = c(&#39;Name&#39;,&#39;Class&#39;,&#39;Type&#39;))
   fh &lt;- fh %&gt;% unite(United, Class, Type)
   # remove NAs in files with 2 columns
   fh$United &lt;- gsub(pattern = &#39;_NA&#39;, replacement = &#39;&#39;, fh$United)
   
-  # now split into pangenome genes and reference genome genes
-  pan_fh &lt;- fh %&gt;% filter(str_detect(Name, &#39;UWA&#39;))
-  ref_fh &lt;- fh %&gt;% filter(!str_detect(Name, &#39;UWA&#39;))
-  print(f)
-  print(kable(table(fh$United), &#39;html&#39;))
-  print(&#39;Reference&#39;)
-  print(kable(table(ref_fh$United), &#39;html&#39;))
-  print(&#39;Pangenome&#39;)
-  print(kable(table(pan_fh$United), &#39;html&#39;))
+  class_dict[[gsub(&#39;Lee.|.candidates.lst&#39;,&#39;&#39;,f)]] &lt;- fh
+  all_results &lt;- c(all_results, table(fh$United))
+
 }</code></pre>
-[1] “Lee.NBS.candidates.lst”
+<p>[1] “Lee.NBS.candidates.lst” [1] “Lee.preRGA.candidates.by.Blast.lst” [1] “Lee.RLK.candidates.lst” [1] “Lee.RLP.candidates.lst” [1] “Lee.TMCC.candidates.lst”</p>
+<pre class="r"><code>kable(enframe(all_results, name=&#39;Class&#39;, value = &#39;Count&#39;))</code></pre>
 <table>
 <thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
+<tr class="header">
+<th align="left">Class</th>
+<th align="right">Count</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-CN
-</td>
-<td style="text-align:right;">
-13
-</td>
+<tr class="odd">
+<td align="left">CN</td>
+<td align="right">13</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-CNL
-</td>
-<td style="text-align:right;">
-123
-</td>
+<tr class="even">
+<td align="left">CNL</td>
+<td align="right">123</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-NBS
-</td>
-<td style="text-align:right;">
-52
-</td>
+<tr class="odd">
+<td align="left">NBS</td>
+<td align="right">52</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-NL
-</td>
-<td style="text-align:right;">
-95
-</td>
+<tr class="even">
+<td align="left">NL</td>
+<td align="right">95</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-OTHER
-</td>
-<td style="text-align:right;">
-20
-</td>
+<tr class="odd">
+<td align="left">OTHER</td>
+<td align="right">20</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-TN
-</td>
-<td style="text-align:right;">
-22
-</td>
+<tr class="even">
+<td align="left">TN</td>
+<td align="right">22</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-TNL
-</td>
-<td style="text-align:right;">
-99
-</td>
+<tr class="odd">
+<td align="left">TNL</td>
+<td align="right">99</td>
 </tr>
-<tr>
-<td style="text-align:left;">
-TX
-</td>
-<td style="text-align:right;">
-62
-</td>
+<tr class="even">
+<td align="left">TX</td>
+<td align="right">62</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">14358</td>
+</tr>
+<tr class="even">
+<td align="left">RLK_lrr</td>
+<td align="right">470</td>
+</tr>
+<tr class="odd">
+<td align="left">RLK_lysm</td>
+<td align="right">19</td>
+</tr>
+<tr class="even">
+<td align="left">RLK_other_receptor</td>
+<td align="right">684</td>
+</tr>
+<tr class="odd">
+<td align="left">RLP_lrr</td>
+<td align="right">177</td>
+</tr>
+<tr class="even">
+<td align="left">RLP_lysm</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">TM-CC</td>
+<td align="right">280</td>
 </tr>
 </tbody>
 </table>
-[1] “Reference”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-CN
-</td>
-<td style="text-align:right;">
-8
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CNL
-</td>
-<td style="text-align:right;">
-123
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NBS
-</td>
-<td style="text-align:right;">
-29
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NL
-</td>
-<td style="text-align:right;">
-92
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-OTHER
-</td>
-<td style="text-align:right;">
-20
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TN
-</td>
-<td style="text-align:right;">
-22
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TNL
-</td>
-<td style="text-align:right;">
-99
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TX
-</td>
-<td style="text-align:right;">
-49
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Pangenome”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-CN
-</td>
-<td style="text-align:right;">
-5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NBS
-</td>
-<td style="text-align:right;">
-23
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NL
-</td>
-<td style="text-align:right;">
-3
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TX
-</td>
-<td style="text-align:right;">
-13
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Lee.preRGA.candidates.by.Blast.lst”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-14358
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Reference”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-13448
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Pangenome”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-910
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Lee.RGA.candidates.lst”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-CN
-</td>
-<td style="text-align:right;">
-13
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CNL
-</td>
-<td style="text-align:right;">
-123
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NBS
-</td>
-<td style="text-align:right;">
-52
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NL
-</td>
-<td style="text-align:right;">
-95
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-OTHER
-</td>
-<td style="text-align:right;">
-20
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLK
-</td>
-<td style="text-align:right;">
-1173
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLP
-</td>
-<td style="text-align:right;">
-180
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TM-CC
-</td>
-<td style="text-align:right;">
-280
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TN
-</td>
-<td style="text-align:right;">
-22
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TNL
-</td>
-<td style="text-align:right;">
-99
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TX
-</td>
-<td style="text-align:right;">
-62
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Reference”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-CN
-</td>
-<td style="text-align:right;">
-8
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-CNL
-</td>
-<td style="text-align:right;">
-123
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NBS
-</td>
-<td style="text-align:right;">
-29
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NL
-</td>
-<td style="text-align:right;">
-92
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-OTHER
-</td>
-<td style="text-align:right;">
-20
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLK
-</td>
-<td style="text-align:right;">
-1164
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLP
-</td>
-<td style="text-align:right;">
-170
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TM-CC
-</td>
-<td style="text-align:right;">
-273
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TN
-</td>
-<td style="text-align:right;">
-22
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TNL
-</td>
-<td style="text-align:right;">
-99
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TX
-</td>
-<td style="text-align:right;">
-49
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Pangenome”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-CN
-</td>
-<td style="text-align:right;">
-5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NBS
-</td>
-<td style="text-align:right;">
-23
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-NL
-</td>
-<td style="text-align:right;">
-3
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLK
-</td>
-<td style="text-align:right;">
-9
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLP
-</td>
-<td style="text-align:right;">
-10
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TM-CC
-</td>
-<td style="text-align:right;">
-7
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-TX
-</td>
-<td style="text-align:right;">
-13
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Lee.RLK.candidates.lst”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-RLK_lrr
-</td>
-<td style="text-align:right;">
-470
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLK_lysm
-</td>
-<td style="text-align:right;">
-19
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLK_other_receptor
-</td>
-<td style="text-align:right;">
-684
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Reference”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-RLK_lrr
-</td>
-<td style="text-align:right;">
-469
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLK_lysm
-</td>
-<td style="text-align:right;">
-19
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLK_other_receptor
-</td>
-<td style="text-align:right;">
-676
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Pangenome”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-RLK_lrr
-</td>
-<td style="text-align:right;">
-1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLK_other_receptor
-</td>
-<td style="text-align:right;">
-8
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Lee.RLP.candidates.lst”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-RLP_lrr
-</td>
-<td style="text-align:right;">
-177
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLP_lysm
-</td>
-<td style="text-align:right;">
-3
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Reference”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-RLP_lrr
-</td>
-<td style="text-align:right;">
-167
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-RLP_lysm
-</td>
-<td style="text-align:right;">
-3
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Pangenome”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-RLP_lrr
-</td>
-<td style="text-align:right;">
-10
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Lee.TMCC.candidates.lst”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-TM-CC
-</td>
-<td style="text-align:right;">
-280
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Reference”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-TM-CC
-</td>
-<td style="text-align:right;">
-273
-</td>
-</tr>
-</tbody>
-</table>
-[1] “Pangenome”
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Var1
-</th>
-<th style="text-align:right;">
-Freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-TM-CC
-</td>
-<td style="text-align:right;">
-7
-</td>
-</tr>
-</tbody>
-</table>
+<p>Let’s calculate the per-class gene variability.</p>
+<pre class="r"><code>pav_table &lt;- read_tsv(&#39;./data/soybean_pan_pav.matrix_gene.txt.gz&#39;)</code></pre>
+<pre><code>
+-- Column specification --------------------------------------------------------
+cols(
+  .default = col_double(),
+  Individual = col_character()
+)
+i Use `spec()` for the full column specifications.</code></pre>
+<pre class="r"><code>t_pav_table &lt;- as_tibble(cbind(nms = names(pav_table), t(pav_table)))</code></pre>
+<pre><code>Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
+Using compatibility `.name_repair`.</code></pre>
+<pre class="r"><code>names(t_pav_table) &lt;- t_pav_table[1,]</code></pre>
+<pre><code>Warning: The `value` argument of `names&lt;-` must be a character vector as of
+tibble 3.0.0.</code></pre>
+<pre class="r"><code>t_pav_table &lt;- t_pav_table %&gt;% filter(Individual != &#39;Individual&#39;)</code></pre>
+<pre class="r"><code>names &lt;- c()
+presences &lt;- c()
+
+for (i in seq_along(t_pav_table)){
+  if ( i == 1) next
+  thisind &lt;- colnames(t_pav_table)[i]
+  pavs &lt;- t_pav_table[[i]]
+  presents &lt;- sum(strtoi(pavs))
+  names &lt;- c(names, thisind)
+  presences &lt;- c(presences, presents)
+}
+res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
+<pre><code>Warning: The `nrow` argument of `new_tibble()` can&#39;t be missing as of tibble 2.0.0.
+`x` must be a scalar integer.</code></pre>
+<p>res_tibb now stores for each gene, in how many individuals it is present. We have 1110 individuals, so all genes with presences &lt; 1110 are variable.</p>
+<pre class="r"><code>res_tibb &lt;- res_tibb %&gt;% mutate(type = case_when(presences == 1110 ~ &#39;core&#39;,
+                                     TRUE ~ &#39;variable&#39;))</code></pre>
+<pre class="r"><code>nbs_joined &lt;- left_join(class_dict[[&#39;NBS&#39;]], res_tibb, by = c(&#39;Name&#39;=&#39;names&#39;))</code></pre>
+<p>There are <code>nrow(nbs_joined)</code> NLR genes out of which <code>nbs_joined %&gt;% filter(type == 'core') %&gt;% nrow()</code> are core and <code>nbs_joined %&gt;% filter(type == 'variable') %&gt;% nrow()</code> are variable.</p>
+<pre class="r"><code>rlk_joined &lt;- left_join(class_dict[[&#39;RLK&#39;]], res_tibb, by = c(&#39;Name&#39;=&#39;names&#39;))</code></pre>
+<p>There are <code>nrow(rlk_joined)</code> RLK genes out of which <code>rlk_joined %&gt;% filter(type == 'core') %&gt;% nrow()</code> are core and <code>rlk_joined %&gt;% filter(type == 'variable') %&gt;% nrow()</code> are variable.</p>
+<pre class="r"><code>rlp_joined &lt;- left_join(class_dict[[&#39;RLP&#39;]], res_tibb, by = c(&#39;Name&#39;=&#39;names&#39;))</code></pre>
+<p>There are <code>nrow(rlp_joined)</code> RLK genes out of which <code>rlp_joined %&gt;% filter(type == 'core') %&gt;% nrow()</code> are core and <code>rlp_joined %&gt;% filter(type == 'variable') %&gt;% nrow()</code> are variable.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1704,7 +1027,7 @@ TM-CC
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.3 (2020-02-29)
+<pre><code>R version 4.0.3 (2020-10-10)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 17134)
 
@@ -1719,28 +1042,26 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] knitr_1.29           forcats_0.5.0        stringr_1.4.0       
- [4] dplyr_1.0.0          purrr_0.3.4          readr_1.3.1         
- [7] tidyr_1.1.0          tibble_3.0.2         ggplot2_3.3.2       
-[10] tidyverse_1.3.0      workflowr_1.6.2.9000
+ [1] knitr_1.33      forcats_0.5.1   stringr_1.4.0   dplyr_1.0.7    
+ [5] purrr_0.3.4     readr_1.4.0     tidyr_1.1.3     tibble_3.1.2   
+ [9] ggplot2_3.3.5   tidyverse_1.3.1 workflowr_1.6.2
 
 loaded via a namespace (and not attached):
- [1] tidyselect_1.1.0 xfun_0.17        haven_2.3.1      lattice_0.20-41 
- [5] colorspace_1.4-1 vctrs_0.3.1      generics_0.0.2   htmltools_0.5.0 
- [9] yaml_2.2.1       blob_1.2.1       rlang_0.4.7      later_1.1.0.1   
-[13] pillar_1.4.4     withr_2.2.0      glue_1.4.2       DBI_1.1.0       
-[17] dbplyr_1.4.4     readxl_1.3.1     modelr_0.1.8     lifecycle_0.2.0 
-[21] cellranger_1.1.0 munsell_0.5.0    gtable_0.3.0     rvest_0.3.5     
-[25] evaluate_0.14    callr_3.4.4      httpuv_1.5.4     ps_1.3.4        
-[29] fansi_0.4.1      highr_0.8        broom_0.5.6      Rcpp_1.0.5      
-[33] promises_1.1.1   backports_1.1.10 scales_1.1.1     jsonlite_1.7.1  
-[37] fs_1.5.0.9000    hms_0.5.3        digest_0.6.25    stringi_1.5.3   
-[41] processx_3.4.4   getPass_0.2-2    rprojroot_1.3-2  grid_3.6.3      
-[45] cli_2.0.2        tools_3.6.3      magrittr_1.5     crayon_1.3.4    
-[49] whisker_0.4      pkgconfig_2.0.3  ellipsis_0.3.1   xml2_1.3.2      
-[53] reprex_0.3.0     lubridate_1.7.9  assertthat_0.2.1 rmarkdown_2.3   
-[57] httr_1.4.2       rstudioapi_0.11  R6_2.4.1         nlme_3.1-148    
-[61] git2r_0.27.1     compiler_3.6.3  </code></pre>
+ [1] tidyselect_1.1.1  xfun_0.22         bslib_0.2.4       haven_2.4.0      
+ [5] colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0    htmltools_0.5.1.1
+ [9] yaml_2.2.1        utf8_1.2.1        rlang_0.4.11      jquerylib_0.1.4  
+[13] later_1.2.0       pillar_1.6.1      withr_2.4.2       glue_1.4.2       
+[17] DBI_1.1.1         dbplyr_2.1.1      readxl_1.3.1      modelr_0.1.8     
+[21] lifecycle_1.0.0   cellranger_1.1.0  munsell_0.5.0     gtable_0.3.0     
+[25] rvest_1.0.0       evaluate_0.14     httpuv_1.6.0      fansi_0.5.0      
+[29] highr_0.9         broom_0.7.6       Rcpp_1.0.6        promises_1.2.0.1 
+[33] backports_1.2.1   scales_1.1.1      jsonlite_1.7.2    fs_1.5.0         
+[37] hms_1.0.0         digest_0.6.27     stringi_1.6.2     rprojroot_2.0.2  
+[41] grid_4.0.3        cli_3.0.0         tools_4.0.3       magrittr_2.0.1   
+[45] sass_0.3.1        crayon_1.4.1      whisker_0.4       pkgconfig_2.0.3  
+[49] ellipsis_0.3.2    xml2_1.3.2        reprex_2.0.0      lubridate_1.7.10 
+[53] rstudioapi_0.13   assertthat_0.2.1  rmarkdown_2.7     httr_1.4.2       
+[57] R6_2.5.0          git2r_0.28.0      compiler_4.0.3   </code></pre>
 </div>
 </div>
 
@@ -1758,6 +1079,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+
+
 </div>
 </div>
 
@@ -1767,7 +1090,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -1785,7 +1108,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
