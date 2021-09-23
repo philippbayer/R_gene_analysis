@@ -98,5 +98,5 @@ There are `r nrow(rlk_joined)` RLK genes out of which `r rlk_joined %>% filter(t
 rlp_joined <- left_join(class_dict[['RLP']], res_tibb, by = c('Name'='names'))
 ```
 
-There are `r `nrow(rlp_joined)` RLK genes out of which `r rlp_joined %>% filter(type == 'core') %>% nrow()` are core and `r  rlp_joined %>% filter(type == 'variable') %>% nrow()` are variable.
+There are `r nrow(rlp_joined)` RLK genes out of which `r rlp_joined %>% filter(type == 'core') %>% nrow()` are core and `r  rlp_joined %>% filter(type == 'variable') %>% nrow()` are variable.
 
