@@ -476,16 +476,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree01cf4a487598061718a0d5f306a8ec5ecbeb2a70targetblank01cf4a4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/01cf4a487598061718a0d5f306a8ec5ecbeb2a70" target="_blank">01cf4a4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2a87744840f97167227eaed961b0a743081ec78dtargetblank2a87744a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/2a87744840f97167227eaed961b0a743081ec78d" target="_blank">2a87744</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree01cf4a487598061718a0d5f306a8ec5ecbeb2a70targetblank01cf4a4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2a87744840f97167227eaed961b0a743081ec78dtargetblank2a87744a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/01cf4a487598061718a0d5f306a8ec5ecbeb2a70" target="_blank">01cf4a4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/2a87744840f97167227eaed961b0a743081ec78d" target="_blank">2a87744</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -575,6 +575,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/2a87744840f97167227eaed961b0a743081ec78d/analysis/eda.Rmd" target="_blank">2a87744</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-09-23
+</td>
+<td>
+add more EDA
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/29d592e6ad8148a03b1310884eeb9004b1899fda/docs/eda.html" target="_blank">29d592e</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-09-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1052,7 +1086,7 @@ res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pr
 <pre class="r"><code>rlk_joined &lt;- left_join(class_dict[[&#39;RLK&#39;]], res_tibb, by = c(&#39;Name&#39;=&#39;names&#39;))</code></pre>
 <p>There are 1173 RLK genes out of which 1075 are core and 89 are variable.</p>
 <pre class="r"><code>rlp_joined &lt;- left_join(class_dict[[&#39;RLP&#39;]], res_tibb, by = c(&#39;Name&#39;=&#39;names&#39;))</code></pre>
-<p>There are <code>r</code>nrow(rlp_joined)` RLK genes out of which 125 are core and 45 are variable.</p>
+<p>There are 180 RLK genes out of which 125 are core and 45 are variable.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
