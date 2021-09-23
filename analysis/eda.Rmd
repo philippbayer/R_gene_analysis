@@ -17,28 +17,86 @@ Here i make some of the tables for the manuscript.
 
 ```{r}
 files_to_make_tables_for <- list.files(path = './data', pattern = '*lst')
-files_to_make_tables_for
 ```
 
 Let's print the counts of R-gene classes for each type, that will be table 1:
 
 ```{r results='asis',  warning=FALSE, message=FALSE}
+all_results <- c()
+class_dict <- list()
+
 for(i in seq_along(files_to_make_tables_for)) {
+  
   f <- files_to_make_tables_for[i]
+  if (f == 'preRGA.candidates.by.Blast.lst' ) {next}
+  if (f == 'Lee.RGA.candidates.lst') {next}
+  print(f)
   fh <- read_tsv(paste('./data/', f, sep=''), col_names = c('Name','Class','Type'))
   fh <- fh %>% unite(United, Class, Type)
   # remove NAs in files with 2 columns
   fh$United <- gsub(pattern = '_NA', replacement = '', fh$United)
   
-  # now split into pangenome genes and reference genome genes
-  pan_fh <- fh %>% filter(str_detect(Name, 'UWA'))
-  ref_fh <- fh %>% filter(!str_detect(Name, 'UWA'))
-  print(f)
-  print(kable(table(fh$United), 'html'))
-  print('Reference')
-  print(kable(table(ref_fh$United), 'html'))
-  print('Pangenome')
-  print(kable(table(pan_fh$United), 'html'))
+  class_dict[[gsub('Lee.|.candidates.lst','',f)]] <- fh
+  all_results <- c(all_results, table(fh$United))
+
 }
+
+kable(enframe(all_results, name='Class', value = 'Count'))
 ```
+
+
+
+Let's calculate the per-class gene variability.
+
+```{r}
+pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt.gz')
+t_pav_table <- as_tibble(cbind(nms = names(pav_table), t(pav_table)))
+```
+
+```{r}
+names(t_pav_table) <- t_pav_table[1,]
+t_pav_table <- t_pav_table %>% filter(Individual != 'Individual')
+```
+
+```{r}
+names <- c()
+presences <- c()
+
+for (i in seq_along(t_pav_table)){
+  if ( i == 1) next
+  thisind <- colnames(t_pav_table)[i]
+  pavs <- t_pav_table[[i]]
+  presents <- sum(strtoi(pavs))
+  names <- c(names, thisind)
+  presences <- c(presences, presents)
+}
+res_tibb <- new_tibble(list(names = names, presences = presences))
+```
+
+res_tibb now stores for each gene, in how many individuals it is present. We have 1110 individuals, so all genes with presences < 1110 are variable.
+
+```{r}
+res_tibb <- res_tibb %>% mutate(type = case_when(presences == 1110 ~ 'core',
+                                     TRUE ~ 'variable'))
+```
+
+```{r}
+nbs_joined <- left_join(class_dict[['NBS']], res_tibb, by = c('Name'='names'))
+```
+
+There are `nrow(nbs_joined)` NLR genes out of which `nbs_joined %>% filter(type == 'core') %>% nrow()` are core and `nbs_joined %>% filter(type == 'variable') %>% nrow()` are variable.
+
+
+```{r}
+rlk_joined <- left_join(class_dict[['RLK']], res_tibb, by = c('Name'='names'))
+```
+
+There are `nrow(rlk_joined)` RLK genes out of which `rlk_joined %>% filter(type == 'core') %>% nrow()` are core and `rlk_joined %>% filter(type == 'variable') %>% nrow()` are variable.
+
+
+```{r}
+rlp_joined <- left_join(class_dict[['RLP']], res_tibb, by = c('Name'='names'))
+```
+
+There are `nrow(rlp_joined)` RLK genes out of which `rlp_joined %>% filter(type == 'core') %>% nrow()` are core and `rlp_joined %>% filter(type == 'variable') %>% nrow()` are variable.
 
