@@ -268,6 +268,19 @@ plot_model(clm_model, type = "pred", terms = c("Count", "Group"), show.data=F) +
   theme(plot.title=element_blank())
 ```
 
+We can revert this plot too:
+
+```{r}
+plot_model(clm_model, type = "pred", terms = c("Count", "Group"), show.data=F) +
+  theme_minimal_hgrid() +
+  #scale_fill_manual(values = col_list) +
+  #scale_color_manual(values = col_list) +
+  xlab('NLR count') + 
+  ylab((expression(paste('Yield [Mg ', ha^-1, ']')))) +
+  theme(plot.title=element_blank()) +
+  scale_x_reverse()
+```
+
 ```{r}
 qqnorm(resid(clm_model))
 qqline(resid(clm_model))
@@ -334,10 +347,47 @@ newdatlm %>% mutate(
   #xlim(c(47.900, 49.700)) +
   labs(color = "Country") +
   theme(panel.spacing = unit(0.9, "lines"),
-  axis.text.x = element_text(size = 10)) 
+  axis.text.x = element_text(size = 10))
+
 ```
 
 Let's use this as figure 1.
+
+We can also reverse the x-axis:
+
+```{r}
+```{r}
+newdatlm %>% mutate(
+  Country2 = case_when (
+  Country == 'USA' ~ 'USA',
+  Country == 'China' ~ 'China',
+  Country == 'Korea' ~ 'Korea',
+  Country == 'Japan' ~ 'Japan',
+  Country == 'Russia' ~ 'Russia',
+  TRUE ~ 'Rest'
+  )
+  ) %>%
+  mutate(Country2 = factor(
+  Country2,
+  levels = c('China', 'Japan', 'Korea', 'Russia', 'USA', 'Rest')
+  )) %>%
+  ggplot(aes(x = Count, y = pred, color = Country2)) +
+  facet_wrap(~ Group, nrow = 1) +  
+  geom_point(aes(y = Yield, color = Country2),
+    alpha = 0.8,
+    size = 2) +
+  geom_line(aes(y=pred), color='black', size=1.5)+
+  theme_minimal_hgrid() +
+  xlab('Gene count') +
+  ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+  scale_color_manual(values = mycol) +
+  #xlim(c(47.900, 49.700)) +
+  labs(color = "Country") +
+  theme(panel.spacing = unit(0.9, "lines"),
+  axis.text.x = element_text(size = 10)) +
+  scale_x_reverse()
+```
+```
 
 ### Let's nest the countries and run one lm each
 
@@ -648,6 +698,13 @@ clm <- lm(Yield ~ `All genes` + Group + Country, data=yield_country_all_joined_g
 summary(clm)
 ```
 Good, p > 0.05
+
+Let's try the model without group and country
+
+```{r}
+baselm <- lm(as.numeric(Group) ~ `All genes`, data=yield_country_all_joined_groups)
+summary(baselm)
+```
 
 ```{r}
 tab_model(clm, p.val='kr', digits=3)
