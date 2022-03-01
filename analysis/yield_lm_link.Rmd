@@ -291,23 +291,33 @@ plot(resid(clm_model))
 ```
 
 ```{r}
+theme_set(theme_sjplot())
+```
+
+```{r}
 plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
 ```
 
 All terms in the model:
 ```{r fig.height=8, fig.width=8}
-plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,)
+Cplot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3)
 ```
 
 Only groups and count:
 
 ```{r}
-plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
+plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
 ```
 
 Only countries and count:
-```{r fig.height=8, fig.width=8}
-plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3,, terms=c(names(clm_model$coefficients)[2], names(clm_model$coefficients)[-1:-4]))
+```{r fig.height=10, fig.width=8}
+theme_set(theme_sjplot())
+
+p <- plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .6, auto.label = F, terms=c(names(clm_model$coefficients)[2], names(clm_model$coefficients)[-1:-4])) +
+      scale_x_discrete(expand = expansion(mult=0.05)) +
+  theme(axis.text.y = element_text(colour = 'black'))
+p
+cowplot::save_plot(filename = 'FigS5.png', p, base_height = 3.71*2)
 ```
 
 
