@@ -13,6 +13,7 @@ library(knitr)
 ```
 
 # Introduction
+
 Here i make some of the tables for the manuscript.
 
 ```{r}
@@ -28,13 +29,20 @@ class_dict <- list()
 for(i in seq_along(files_to_make_tables_for)) {
   
   f <- files_to_make_tables_for[i]
-  if (f == 'preRGA.candidates.by.Blast.lst' ) {next}
+  if (f == 'Lee.preRGA.candidates.by.Blast.lst' ) {next}
   if (f == 'Lee.RGA.candidates.lst') {next}
   print(f)
   fh <- read_tsv(paste('./data/', f, sep=''), col_names = c('Name','Class','Type'))
+  if (ncol(fh) == 2) {
+    # weird change in behaviour of tidyverse- used to be all NA by default
+    # when there were only 2 columns
+    fh$Type <- NA
+  }
   fh <- fh %>% unite(United, Class, Type)
   # remove NAs in files with 2 columns
   fh$United <- gsub(pattern = '_NA', replacement = '', fh$United)
+  
+  fh <- fh %>% mutate(Name = gsub('.t1', '', Name))
   
   class_dict[[gsub('Lee.|.candidates.lst','',f)]] <- fh
   all_results <- c(all_results, table(fh$United))
@@ -50,12 +58,8 @@ Let's calculate the per-class gene variability.
 
 ```{r}
 pav_table <- read_tsv('./data/soybean_pan_pav.matrix_gene.txt.gz')
-t_pav_table <- as_tibble(cbind(nms = names(pav_table), t(pav_table)))
-```
-
-```{r}
-names(t_pav_table) <- t_pav_table[1,]
-t_pav_table <- t_pav_table %>% filter(Individual != 'Individual')
+#t_pav_table <- as_tibble(cbind(nms = names(pav_table), t(pav_table)))
+t_pav_table <- pav_table %>% pivot_longer(cols= -1) %>% pivot_wider(names_from = "Individual",values_from = "value") %>% rename('Individual'='name')
 ```
 
 ```{r}
