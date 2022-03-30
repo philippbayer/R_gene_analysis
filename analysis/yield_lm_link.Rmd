@@ -259,13 +259,14 @@ So the effect is around 0.58 per group
 
 
 ```{r}
-plot_model(clm_model, type = "pred", terms = c("Count", "Group"), show.data=F) +
+fig2 <- plot_model(clm_model, type = "pred", terms = c("Count", "Group"), show.data=F) +
   theme_minimal_hgrid() +
   #scale_fill_manual(values = col_list) +
   #scale_color_manual(values = col_list) +
   xlab('NLR count') + 
   ylab((expression(paste('Yield [Mg ', ha^-1, ']')))) +
   theme(plot.title=element_blank())
+fig2
 ```
 
 We can revert this plot too:
@@ -295,12 +296,13 @@ theme_set(theme_sjplot())
 ```
 
 ```{r}
-plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
+fig4 <- plot_model(clm_model, show.values = TRUE, value.offset = .3, terms=c('GroupOld cultivar', 'Count', 'GroupModern cultivar'))
+fig4
 ```
 
 All terms in the model:
 ```{r fig.height=8, fig.width=8}
-Cplot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3)
+plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .3)
 ```
 
 Only groups and count:
@@ -317,7 +319,7 @@ p <- plot_model(clm_model, type = "std", show.values = TRUE, value.offset = .6, 
       scale_x_discrete(expand = expansion(mult=0.05)) +
   theme(axis.text.y = element_text(colour = 'black'))
 p
-cowplot::save_plot(filename = 'FigS5.png', p, base_height = 3.71*2)
+cowplot::save_plot(filename = 'output/FigS5.png', p, base_height = 3.71*2)
 ```
 
 
@@ -330,7 +332,7 @@ newdatlm <-cbind(yield_country_nbs_joined_groups, pred = predict(lm_model))
 
 
 ```{r}
-newdatlm %>% mutate(
+fig1 <- newdatlm %>% mutate(
   Country2 = case_when (
   Country == 'USA' ~ 'USA',
   Country == 'China' ~ 'China',
@@ -358,14 +360,13 @@ newdatlm %>% mutate(
   labs(color = "Country") +
   theme(panel.spacing = unit(0.9, "lines"),
   axis.text.x = element_text(size = 10))
-
+fig1
 ```
 
 Let's use this as figure 1.
 
 We can also reverse the x-axis:
 
-```{r}
 ```{r}
 newdatlm %>% mutate(
   Country2 = case_when (
@@ -396,7 +397,6 @@ newdatlm %>% mutate(
   theme(panel.spacing = unit(0.9, "lines"),
   axis.text.x = element_text(size = 10)) +
   scale_x_reverse()
-```
 ```
 
 ### Let's nest the countries and run one lm each
@@ -849,4 +849,16 @@ print(plots$plots)
 plots %>% unnest(data) %>% group_by(continent2) %>% 
   do(augment(.$models[[1]]))
 ```
+
+
+# Merge three figures
+
+Let's make Fig 1 abc instead of Fig 1,2,3
+```{r}
+load('output/NLR_boxplot_saved.Rds') # now we have nlr_plot
+merged <- (nlr_plot + fig2) / (fig1)+ plot_annotation(tag_levels='A')
+cowplot::save_plot(merged, filename ='output/merged_fig1.png', base_height=3.71*2)
+```
+
+
 
