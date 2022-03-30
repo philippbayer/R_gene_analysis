@@ -683,7 +683,7 @@ Again, no difference between old and modern cultivars!
 ## NBS
 
 ```{r}
-nbs_joined_groups %>% 
+nlr_plot <- nbs_joined_groups %>% 
   filter( !is.na(`PI-ID`) ) %>%
     ggplot(aes(x=`Group in violin table`, y = presences,
                fill = `Group in violin table`)) + 
@@ -698,6 +698,8 @@ nbs_joined_groups %>%
   guides(fill=FALSE) +
   ylab('Number of NLR genes') +
   xlab('Accession group')
+nlr_plot
+save(nlr_plot, file = 'output/NLR_boxplot_saved.Rds')
 ```
 
 ## RLP
