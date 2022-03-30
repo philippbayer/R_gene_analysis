@@ -15,8 +15,8 @@
 
 <title>Explorative data analysis - let’s play around a bit</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -309,12 +309,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -344,7 +344,7 @@ div.tocify {
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/philippbayer/R_gene_analysis">
-    <span class="fas fa-github"></span>
+    <span class="fa fa-github"></span>
      
     Source code
   </a>
@@ -385,7 +385,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-09-23
+<strong>Last updated:</strong> 2022-03-30
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -476,16 +476,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2a87744840f97167227eaed961b0a743081ec78dtargetblank2a87744a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/2a87744840f97167227eaed961b0a743081ec78d" target="_blank">2a87744</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree6b0f0ac3c92f5310e765affbf4ab12942e7cdc7atargetblank6b0f0aca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/6b0f0ac3c92f5310e765affbf4ab12942e7cdc7a" target="_blank">6b0f0ac</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2a87744840f97167227eaed961b0a743081ec78dtargetblank2a87744a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree6b0f0ac3c92f5310e765affbf4ab12942e7cdc7atargetblank6b0f0aca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/2a87744840f97167227eaed961b0a743081ec78d" target="_blank">2a87744</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/6b0f0ac3c92f5310e765affbf4ab12942e7cdc7a" target="_blank">6b0f0ac</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -496,6 +496,37 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
+    Untracked:  FigS5.png
+    Untracked:  GAPIT.GLM.Yield.Df.tValue.StdErr.csv
+    Untracked:  GAPIT.GLM.Yield.GWAS.Results.csv
+    Untracked:  GAPIT.GLM.Yield.Log.csv
+    Untracked:  GAPIT.GLM.Yield.MAF.pdf
+    Untracked:  GAPIT.GLM.Yield.Manhattan.Plot.Chromosomewise.pdf
+    Untracked:  GAPIT.GLM.Yield.Manhattan.Plot.Genomewise.pdf
+    Untracked:  GAPIT.GLM.Yield.Optimum.pdf
+    Untracked:  GAPIT.GLM.Yield.PRED.csv
+    Untracked:  GAPIT.GLM.Yield.QQ-Plot.pdf
+    Untracked:  GAPIT.GLM.Yield.ROC.csv
+    Untracked:  GAPIT.GLM.Yield.ROC.pdf
+    Untracked:  GAPIT.GLM.Yield.phenotype_view.pdf
+    Untracked:  GAPIT.Heterozygosity.pdf
+    Untracked:  GAPIT.Kin.VanRaden.csv
+    Untracked:  GAPIT.Kin.VanRaden.pdf
+    Untracked:  GAPIT.MLM.Yield.Df.tValue.StdErr.csv
+    Untracked:  GAPIT.MLM.Yield.GWAS.Results.csv
+    Untracked:  GAPIT.MLM.Yield.Log.csv
+    Untracked:  GAPIT.MLM.Yield.MAF.pdf
+    Untracked:  GAPIT.MLM.Yield.Manhattan.Plot.Chromosomewise.pdf
+    Untracked:  GAPIT.MLM.Yield.Manhattan.Plot.Genomewise.pdf
+    Untracked:  GAPIT.MLM.Yield.Optimum.pdf
+    Untracked:  GAPIT.MLM.Yield.PRED.csv
+    Untracked:  GAPIT.MLM.Yield.QQ-Plot.pdf
+    Untracked:  GAPIT.MLM.Yield.ROC.csv
+    Untracked:  GAPIT.MLM.Yield.ROC.pdf
+    Untracked:  GAPIT.MLM.Yield.phenotype_view.pdf
+    Untracked:  GAPIT.MLMM.Yield.phenotype_view.pdf
+    Untracked:  GAPIT.Marker.Density.pdf
+    Untracked:  GAPIT.Marker.LD.pdf
     Untracked:  data/Brec_R1.txt
     Untracked:  data/Brec_R2.txt
     Untracked:  data/CR15_R1.txt
@@ -510,6 +541,7 @@ Untracked files:
     Untracked:  data/PAVs_newick.txt
     Untracked:  data/PPR1.txt
     Untracked:  data/PPR2.txt
+    Untracked:  data/SNPs_lee.id.biallic_maf_0.05_geno_0.1.vcf.gz
     Untracked:  data/SNPs_newick.txt
     Untracked:  data/bac.txt
     Untracked:  data/brown.txt
@@ -519,24 +551,24 @@ Untracked files:
     Untracked:  data/flowerings.txt
     Untracked:  data/foregeye.txt
     Untracked:  data/height.txt
+    Untracked:  data/inds.txt
     Untracked:  data/late.txt
     Untracked:  data/mature.txt
     Untracked:  data/motting.txt
     Untracked:  data/mvp.kin.bin
     Untracked:  data/mvp.kin.desc
     Untracked:  data/oil.txt
+    Untracked:  data/paperinds.txt
     Untracked:  data/pdh.txt
     Untracked:  data/protein.txt
     Untracked:  data/rust_tan.txt
     Untracked:  data/salt.txt
     Untracked:  data/seedq.txt
     Untracked:  data/seedweight.txt
+    Untracked:  data/snp.gds
     Untracked:  data/stem_termination.txt
     Untracked:  data/sudden.txt
     Untracked:  data/virus.txt
-
-Unstaged changes:
-    Modified:   analysis/yield_lm_link.Rmd
 
 </code></pre>
 <p>
@@ -575,6 +607,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/6b0f0ac3c92f5310e765affbf4ab12942e7cdc7a/analysis/eda.Rmd" target="_blank">6b0f0ac</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2022-03-30
+</td>
+<td>
+Fix tidyr update
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/61011816309080de88ca75149d5d8cc8615030bc/docs/eda.html" target="_blank">6101181</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-09-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -940,19 +1006,25 @@ wflow_git_commit(all = T)
 </div>
 </div>
 <pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>Warning: package &#39;tidyverse&#39; was built under R version 4.1.2</code></pre>
 <pre><code>-- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
 <pre><code>v ggplot2 3.3.5     v purrr   0.3.4
-v tibble  3.1.2     v dplyr   1.0.7
-v tidyr   1.1.3     v stringr 1.4.0
-v readr   1.4.0     v forcats 0.5.1</code></pre>
-<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 4.0.5</code></pre>
-<pre><code>Warning: package &#39;tibble&#39; was built under R version 4.0.5</code></pre>
-<pre><code>Warning: package &#39;dplyr&#39; was built under R version 4.0.5</code></pre>
+v tibble  3.1.5     v dplyr   1.0.7
+v tidyr   1.1.4     v stringr 1.4.0
+v readr   2.1.2     v forcats 0.5.1</code></pre>
+<pre><code>Warning: package &#39;ggplot2&#39; was built under R version 4.1.1</code></pre>
+<pre><code>Warning: package &#39;tibble&#39; was built under R version 4.1.1</code></pre>
+<pre><code>Warning: package &#39;tidyr&#39; was built under R version 4.1.1</code></pre>
+<pre><code>Warning: package &#39;readr&#39; was built under R version 4.1.2</code></pre>
+<pre><code>Warning: package &#39;purrr&#39; was built under R version 4.1.1</code></pre>
+<pre><code>Warning: package &#39;dplyr&#39; was built under R version 4.1.1</code></pre>
+<pre><code>Warning: package &#39;stringr&#39; was built under R version 4.1.1</code></pre>
+<pre><code>Warning: package &#39;forcats&#39; was built under R version 4.1.1</code></pre>
 <pre><code>-- Conflicts ------------------------------------------ tidyverse_conflicts() --
 x dplyr::filter() masks stats::filter()
 x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(knitr)</code></pre>
-<pre><code>Warning: package &#39;knitr&#39; was built under R version 4.0.5</code></pre>
+<pre><code>Warning: package &#39;knitr&#39; was built under R version 4.1.1</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>Here i make some of the tables for the manuscript.</p>
@@ -964,19 +1036,26 @@ class_dict &lt;- list()
 for(i in seq_along(files_to_make_tables_for)) {
   
   f &lt;- files_to_make_tables_for[i]
-  if (f == &#39;preRGA.candidates.by.Blast.lst&#39; ) {next}
+  if (f == &#39;Lee.preRGA.candidates.by.Blast.lst&#39; ) {next}
   if (f == &#39;Lee.RGA.candidates.lst&#39;) {next}
   print(f)
   fh &lt;- read_tsv(paste(&#39;./data/&#39;, f, sep=&#39;&#39;), col_names = c(&#39;Name&#39;,&#39;Class&#39;,&#39;Type&#39;))
+  if (ncol(fh) == 2) {
+    # weird change in behaviour of tidyverse- used to be all NA by default
+    # when there were only 2 columns
+    fh$Type &lt;- NA
+  }
   fh &lt;- fh %&gt;% unite(United, Class, Type)
   # remove NAs in files with 2 columns
   fh$United &lt;- gsub(pattern = &#39;_NA&#39;, replacement = &#39;&#39;, fh$United)
+  
+  fh &lt;- fh %&gt;% mutate(Name = gsub(&#39;.t1&#39;, &#39;&#39;, Name))
   
   class_dict[[gsub(&#39;Lee.|.candidates.lst&#39;,&#39;&#39;,f)]] &lt;- fh
   all_results &lt;- c(all_results, table(fh$United))
 
 }</code></pre>
-<p>[1] “Lee.NBS.candidates.lst” [1] “Lee.preRGA.candidates.by.Blast.lst” [1] “Lee.RLK.candidates.lst” [1] “Lee.RLP.candidates.lst” [1] “Lee.TMCC.candidates.lst”</p>
+<p>[1] “Lee.NBS.candidates.lst” [1] “Lee.RLK.candidates.lst” [1] “Lee.RLP.candidates.lst” [1] “Lee.TMCC.candidates.lst”</p>
 <pre class="r"><code>kable(enframe(all_results, name=&#39;Class&#39;, value = &#39;Count&#39;))</code></pre>
 <table>
 <thead>
@@ -1019,30 +1098,26 @@ for(i in seq_along(files_to_make_tables_for)) {
 <td align="right">62</td>
 </tr>
 <tr class="odd">
-<td align="left">NA</td>
-<td align="right">14358</td>
-</tr>
-<tr class="even">
 <td align="left">RLK_lrr</td>
 <td align="right">470</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">RLK_lysm</td>
 <td align="right">19</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">RLK_other_receptor</td>
 <td align="right">684</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">RLP_lrr</td>
 <td align="right">177</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">RLP_lysm</td>
 <td align="right">3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">TM-CC</td>
 <td align="right">280</td>
 </tr>
@@ -1050,20 +1125,16 @@ for(i in seq_along(files_to_make_tables_for)) {
 </table>
 <p>Let’s calculate the per-class gene variability.</p>
 <pre class="r"><code>pav_table &lt;- read_tsv(&#39;./data/soybean_pan_pav.matrix_gene.txt.gz&#39;)</code></pre>
+<pre><code>Rows: 51414 Columns: 1111</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;\t&quot;
+chr    (1): Individual
+dbl (1110): AB-01, AB-02, BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-07, B...</code></pre>
 <pre><code>
--- Column specification --------------------------------------------------------
-cols(
-  .default = col_double(),
-  Individual = col_character()
-)
-i Use `spec()` for the full column specifications.</code></pre>
-<pre class="r"><code>t_pav_table &lt;- as_tibble(cbind(nms = names(pav_table), t(pav_table)))</code></pre>
-<pre><code>Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
-Using compatibility `.name_repair`.</code></pre>
-<pre class="r"><code>names(t_pav_table) &lt;- t_pav_table[1,]</code></pre>
-<pre><code>Warning: The `value` argument of `names&lt;-` must be a character vector as of
-tibble 3.0.0.</code></pre>
-<pre class="r"><code>t_pav_table &lt;- t_pav_table %&gt;% filter(Individual != &#39;Individual&#39;)</code></pre>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>#t_pav_table &lt;- as_tibble(cbind(nms = names(pav_table), t(pav_table)))
+t_pav_table &lt;- pav_table %&gt;% pivot_longer(cols= -1) %&gt;% pivot_wider(names_from = &quot;Individual&quot;,values_from = &quot;value&quot;) %&gt;% rename(&#39;Individual&#39;=&#39;name&#39;)</code></pre>
 <pre class="r"><code>names &lt;- c()
 presences &lt;- c()
 
@@ -1076,17 +1147,15 @@ for (i in seq_along(t_pav_table)){
   presences &lt;- c(presences, presents)
 }
 res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pre>
-<pre><code>Warning: The `nrow` argument of `new_tibble()` can&#39;t be missing as of tibble 2.0.0.
-`x` must be a scalar integer.</code></pre>
 <p>res_tibb now stores for each gene, in how many individuals it is present. We have 1110 individuals, so all genes with presences &lt; 1110 are variable.</p>
 <pre class="r"><code>res_tibb &lt;- res_tibb %&gt;% mutate(type = case_when(presences == 1110 ~ &#39;core&#39;,
                                      TRUE ~ &#39;variable&#39;))</code></pre>
 <pre class="r"><code>nbs_joined &lt;- left_join(class_dict[[&#39;NBS&#39;]], res_tibb, by = c(&#39;Name&#39;=&#39;names&#39;))</code></pre>
-<p>There are 486 NLR genes out of which 320 are core and 122 are variable.</p>
+<p>There are 486 NLR genes out of which 320 are core and 166 are variable.</p>
 <pre class="r"><code>rlk_joined &lt;- left_join(class_dict[[&#39;RLK&#39;]], res_tibb, by = c(&#39;Name&#39;=&#39;names&#39;))</code></pre>
-<p>There are 1173 RLK genes out of which 1075 are core and 89 are variable.</p>
+<p>There are 1173 RLK genes out of which 1075 are core and 98 are variable.</p>
 <pre class="r"><code>rlp_joined &lt;- left_join(class_dict[[&#39;RLP&#39;]], res_tibb, by = c(&#39;Name&#39;=&#39;names&#39;))</code></pre>
-<p>There are 180 RLK genes out of which 125 are core and 45 are variable.</p>
+<p>There are 180 RLK genes out of which 125 are core and 55 are variable.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1095,9 +1164,9 @@ res_tibb &lt;- new_tibble(list(names = names, presences = presences))</code></pr
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.0.3 (2020-10-10)
+<pre><code>R version 4.1.0 (2021-05-18)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 17134)
+Running under: Windows 10 x64 (build 19042)
 
 Matrix products: default
 
@@ -1110,26 +1179,28 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] knitr_1.33      forcats_0.5.1   stringr_1.4.0   dplyr_1.0.7    
- [5] purrr_0.3.4     readr_1.4.0     tidyr_1.1.3     tibble_3.1.2   
+ [1] knitr_1.36      forcats_0.5.1   stringr_1.4.0   dplyr_1.0.7    
+ [5] purrr_0.3.4     readr_2.1.2     tidyr_1.1.4     tibble_3.1.5   
  [9] ggplot2_3.3.5   tidyverse_1.3.1 workflowr_1.6.2
 
 loaded via a namespace (and not attached):
- [1] tidyselect_1.1.1  xfun_0.22         bslib_0.2.4       haven_2.4.0      
- [5] colorspace_2.0-2  vctrs_0.3.8       generics_0.1.0    htmltools_0.5.1.1
- [9] yaml_2.2.1        utf8_1.2.1        rlang_0.4.11      jquerylib_0.1.4  
-[13] later_1.2.0       pillar_1.6.1      withr_2.4.2       glue_1.4.2       
-[17] DBI_1.1.1         dbplyr_2.1.1      readxl_1.3.1      modelr_0.1.8     
-[21] lifecycle_1.0.0   cellranger_1.1.0  munsell_0.5.0     gtable_0.3.0     
-[25] rvest_1.0.0       evaluate_0.14     httpuv_1.6.0      fansi_0.5.0      
-[29] highr_0.9         broom_0.7.6       Rcpp_1.0.6        promises_1.2.0.1 
-[33] backports_1.2.1   scales_1.1.1      jsonlite_1.7.2    fs_1.5.0         
-[37] hms_1.0.0         digest_0.6.27     stringi_1.6.2     rprojroot_2.0.2  
-[41] grid_4.0.3        cli_3.0.0         tools_4.0.3       magrittr_2.0.1   
-[45] sass_0.3.1        crayon_1.4.1      whisker_0.4       pkgconfig_2.0.3  
-[49] ellipsis_0.3.2    xml2_1.3.2        reprex_2.0.0      lubridate_1.7.10 
-[53] rstudioapi_0.13   assertthat_0.2.1  rmarkdown_2.7     httr_1.4.2       
-[57] R6_2.5.0          git2r_0.28.0      compiler_4.0.3   </code></pre>
+ [1] Rcpp_1.0.7       lubridate_1.8.0  assertthat_0.2.1 rprojroot_2.0.2 
+ [5] digest_0.6.28    utf8_1.2.2       R6_2.5.1         cellranger_1.1.0
+ [9] backports_1.2.1  reprex_2.0.1     evaluate_0.14    highr_0.9       
+[13] httr_1.4.2       pillar_1.6.4     rlang_0.4.12     readxl_1.3.1    
+[17] rstudioapi_0.13  whisker_0.4      jquerylib_0.1.4  rmarkdown_2.11  
+[21] bit_4.0.4        munsell_0.5.0    broom_0.7.9      compiler_4.1.0  
+[25] httpuv_1.6.3     modelr_0.1.8     xfun_0.27        pkgconfig_2.0.3 
+[29] htmltools_0.5.2  tidyselect_1.1.1 fansi_0.5.0      crayon_1.4.1    
+[33] tzdb_0.1.2       dbplyr_2.1.1     withr_2.5.0      later_1.3.0     
+[37] grid_4.1.0       jsonlite_1.7.2   gtable_0.3.0     lifecycle_1.0.1 
+[41] DBI_1.1.1        git2r_0.28.0     magrittr_2.0.1   scales_1.1.1    
+[45] vroom_1.5.7      cli_3.2.0        stringi_1.7.5    fs_1.5.0        
+[49] promises_1.2.0.1 xml2_1.3.2       bslib_0.3.1      ellipsis_0.3.2  
+[53] generics_0.1.1   vctrs_0.3.8      tools_4.1.0      bit64_4.0.5     
+[57] glue_1.6.2       hms_1.1.1        parallel_4.1.0   fastmap_1.1.0   
+[61] yaml_2.2.1       colorspace_2.0-2 rvest_1.0.2      haven_2.4.3     
+[65] sass_0.4.0      </code></pre>
 </div>
 </div>
 
@@ -1185,6 +1256,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
