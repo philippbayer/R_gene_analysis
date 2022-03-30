@@ -15,12 +15,22 @@
 
 <title>R-gene count comparisons</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -38,12 +48,18 @@ div.section {
 }
 </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +72,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -91,10 +82,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +98,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +132,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +144,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +155,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +183,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +308,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -382,7 +354,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -413,7 +385,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-31
+<strong>Last updated:</strong> 2022-03-30
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -423,7 +395,7 @@ div.tocify {
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2.9000). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
@@ -461,7 +433,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20200917code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -504,16 +476,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee6b537ad9e14885c4cde1914443179f248a48be9targetblanke6b537aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/e6b537ad9e14885c4cde1914443179f248a48be9" target="_blank">e6b537a</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree768d0c973ea393f1f18d0795af547e1cdbf5f578targetblank768d0c9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/768d0c973ea393f1f18d0795af547e1cdbf5f578" target="_blank">768d0c9</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistreee6b537ad9e14885c4cde1914443179f248a48be9targetblanke6b537aa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree768d0c973ea393f1f18d0795af547e1cdbf5f578targetblank768d0c9a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/e6b537ad9e14885c4cde1914443179f248a48be9" target="_blank">e6b537a</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/768d0c973ea393f1f18d0795af547e1cdbf5f578" target="_blank">768d0c9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -522,8 +494,40 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
 
 Untracked files:
+    Untracked:  FigS5.png
+    Untracked:  GAPIT.GLM.Yield.Df.tValue.StdErr.csv
+    Untracked:  GAPIT.GLM.Yield.GWAS.Results.csv
+    Untracked:  GAPIT.GLM.Yield.Log.csv
+    Untracked:  GAPIT.GLM.Yield.MAF.pdf
+    Untracked:  GAPIT.GLM.Yield.Manhattan.Plot.Chromosomewise.pdf
+    Untracked:  GAPIT.GLM.Yield.Manhattan.Plot.Genomewise.pdf
+    Untracked:  GAPIT.GLM.Yield.Optimum.pdf
+    Untracked:  GAPIT.GLM.Yield.PRED.csv
+    Untracked:  GAPIT.GLM.Yield.QQ-Plot.pdf
+    Untracked:  GAPIT.GLM.Yield.ROC.csv
+    Untracked:  GAPIT.GLM.Yield.ROC.pdf
+    Untracked:  GAPIT.GLM.Yield.phenotype_view.pdf
+    Untracked:  GAPIT.Heterozygosity.pdf
+    Untracked:  GAPIT.Kin.VanRaden.csv
+    Untracked:  GAPIT.Kin.VanRaden.pdf
+    Untracked:  GAPIT.MLM.Yield.Df.tValue.StdErr.csv
+    Untracked:  GAPIT.MLM.Yield.GWAS.Results.csv
+    Untracked:  GAPIT.MLM.Yield.Log.csv
+    Untracked:  GAPIT.MLM.Yield.MAF.pdf
+    Untracked:  GAPIT.MLM.Yield.Manhattan.Plot.Chromosomewise.pdf
+    Untracked:  GAPIT.MLM.Yield.Manhattan.Plot.Genomewise.pdf
+    Untracked:  GAPIT.MLM.Yield.Optimum.pdf
+    Untracked:  GAPIT.MLM.Yield.PRED.csv
+    Untracked:  GAPIT.MLM.Yield.QQ-Plot.pdf
+    Untracked:  GAPIT.MLM.Yield.ROC.csv
+    Untracked:  GAPIT.MLM.Yield.ROC.pdf
+    Untracked:  GAPIT.MLM.Yield.phenotype_view.pdf
+    Untracked:  GAPIT.MLMM.Yield.phenotype_view.pdf
+    Untracked:  GAPIT.Marker.Density.pdf
+    Untracked:  GAPIT.Marker.LD.pdf
     Untracked:  data/Brec_R1.txt
     Untracked:  data/Brec_R2.txt
     Untracked:  data/CR15_R1.txt
@@ -538,6 +542,7 @@ Untracked files:
     Untracked:  data/PAVs_newick.txt
     Untracked:  data/PPR1.txt
     Untracked:  data/PPR2.txt
+    Untracked:  data/SNPs_lee.id.biallic_maf_0.05_geno_0.1.vcf.gz
     Untracked:  data/SNPs_newick.txt
     Untracked:  data/bac.txt
     Untracked:  data/brown.txt
@@ -547,21 +552,28 @@ Untracked files:
     Untracked:  data/flowerings.txt
     Untracked:  data/foregeye.txt
     Untracked:  data/height.txt
+    Untracked:  data/inds.txt
     Untracked:  data/late.txt
     Untracked:  data/mature.txt
     Untracked:  data/motting.txt
     Untracked:  data/mvp.kin.bin
     Untracked:  data/mvp.kin.desc
     Untracked:  data/oil.txt
+    Untracked:  data/paperinds.txt
     Untracked:  data/pdh.txt
     Untracked:  data/protein.txt
     Untracked:  data/rust_tan.txt
     Untracked:  data/salt.txt
     Untracked:  data/seedq.txt
     Untracked:  data/seedweight.txt
+    Untracked:  data/snp.gds
     Untracked:  data/stem_termination.txt
     Untracked:  data/sudden.txt
     Untracked:  data/virus.txt
+    Untracked:  output/GWAS_Manhattan.png
+
+Unstaged changes:
+    Modified:   data/pca.rds
 
 </code></pre>
 <p>
@@ -600,6 +612,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/768d0c973ea393f1f18d0795af547e1cdbf5f578/analysis/gwas.Rmd" target="_blank">768d0c9</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2022-03-30
+</td>
+<td>
+update GWAS with Manhattan plots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/33c71ae9321ad97d6d8980e4ca3ac3dc3003fa04/docs/gwas.html" target="_blank">33c71ae</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1171,6 +1217,7 @@ Update of analysis
 <p>Let’s run a GWAS via GAPIT using the NLR genes as input, and the PCs calculated using SNPs</p>
 <pre class="r"><code>library(GAPIT3)
 library(SNPRelate)
+library(ggtext)
 library(tidyverse)
 library(ggsignif)
 library(cowplot)
@@ -1211,13 +1258,13 @@ pca &lt;- readRDS(&#39;data/pca.rds&#39;)</code></pre>
 plot(tab$EV2, tab$EV1, xlab=&quot;eigenvector 2&quot;, ylab=&quot;eigenvector 1&quot;)</code></pre>
 <p><img src="figure/gwas.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>head(tab)</code></pre>
-<pre><code>  sample.id         EV1          EV2
-1     AB-01 -0.03587935  0.008552839
-2     AB-02 -0.03681818  0.010897831
-3     BR-01 -0.01975551 -0.016854610
-4     BR-02 -0.01651350 -0.015271782
-5     BR-03 -0.01702049 -0.018778840
-6     BR-04 -0.01639033 -0.021407320</code></pre>
+<pre><code>  sample.id           EV1         EV2
+1     AB-01 -0.0096910924  0.01605862
+2     AB-02  0.0061795109  0.01644249
+3     BR-01 -0.0173940264 -0.01621850
+4     BR-02 -0.0134548060 -0.01678429
+5     BR-03 -0.0025329218 -0.03735107
+6     BR-04 -0.0003749604 -0.03575687</code></pre>
 <p>Alright, now we have SNP-based principal components. We’ll use the first two as our own covariates in GAPIT.</p>
 <p>I wrote a Python script which takes the NLR-only PAV table and turns that into HapMap format with fake SNPs, see <code>code/transformToGAPIT.py</code>.</p>
 <pre class="r"><code>myY &lt;- read.table(&#39;data/yield.txt&#39;, head = TRUE)
@@ -1257,58 +1304,40 @@ for(i in seq_along(results_files)) {
     results_df &lt;- rbind(results_df, filt_df)
   }
 }</code></pre>
-<pre><code>Parsed with column specification:
-cols(
-  SNP = col_character(),
-  Chromosome = col_double(),
-  Position = col_double(),
-  P.value = col_double(),
-  maf = col_double(),
-  nobs = col_double(),
-  Rsquare.of.Model.without.SNP = col_logical(),
-  Rsquare.of.Model.with.SNP = col_logical(),
-  `FDR_Adjusted_P-values` = col_double(),
-  effect = col_double()
-)</code></pre>
-<pre><code>Parsed with column specification:
-cols(
-  SNP = col_character(),
-  Chromosome = col_double(),
-  Position = col_double(),
-  P.value = col_double(),
-  maf = col_double(),
-  nobs = col_double(),
-  Rsquare.of.Model.without.SNP = col_double(),
-  Rsquare.of.Model.with.SNP = col_double(),
-  `FDR_Adjusted_P-values` = col_double(),
-  effect = col_double()
-)
-Parsed with column specification:
-cols(
-  SNP = col_character(),
-  Chromosome = col_double(),
-  Position = col_double(),
-  P.value = col_double(),
-  maf = col_double(),
-  nobs = col_double(),
-  Rsquare.of.Model.without.SNP = col_double(),
-  Rsquare.of.Model.with.SNP = col_double(),
-  `FDR_Adjusted_P-values` = col_double(),
-  effect = col_double()
-)</code></pre>
-<pre><code>Parsed with column specification:
-cols(
-  SNP = col_character(),
-  Chromosome = col_double(),
-  Position = col_double(),
-  P.value = col_double(),
-  maf = col_double(),
-  nobs = col_double(),
-  Rsquare.of.Model.without.SNP = col_logical(),
-  Rsquare.of.Model.with.SNP = col_logical(),
-  `FDR_Adjusted_P-values` = col_double(),
-  effect = col_logical()
-)</code></pre>
+<pre><code>Rows: 486 Columns: 10</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;,&quot;
+chr (1): SNP
+dbl (7): Chromosome, Position, P.value, maf, nobs, FDR_Adjusted_P-values, ef...
+lgl (2): Rsquare.of.Model.without.SNP, Rsquare.of.Model.with.SNP</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>Rows: 486 Columns: 10</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;,&quot;
+chr (1): SNP
+dbl (9): Chromosome, Position, P.value, maf, nobs, Rsquare.of.Model.without....</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>Rows: 486 Columns: 10</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;,&quot;
+chr (1): SNP
+dbl (9): Chromosome, Position, P.value, maf, nobs, Rsquare.of.Model.without....</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>Rows: 486 Columns: 10</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;,&quot;
+chr (1): SNP
+dbl (6): Chromosome, Position, P.value, maf, nobs, FDR_Adjusted_P-values
+lgl (3): Rsquare.of.Model.without.SNP, Rsquare.of.Model.with.SNP, effect</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>results_df %&gt;% knitr::kable()</code></pre>
 <table>
 <colgroup>
@@ -1590,18 +1619,23 @@ candidates %&gt;% knitr::kable()</code></pre>
 <p>Let’s focus on genes found by more than one method.</p>
 <p>This particular R-gene GlymaLee.02G228600.1.p seems to have a strong negative impact on yield (effect -1.69 in MLM, -1.94 in GLM, -1.72 in FarmCPU) but it also has a horrible MAF, normally this would get filtered in SNPs but we don’t have SNPs here. Let’s plot the yield for individuals who have vs those who don’t have those genes that appear in more than one method.</p>
 <pre class="r"><code>pav_table &lt;- read_tsv(&#39;./data/soybean_pan_pav.matrix_gene.txt.gz&#39;)</code></pre>
-<pre><code>Parsed with column specification:
-cols(
-  .default = col_double(),
-  Individual = col_character()
-)</code></pre>
-<pre><code>See spec(...) for full column specifications.</code></pre>
+<pre><code>Rows: 51414 Columns: 1111</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;\t&quot;
+chr    (1): Individual
+dbl (1110): AB-01, AB-02, BR-01, BR-02, BR-03, BR-04, BR-05, BR-06, BR-07, B...</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>yield &lt;- read_tsv(&#39;./data/yield.txt&#39;)</code></pre>
-<pre><code>Parsed with column specification:
-cols(
-  Line = col_character(),
-  Yield = col_double()
-)</code></pre>
+<pre><code>Rows: 769 Columns: 2</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;\t&quot;
+chr (1): Line
+dbl (1): Yield</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>pav_table %&gt;% 
   filter(Individual == &#39;GlymaLee.02G228600.1.p&#39;) %&gt;% 
   pivot_longer(!Individual, names_to = &#39;Line&#39;, values_to = &#39;Presence&#39;) %&gt;% 
@@ -1689,12 +1723,13 @@ Joining, by = &quot;Line&quot;</code></pre>
 <p>For myself, the four labels: GlymaLee.01G030900.1.p, UWASoyPan00316, UWASoyPan00772, UWASoyPan04354</p>
 <p>Let’s also make those plots, grouped by breeding group</p>
 <pre class="r"><code>groups &lt;- read_csv(&#39;./data/Table_of_cultivar_groups.csv&#39;)</code></pre>
-<pre><code>Parsed with column specification:
-cols(
-  `Data-storage-ID` = col_character(),
-  `PI-ID` = col_character(),
-  `Group in violin table` = col_character()
-)</code></pre>
+<pre><code>Rows: 1069 Columns: 3</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;,&quot;
+chr (3): Data-storage-ID, PI-ID, Group in violin table</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>groups &lt;- groups %&gt;% dplyr::rename(Group = `Group in violin table`)
 groups &lt;- groups %&gt;% 
   mutate(Group = str_replace_all(Group, &#39;landrace&#39;, &#39;Landrace&#39;)) %&gt;%
@@ -2062,13 +2097,13 @@ for(i in 1:nrow(candidates)) {
   }
 }</code></pre>
 <pre><code>Joining, by = &quot;Line&quot;</code></pre>
-<pre><code>`summarise()` regrouping output by &#39;Presence&#39; (override with `.groups` argument)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Presence&#39;. You can override using the `.groups` argument.</code></pre>
 <pre><code>Joining, by = &quot;Line&quot;</code></pre>
-<pre><code>`summarise()` regrouping output by &#39;Presence&#39; (override with `.groups` argument)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Presence&#39;. You can override using the `.groups` argument.</code></pre>
 <pre><code>Joining, by = &quot;Line&quot;</code></pre>
-<pre><code>`summarise()` regrouping output by &#39;Presence&#39; (override with `.groups` argument)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Presence&#39;. You can override using the `.groups` argument.</code></pre>
 <pre><code>Joining, by = &quot;Line&quot;</code></pre>
-<pre><code>`summarise()` regrouping output by &#39;Presence&#39; (override with `.groups` argument)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Presence&#39;. You can override using the `.groups` argument.</code></pre>
 <pre class="r"><code>yields %&gt;% knitr::kable(digits=2)</code></pre>
 <table>
 <thead>
@@ -2230,7 +2265,7 @@ for(i in 1:nrow(candidates)) {
   group_by(Gene, Group) %&gt;% 
   summarise(&#39;Yield difference when gene present&#39; = diff(`Mean yield`)) %&gt;% 
   knitr::kable(digits=2)</code></pre>
-<pre><code>`summarise()` regrouping output by &#39;Gene&#39; (override with `.groups` argument)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Gene&#39;. You can override using the `.groups` argument.</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -2302,6 +2337,93 @@ for(i in 1:nrow(candidates)) {
 </tr>
 </tbody>
 </table>
+<div id="manhattan-plots" class="section level1">
+<h1>Manhattan plots</h1>
+<p>A reviewer asked for Manhattan plots.</p>
+<pre class="r"><code># slightly modified from https://danielroelfs.com/blog/how-i-create-manhattan-plots-using-ggplot/
+# Thanks :) 
+myplot &lt;- function(f) {
+  print(f)
+  mlm &lt;- read_csv(paste(&#39;./output/GAPIT/&#39;, f, sep=&#39;&#39;))
+  mlm &lt;- mlm %&gt;% filter(SNP != &#39;GlymaLee.02G228600.1.p&#39;)
+  data_cum &lt;- mlm %&gt;% 
+    group_by(Chromosome) %&gt;% 
+    summarise(max_bp = max(Position)) %&gt;% 
+    mutate(bp_add = lag(cumsum(max_bp), default = 0)) %&gt;% 
+    select(Chromosome, bp_add)
+  
+  mlm &lt;- mlm %&gt;% 
+    inner_join(data_cum, by = &quot;Chromosome&quot;) %&gt;% 
+    mutate(bp_cum = Position + bp_add)
+  
+  axis_set &lt;- mlm %&gt;% 
+    group_by(Chromosome) %&gt;% 
+    summarize(center = mean(bp_cum))
+  
+  ylim &lt;- mlm %&gt;% 
+     filter(`FDR_Adjusted_P-values` == min(`FDR_Adjusted_P-values`)) %&gt;% 
+     mutate(ylim = abs(floor(log10(`FDR_Adjusted_P-values`))) + 1) %&gt;% 
+     pull(ylim)
+  
+  mlm_plot &lt;- ggplot(mlm, aes(x = bp_cum, y = -log10(`FDR_Adjusted_P-values`), 
+                color = as_factor(Chromosome))) +
+    geom_hline(yintercept = -log10(0.05), color = &quot;grey40&quot;, linetype = &quot;dashed&quot;) + 
+    geom_point(alpha = 0.75) +
+    scale_x_continuous(label = axis_set$Chromosome, breaks = axis_set$center) +
+    scale_y_continuous(expand = c(0,0), limits = c(0, ylim)) +
+    scale_color_manual(values = rep(c(&quot;#276FBF&quot;, &quot;#183059&quot;), unique(length(axis_set$Chromosome)))) +
+    labs(x = NULL, 
+         y = &quot;-log&lt;sub&gt;10&lt;/sub&gt;(p)&quot;) + 
+    theme_minimal() +
+    theme( 
+      legend.position = &quot;none&quot;,
+      panel.border = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.title.y = element_markdown(),
+      #axis.text.x = element_text(angle = 60, size = 8, vjust = 0.5)
+    )
+mlm_plot
+}</code></pre>
+<pre class="r"><code>files &lt;- list.files(path=&#39;./output/GAPIT/&#39;, &#39;*GWAS.Results.csv&#39;)
+names(files) &lt;- str_split(files, pattern = &#39;\\.&#39;, simplify=T)[,2]
+# remove MLM as there are no hits
+files &lt;- files[c(&#39;GLM&#39;,&#39;MLMM&#39;,&#39;FarmCPU&#39;)]
+plot_list &lt;- purrr::map(files, myplot)</code></pre>
+<pre><code>[1] &quot;GAPIT.GLM.Yield.GWAS.Results.csv&quot;</code></pre>
+<pre><code>Rows: 486 Columns: 10</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;,&quot;
+chr (1): SNP
+dbl (9): Chromosome, Position, P.value, maf, nobs, Rsquare.of.Model.without....</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>[1] &quot;GAPIT.MLMM.Yield.GWAS.Results.csv&quot;</code></pre>
+<pre><code>Rows: 486 Columns: 10</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;,&quot;
+chr (1): SNP
+dbl (6): Chromosome, Position, P.value, maf, nobs, FDR_Adjusted_P-values
+lgl (3): Rsquare.of.Model.without.SNP, Rsquare.of.Model.with.SNP, effect</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>[1] &quot;GAPIT.FarmCPU.Yield.GWAS.Results.csv&quot;</code></pre>
+<pre><code>Rows: 486 Columns: 10</code></pre>
+<pre><code>-- Column specification --------------------------------------------------------
+Delimiter: &quot;,&quot;
+chr (1): SNP
+dbl (7): Chromosome, Position, P.value, maf, nobs, FDR_Adjusted_P-values, ef...
+lgl (2): Rsquare.of.Model.without.SNP, Rsquare.of.Model.with.SNP</code></pre>
+<pre><code>
+i Use `spec()` to retrieve the full column specification for this data.
+i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>result &lt;- plot_list$GLM /  plot_list$FarmCPU + plot_annotation(tag_levels = &#39;A&#39;)
+
+result</code></pre>
+<p><img src="figure/gwas.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>cowplot::save_plot(filename = &#39;output/GWAS_Manhattan.png&#39;,result, base_height = 5, base_width=8)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2310,9 +2432,9 @@ for(i in 1:nrow(candidates)) {
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.3 (2020-02-29)
+<pre><code>R version 4.1.0 (2021-05-18)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 17134)
+Running under: Windows 10 x64 (build 19042)
 
 Matrix products: default
 
@@ -2322,50 +2444,35 @@ locale:
 [5] LC_TIME=English_Australia.1252    
 
 attached base packages:
-[1] compiler  parallel  stats     graphics  grDevices utils     datasets 
-[8] methods   base     
+[1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] biganalytics_1.1.21  biglm_0.9-2          DBI_1.1.0           
- [4] foreach_1.4.8        bigmemory_4.5.36     scatterplot3d_0.3-41
- [7] EMMREML_3.1          Matrix_1.2-18        ape_5.3             
-[10] genetics_1.3.8.1.2   mvtnorm_1.1-1        MASS_7.3-51.6       
-[13] gtools_3.8.1         gdata_2.18.0         combinat_0.0-8      
-[16] LDheatmap_0.99-8     gplots_3.0.3         multtest_2.42.0     
-[19] Biobase_2.46.0       BiocGenerics_0.32.0  patchwork_1.0.0     
-[22] ggsci_2.9            cowplot_1.0.0        ggsignif_0.6.0      
-[25] forcats_0.5.0        stringr_1.4.0        dplyr_1.0.0         
-[28] purrr_0.3.4          readr_1.3.1          tidyr_1.1.0         
-[31] tibble_3.0.2         ggplot2_3.3.2        tidyverse_1.3.0     
-[34] SNPRelate_1.20.1     gdsfmt_1.22.0        GAPIT3_3.1.0        
-[37] workflowr_1.6.2.9000
+ [1] patchwork_1.1.1  ggsci_2.9        cowplot_1.1.1    ggsignif_0.6.3  
+ [5] forcats_0.5.1    stringr_1.4.0    dplyr_1.0.7      purrr_0.3.4     
+ [9] readr_2.1.2      tidyr_1.1.4      tibble_3.1.5     ggplot2_3.3.5   
+[13] tidyverse_1.3.1  ggtext_0.1.1     SNPRelate_1.26.0 gdsfmt_1.28.1   
+[17] GAPIT3_3.1.0     workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
- [1] bigmemory.sri_0.1.3 colorspace_1.4-1    ellipsis_0.3.1     
- [4] rprojroot_1.3-2     fs_1.5.0.9000       rstudioapi_0.11    
- [7] farver_2.0.3        fansi_0.4.1         lubridate_1.7.9    
-[10] xml2_1.3.2          codetools_0.2-16    splines_3.6.3      
-[13] knitr_1.29          jsonlite_1.7.1      broom_0.5.6        
-[16] dbplyr_1.4.4        httr_1.4.2          backports_1.1.10   
-[19] assertthat_0.2.1    cli_2.0.2           later_1.1.0.1      
-[22] htmltools_0.5.0     tools_3.6.3         gtable_0.3.0       
-[25] glue_1.4.2          Rcpp_1.0.5          cellranger_1.1.0   
-[28] vctrs_0.3.1         nlme_3.1-148        iterators_1.0.12   
-[31] xfun_0.17           ps_1.3.4            rvest_0.3.5        
-[34] lifecycle_0.2.0     getPass_0.2-2       scales_1.1.1       
-[37] hms_0.5.3           promises_1.1.1      RColorBrewer_1.1-2 
-[40] yaml_2.2.1          stringi_1.5.3       highr_0.8          
-[43] caTools_1.18.0      rlang_0.4.7         pkgconfig_2.0.3    
-[46] bitops_1.0-6        evaluate_0.14       lattice_0.20-41    
-[49] labeling_0.3        processx_3.4.4      tidyselect_1.1.0   
-[52] magrittr_1.5        R6_2.4.1            generics_0.0.2     
-[55] pillar_1.4.4        haven_2.3.1         whisker_0.4        
-[58] withr_2.2.0         survival_3.2-3      modelr_0.1.8       
-[61] crayon_1.3.4        KernSmooth_2.23-17  utf8_1.1.4         
-[64] rmarkdown_2.3       grid_3.6.3          readxl_1.3.1       
-[67] blob_1.2.1          callr_3.4.4         git2r_0.27.1       
-[70] reprex_0.3.0        digest_0.6.25       httpuv_1.5.4       
-[73] stats4_3.6.3        munsell_0.5.0      </code></pre>
+ [1] httr_1.4.2         sass_0.4.0         bit64_4.0.5        vroom_1.5.7       
+ [5] jsonlite_1.7.2     modelr_0.1.8       bslib_0.3.1        assertthat_0.2.1  
+ [9] highr_0.9          cellranger_1.1.0   yaml_2.2.1         pillar_1.6.4      
+[13] backports_1.2.1    glue_1.6.2         digest_0.6.28      RColorBrewer_1.1-2
+[17] promises_1.2.0.1   gridtext_0.1.4     rvest_1.0.2        colorspace_2.0-2  
+[21] htmltools_0.5.2    httpuv_1.6.3       pkgconfig_2.0.3    broom_0.7.9       
+[25] haven_2.4.3        scales_1.1.1       whisker_0.4        later_1.3.0       
+[29] tzdb_0.1.2         git2r_0.28.0       farver_2.1.0       generics_0.1.1    
+[33] ellipsis_0.3.2     withr_2.5.0        cli_3.2.0          magrittr_2.0.1    
+[37] crayon_1.4.1       readxl_1.3.1       evaluate_0.14      fs_1.5.0          
+[41] fansi_0.5.0        xml2_1.3.2         tools_4.1.0        hms_1.1.1         
+[45] lifecycle_1.0.1    munsell_0.5.0      reprex_2.0.1       compiler_4.1.0    
+[49] jquerylib_0.1.4    rlang_0.4.12       grid_4.1.0         rstudioapi_0.13   
+[53] labeling_0.4.2     rmarkdown_2.11     gtable_0.3.0       DBI_1.1.1         
+[57] markdown_1.1       R6_2.5.1           lubridate_1.8.0    knitr_1.36        
+[61] fastmap_1.1.0      bit_4.0.4          utf8_1.2.2         rprojroot_2.0.2   
+[65] stringi_1.7.5      parallel_4.1.0     Rcpp_1.0.7         vctrs_0.3.8       
+[69] dbplyr_2.1.1       tidyselect_1.1.1   xfun_0.27         </code></pre>
+</div>
 </div>
 
 
@@ -2382,6 +2489,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+
+
 </div>
 </div>
 
@@ -2391,7 +2500,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -2409,7 +2518,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -2418,6 +2527,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
