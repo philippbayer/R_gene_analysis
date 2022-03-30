@@ -15,12 +15,22 @@
 
 <title>R-gene count comparisons</title>
 
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
 <script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
@@ -38,12 +48,18 @@ div.section {
 }
 </style>
 
-<style type="text/css">code{white-space: pre;}</style>
+
+
 <style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
 <script type="text/javascript">
 if (window.hljs) {
   hljs.configure({languages: []});
@@ -56,32 +72,7 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+
 
 
 
@@ -91,10 +82,6 @@ h6 {
   max-width: 940px;
   margin-left: auto;
   margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
 }
 img {
   max-width:100%;
@@ -111,40 +98,13 @@ button.code-folding-btn:focus {
 summary {
   display: list-item;
 }
+pre code {
+  padding: 0;
+}
 </style>
 
 
 <style type="text/css">
-/* padding for bootstrap navbar */
-body {
-  padding-top: 51px;
-  padding-bottom: 40px;
-}
-/* offset scroll position for anchor links (for fixed navbar)  */
-.section h1 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h2 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h3 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h4 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h5 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
-.section h6 {
-  padding-top: 56px;
-  margin-top: -56px;
-}
 .dropdown-submenu {
   position: relative;
 }
@@ -172,7 +132,7 @@ body {
   margin-right: -10px;
 }
 .dropdown-submenu:hover>a:after {
-  border-left-color: #ffffff;
+  border-left-color: #adb5bd;
 }
 .dropdown-submenu.pull-left {
   float: none;
@@ -184,7 +144,7 @@ body {
 }
 </style>
 
-<script>
+<script type="text/javascript">
 // manage active state of menu based on current page
 $(document).ready(function () {
   // active menu anchor
@@ -195,10 +155,23 @@ $(document).ready(function () {
   var menuAnchor = $('a[href="' + href + '"]');
 
   // mark it active
-  menuAnchor.parent().addClass('active');
+  menuAnchor.tab('show');
 
   // if it's got a parent navbar menu mark it active as well
   menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
 });
 </script>
 
@@ -210,7 +183,6 @@ $(document).ready(function () {
   max-height: 500px;
   min-height: 44px;
   overflow-y: auto;
-  background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -336,7 +308,7 @@ div.tocify {
 
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
-<div class="row-fluid">
+<div class="row">
 <div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
@@ -382,7 +354,7 @@ div.tocify {
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-<div class="fluid-row" id="header">
+<div id="header">
 
 
 
@@ -413,7 +385,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-03-29
+<strong>Last updated:</strong> 2022-03-30
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -423,7 +395,7 @@ div.tocify {
 </p>
 <p>
 This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
-  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2.9000). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
 </p>
 <hr>
 </div>
@@ -461,7 +433,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongSeedstrongcodesetseed20200917code" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+<p>The command <code>set.seed(20200917)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
 </div>
 </div>
 </div>
@@ -504,16 +476,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree22ac14c93aeab6690cd68df289ca73fa80cf3e86targetblank22ac14ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/22ac14c93aeab6690cd68df289ca73fa80cf3e86" target="_blank">22ac14c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2f81d73d12cfe702028cc4a092b72ec25e68c325targetblank2f81d73a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/philippbayer/R_gene_analysis/tree/2f81d73d12cfe702028cc4a092b72ec25e68c325" target="_blank">2f81d73</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree22ac14c93aeab6690cd68df289ca73fa80cf3e86targetblank22ac14ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomphilippbayerRgeneanalysistree2f81d73d12cfe702028cc4a092b72ec25e68c325targetblank2f81d73a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/22ac14c93aeab6690cd68df289ca73fa80cf3e86" target="_blank">22ac14c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/philippbayer/R_gene_analysis/tree/2f81d73d12cfe702028cc4a092b72ec25e68c325" target="_blank">2f81d73</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -524,6 +496,7 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
+    Untracked:  FigS5.png
     Untracked:  data/Brec_R1.txt
     Untracked:  data/Brec_R2.txt
     Untracked:  data/CR15_R1.txt
@@ -538,6 +511,7 @@ Untracked files:
     Untracked:  data/PAVs_newick.txt
     Untracked:  data/PPR1.txt
     Untracked:  data/PPR2.txt
+    Untracked:  data/SNPs_lee.id.biallic_maf_0.05_geno_0.1.vcf.gz
     Untracked:  data/SNPs_newick.txt
     Untracked:  data/bac.txt
     Untracked:  data/brown.txt
@@ -547,25 +521,27 @@ Untracked files:
     Untracked:  data/flowerings.txt
     Untracked:  data/foregeye.txt
     Untracked:  data/height.txt
+    Untracked:  data/inds.txt
     Untracked:  data/late.txt
     Untracked:  data/mature.txt
     Untracked:  data/motting.txt
     Untracked:  data/mvp.kin.bin
     Untracked:  data/mvp.kin.desc
     Untracked:  data/oil.txt
+    Untracked:  data/paperinds.txt
     Untracked:  data/pdh.txt
     Untracked:  data/protein.txt
     Untracked:  data/rust_tan.txt
     Untracked:  data/salt.txt
     Untracked:  data/seedq.txt
     Untracked:  data/seedweight.txt
+    Untracked:  data/snp.gds
     Untracked:  data/stem_termination.txt
     Untracked:  data/sudden.txt
     Untracked:  data/virus.txt
-
-Unstaged changes:
-    Modified:   analysis/gwas.Rmd
-    Modified:   analysis/index.Rmd
+    Untracked:  output/FigS5.png
+    Untracked:  output/NLR_boxplot_saved.Rds
+    Untracked:  output/merged_fig1.png
 
 </code></pre>
 <p>
@@ -604,6 +580,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/philippbayer/R_gene_analysis/blob/2f81d73d12cfe702028cc4a092b72ec25e68c325/analysis/total_numbers.Rmd" target="_blank">2f81d73</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2022-03-30
+</td>
+<td>
+New Fig 1
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/philippbayer/R_gene_analysis/dd05d737a64cdc027caf696fda9cd46323d3e7e0/docs/total_numbers.html" target="_blank">dd05d73</a>
+</td>
+<td>
+Philipp Bayer
+</td>
+<td>
+2021-03-29
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -958,7 +968,7 @@ Philipp Bayer
 2020-09-21
 </td>
 <td>
-wflow_publish(&quot;analysis/*&quot;)
+wflow_publish("analysis/*")
 </td>
 </tr>
 <tr>
@@ -1086,39 +1096,25 @@ write_delim(nbs_pav_table, &#39;data/NBS_PAV.txt.gz&#39;, delim=&#39;\t&#39;)</c
 <pre class="r"><code>not_nbs_pav_table &lt;- pav_table %&gt;% filter(! Individual %in% nbs$Name)</code></pre>
 <pre class="r"><code>not_nbs_pav_table</code></pre>
 <pre><code># A tibble: 50,928 x 1,111
-   Individual `AB-01` `AB-02` `BR-01` `BR-02` `BR-03` `BR-04` `BR-05` `BR-06`
-   &lt;chr&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
- 1 GlymaLee.~       1       1       1       1       1       1       1       1
- 2 GlymaLee.~       1       1       1       1       1       1       1       1
- 3 GlymaLee.~       1       1       1       1       1       1       1       1
- 4 GlymaLee.~       1       1       1       1       1       1       1       1
- 5 GlymaLee.~       1       1       1       1       1       1       1       1
- 6 GlymaLee.~       1       1       1       1       1       1       1       1
- 7 GlymaLee.~       1       1       1       1       1       1       1       1
- 8 GlymaLee.~       1       1       1       1       1       1       1       1
- 9 GlymaLee.~       1       1       1       1       1       1       1       1
-10 GlymaLee.~       1       1       1       1       1       1       1       1
-# ... with 50,918 more rows, and 1,102 more variables: `BR-07` &lt;dbl&gt;,
-#   `BR-08` &lt;dbl&gt;, `BR-09` &lt;dbl&gt;, `BR-10` &lt;dbl&gt;, `BR-11` &lt;dbl&gt;, `BR-12` &lt;dbl&gt;,
-#   `BR-13` &lt;dbl&gt;, `BR-14` &lt;dbl&gt;, `BR-15` &lt;dbl&gt;, `BR-16` &lt;dbl&gt;, `BR-17` &lt;dbl&gt;,
-#   `BR-18` &lt;dbl&gt;, `BR-20` &lt;dbl&gt;, `BR-23` &lt;dbl&gt;, `BR-24` &lt;dbl&gt;, `BR-29` &lt;dbl&gt;,
-#   `BR-30` &lt;dbl&gt;, `BR-32` &lt;dbl&gt;, DT2000 &lt;dbl&gt;, ESS &lt;dbl&gt;, For &lt;dbl&gt;,
-#   HN001 &lt;dbl&gt;, HN002 &lt;dbl&gt;, HN003 &lt;dbl&gt;, HN004 &lt;dbl&gt;, HN005 &lt;dbl&gt;,
-#   HN006 &lt;dbl&gt;, HN007 &lt;dbl&gt;, HN008 &lt;dbl&gt;, HN009 &lt;dbl&gt;, HN010 &lt;dbl&gt;,
-#   HN011 &lt;dbl&gt;, HN012 &lt;dbl&gt;, HN013 &lt;dbl&gt;, HN015 &lt;dbl&gt;, HN016B &lt;dbl&gt;,
-#   HN017B &lt;dbl&gt;, HN018 &lt;dbl&gt;, HN019 &lt;dbl&gt;, HN021 &lt;dbl&gt;, HN022 &lt;dbl&gt;,
-#   HN023 &lt;dbl&gt;, HN024 &lt;dbl&gt;, HN025 &lt;dbl&gt;, HN026 &lt;dbl&gt;, HN027 &lt;dbl&gt;,
-#   HN028 &lt;dbl&gt;, HN029 &lt;dbl&gt;, HN030 &lt;dbl&gt;, HN031 &lt;dbl&gt;, HN032 &lt;dbl&gt;,
-#   HN033 &lt;dbl&gt;, HN034 &lt;dbl&gt;, HN035 &lt;dbl&gt;, HN036 &lt;dbl&gt;, HN037 &lt;dbl&gt;,
-#   HN038 &lt;dbl&gt;, HN039 &lt;dbl&gt;, HN040 &lt;dbl&gt;, HN041 &lt;dbl&gt;, HN042 &lt;dbl&gt;,
-#   HN043 &lt;dbl&gt;, HN044 &lt;dbl&gt;, HN045 &lt;dbl&gt;, HN046 &lt;dbl&gt;, HN047 &lt;dbl&gt;,
-#   HN048 &lt;dbl&gt;, HN049 &lt;dbl&gt;, HN050 &lt;dbl&gt;, HN051 &lt;dbl&gt;, HN052 &lt;dbl&gt;,
-#   HN053 &lt;dbl&gt;, HN054 &lt;dbl&gt;, HN055 &lt;dbl&gt;, HN056 &lt;dbl&gt;, HN057 &lt;dbl&gt;,
-#   HN058 &lt;dbl&gt;, HN059 &lt;dbl&gt;, HN060 &lt;dbl&gt;, HN061 &lt;dbl&gt;, HN062 &lt;dbl&gt;,
-#   HN063 &lt;dbl&gt;, HN064 &lt;dbl&gt;, HN065 &lt;dbl&gt;, HN066 &lt;dbl&gt;, HN067 &lt;dbl&gt;,
-#   HN068 &lt;dbl&gt;, HN069 &lt;dbl&gt;, HN070 &lt;dbl&gt;, HN071 &lt;dbl&gt;, HN072 &lt;dbl&gt;,
-#   HN073 &lt;dbl&gt;, HN074 &lt;dbl&gt;, HN075 &lt;dbl&gt;, HN076 &lt;dbl&gt;, HN077 &lt;dbl&gt;,
-#   HN078 &lt;dbl&gt;, HN079 &lt;dbl&gt;, HN080 &lt;dbl&gt;, HN081 &lt;dbl&gt;, ...</code></pre>
+   Individual    `AB-01` `AB-02` `BR-01` `BR-02` `BR-03` `BR-04` `BR-05` `BR-06`
+   &lt;chr&gt;           &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 GlymaLee.01G~       1       1       1       1       1       1       1       1
+ 2 GlymaLee.01G~       1       1       1       1       1       1       1       1
+ 3 GlymaLee.01G~       1       1       1       1       1       1       1       1
+ 4 GlymaLee.01G~       1       1       1       1       1       1       1       1
+ 5 GlymaLee.01G~       1       1       1       1       1       1       1       1
+ 6 GlymaLee.01G~       1       1       1       1       1       1       1       1
+ 7 GlymaLee.01G~       1       1       1       1       1       1       1       1
+ 8 GlymaLee.01G~       1       1       1       1       1       1       1       1
+ 9 GlymaLee.01G~       1       1       1       1       1       1       1       1
+10 GlymaLee.01G~       1       1       1       1       1       1       1       1
+# ... with 50,918 more rows, and 1,102 more variables: BR-07 &lt;dbl&gt;,
+#   BR-08 &lt;dbl&gt;, BR-09 &lt;dbl&gt;, BR-10 &lt;dbl&gt;, BR-11 &lt;dbl&gt;, BR-12 &lt;dbl&gt;,
+#   BR-13 &lt;dbl&gt;, BR-14 &lt;dbl&gt;, BR-15 &lt;dbl&gt;, BR-16 &lt;dbl&gt;, BR-17 &lt;dbl&gt;,
+#   BR-18 &lt;dbl&gt;, BR-20 &lt;dbl&gt;, BR-23 &lt;dbl&gt;, BR-24 &lt;dbl&gt;, BR-29 &lt;dbl&gt;,
+#   BR-30 &lt;dbl&gt;, BR-32 &lt;dbl&gt;, DT2000 &lt;dbl&gt;, ESS &lt;dbl&gt;, For &lt;dbl&gt;, HN001 &lt;dbl&gt;,
+#   HN002 &lt;dbl&gt;, HN003 &lt;dbl&gt;, HN004 &lt;dbl&gt;, HN005 &lt;dbl&gt;, HN006 &lt;dbl&gt;,
+#   HN007 &lt;dbl&gt;, HN008 &lt;dbl&gt;, HN009 &lt;dbl&gt;, HN010 &lt;dbl&gt;, HN011 &lt;dbl&gt;, ...</code></pre>
 <p>Chisquare test - I need the number of non-NBS genes core + variable, and the number of NBS genes core + variable</p>
 <pre class="r"><code>not_nbs_pav_table$Individual &lt;- NULL
 var &lt;- 0
@@ -2354,7 +2350,7 @@ nbs_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good evening!
-The current time is 21:50 PM on Monday March 29, 2021.
+The current time is 18:10 PM on Wednesday March 30, 2022.
 
 Dataset    :  .
 The first five rows are:
@@ -2379,7 +2375,7 @@ nbs_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good evening!
-The current time is 21:50 PM on Monday March 29, 2021.
+The current time is 18:10 PM on Wednesday March 30, 2022.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -2411,7 +2407,7 @@ rlk_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good evening!
-The current time is 21:51 PM on Monday March 29, 2021.
+The current time is 18:10 PM on Wednesday March 30, 2022.
 
 Dataset    :  .
 The first five rows are:
@@ -2436,7 +2432,7 @@ rlk_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good evening!
-The current time is 21:51 PM on Monday March 29, 2021.
+The current time is 18:10 PM on Wednesday March 30, 2022.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -2469,7 +2465,7 @@ rlp_multi.two.group.unpaired</code></pre>
 =============================================================
 
 Good evening!
-The current time is 21:51 PM on Monday March 29, 2021.
+The current time is 18:10 PM on Wednesday March 30, 2022.
 
 Dataset    :  .
 The first five rows are:
@@ -2494,7 +2490,7 @@ rlp_multi.two.group.unpaired.meandiff</code></pre>
 =============================================================
 
 Good evening!
-The current time is 21:51 PM on Monday March 29, 2021.
+The current time is 18:10 PM on Wednesday March 30, 2022.
 
 Dataset    :  .
 X Variable :  Group in violin table
@@ -2519,7 +2515,7 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
 <h1>Stats - classic t-test</h1>
 <div id="nbs-1" class="section level2">
 <h2>NBS</h2>
-<pre class="r"><code>nbs_joined_groups %&gt;% 
+<pre class="r"><code>nlr_plot &lt;- nbs_joined_groups %&gt;% 
   filter( !is.na(`PI-ID`) ) %&gt;%
     ggplot(aes(x=`Group in violin table`, y = presences,
                fill = `Group in violin table`)) + 
@@ -2533,8 +2529,10 @@ All confidence intervals are bias-corrected and accelerated.</code></pre>
               map_signif_level = T) +
   guides(fill=FALSE) +
   ylab(&#39;Number of NLR genes&#39;) +
-  xlab(&#39;Accession group&#39;)</code></pre>
+  xlab(&#39;Accession group&#39;)
+nlr_plot</code></pre>
 <p><img src="figure/total_numbers.Rmd/unnamed-chunk-65-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>save(nlr_plot, file = &#39;output/NLR_boxplot_saved.Rds&#39;)</code></pre>
 </div>
 <div id="rlp-1" class="section level2">
 <h2>RLP</h2>
@@ -2623,9 +2621,9 @@ rlp_nbs_joined_groups %&gt;%
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 3.6.3 (2020-02-29)
+<pre><code>R version 4.1.0 (2021-05-18)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 17134)
+Running under: Windows 10 x64 (build 19042)
 
 Matrix products: default
 
@@ -2638,34 +2636,34 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] ggforce_0.3.1        ggsignif_0.6.0       cowplot_1.0.0       
- [4] dabestr_0.3.0        magrittr_1.5         ggsci_2.9           
- [7] patchwork_1.0.0      forcats_0.5.0        stringr_1.4.0       
-[10] dplyr_1.0.0          purrr_0.3.4          readr_1.3.1         
-[13] tidyr_1.1.0          tibble_3.0.2         ggplot2_3.3.2       
-[16] tidyverse_1.3.0      workflowr_1.6.2.9000
+ [1] ggforce_0.3.3   ggsignif_0.6.3  cowplot_1.1.1   dabestr_0.3.0  
+ [5] magrittr_2.0.1  ggsci_2.9       patchwork_1.1.1 forcats_0.5.1  
+ [9] stringr_1.4.0   dplyr_1.0.7     purrr_0.3.4     readr_2.1.2    
+[13] tidyr_1.1.4     tibble_3.1.5    ggplot2_3.3.5   tidyverse_1.3.1
+[17] workflowr_1.6.2
 
 loaded via a namespace (and not attached):
- [1] nlme_3.1-148       fs_1.5.0.9000      lubridate_1.7.9    RColorBrewer_1.1-2
- [5] httr_1.4.2         rprojroot_1.3-2    tools_3.6.3        backports_1.1.10  
- [9] utf8_1.1.4         R6_2.4.1           vipor_0.4.5        DBI_1.1.0         
-[13] mgcv_1.8-31        colorspace_1.4-1   withr_2.2.0        tidyselect_1.1.0  
-[17] processx_3.4.4     compiler_3.6.3     git2r_0.27.1       cli_2.0.2         
-[21] rvest_0.3.5        xml2_1.3.2         labeling_0.3       scales_1.1.1      
-[25] callr_3.4.4        digest_0.6.25      rmarkdown_2.3      pkgconfig_2.0.3   
-[29] htmltools_0.5.0    dbplyr_1.4.4       highr_0.8          rlang_0.4.7       
-[33] readxl_1.3.1       rstudioapi_0.11    farver_2.0.3       generics_0.0.2    
-[37] jsonlite_1.7.1     Matrix_1.2-18      Rcpp_1.0.5         ggbeeswarm_0.6.0  
-[41] munsell_0.5.0      fansi_0.4.1        lifecycle_0.2.0    stringi_1.5.3     
-[45] whisker_0.4        yaml_2.2.1         MASS_7.3-51.6      plyr_1.8.6        
-[49] grid_3.6.3         blob_1.2.1         promises_1.1.1     crayon_1.3.4      
-[53] lattice_0.20-41    haven_2.3.1        splines_3.6.3      hms_0.5.3         
-[57] knitr_1.29         ps_1.3.4           pillar_1.4.4       boot_1.3-25       
-[61] reprex_0.3.0       glue_1.4.2         evaluate_0.14      getPass_0.2-2     
-[65] modelr_0.1.8       vctrs_0.3.1        tweenr_1.0.1       httpuv_1.5.4      
-[69] cellranger_1.1.0   gtable_0.3.0       polyclip_1.10-0    assertthat_0.2.1  
-[73] xfun_0.17          broom_0.5.6        later_1.1.0.1      beeswarm_0.2.3    
-[77] ellipsis_0.3.1    </code></pre>
+ [1] nlme_3.1-152       fs_1.5.0           lubridate_1.8.0    bit64_4.0.5       
+ [5] RColorBrewer_1.1-2 httr_1.4.2         rprojroot_2.0.2    tools_4.1.0       
+ [9] backports_1.2.1    bslib_0.3.1        utf8_1.2.2         R6_2.5.1          
+[13] vipor_0.4.5        mgcv_1.8-35        DBI_1.1.1          colorspace_2.0-2  
+[17] withr_2.5.0        tidyselect_1.1.1   bit_4.0.4          compiler_4.1.0    
+[21] git2r_0.28.0       cli_3.2.0          rvest_1.0.2        xml2_1.3.2        
+[25] labeling_0.4.2     sass_0.4.0         scales_1.1.1       digest_0.6.28     
+[29] rmarkdown_2.11     pkgconfig_2.0.3    htmltools_0.5.2    dbplyr_2.1.1      
+[33] fastmap_1.1.0      highr_0.9          rlang_0.4.12       readxl_1.3.1      
+[37] rstudioapi_0.13    jquerylib_0.1.4    farver_2.1.0       generics_0.1.1    
+[41] jsonlite_1.7.2     vroom_1.5.7        Matrix_1.3-3       ggbeeswarm_0.6.0  
+[45] Rcpp_1.0.7         munsell_0.5.0      fansi_0.5.0        lifecycle_1.0.1   
+[49] stringi_1.7.5      whisker_0.4        yaml_2.2.1         MASS_7.3-54       
+[53] plyr_1.8.6         grid_4.1.0         parallel_4.1.0     promises_1.2.0.1  
+[57] crayon_1.4.1       lattice_0.20-44    splines_4.1.0      haven_2.4.3       
+[61] hms_1.1.1          knitr_1.36         pillar_1.6.4       boot_1.3-28       
+[65] reprex_2.0.1       glue_1.6.2         evaluate_0.14      modelr_0.1.8      
+[69] vctrs_0.3.8        tzdb_0.1.2         tweenr_1.0.2       httpuv_1.6.3      
+[73] cellranger_1.1.0   gtable_0.3.0       polyclip_1.10-0    assertthat_0.2.1  
+[77] xfun_0.27          broom_0.7.9        later_1.3.0        beeswarm_0.4.0    
+[81] ellipsis_0.3.2    </code></pre>
 </div>
 </div>
 </div>
@@ -2684,6 +2682,8 @@ footer is added to webpages before the MathJax javascript. -->
 </script>
 
 
+
+
 </div>
 </div>
 
@@ -2693,7 +2693,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 // add bootstrap table styles to pandoc tables
 function bootstrapStylePandocTables() {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
 }
 $(document).ready(function () {
   bootstrapStylePandocTables();
@@ -2711,7 +2711,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
+    $(this).parent().toggleClass('nav-tabs-open');
   });
 });
 </script>
@@ -2720,6 +2720,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
