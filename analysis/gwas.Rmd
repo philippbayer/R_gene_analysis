@@ -12,6 +12,7 @@ Let's run a GWAS via GAPIT using the NLR genes as input, and the PCs calculated 
 ```{r setup, warning=FALSE, message=FALSE}
 library(GAPIT3)
 library(SNPRelate)
+library(ggtext)
 library(tidyverse)
 library(ggsignif)
 library(cowplot)
@@ -73,7 +74,7 @@ Alright, now we have SNP-based principal components. We'll use the first two as 
 
 I wrote a Python script which takes the NLR-only PAV table and turns that into HapMap format with fake SNPs, see `code/transformToGAPIT.py`.
 
-```{r}
+```{r eval=FALSE}
 myY <- read.table('data/yield.txt', head = TRUE)
 myGD <- read.table('data/NLR_PAV_GD.txt', head = TRUE)
 myGM <- read.table('data/NLR_PAV_GM.txt', head = TRUE)
@@ -81,7 +82,7 @@ myGM <- read.table('data/NLR_PAV_GM.txt', head = TRUE)
 
 GAPIT prints a LOT of stuff so I turn that off here, what's important are all the output files.
 
-```{r, evval=FALSE, message=FALSE, warning=FALSE, results=FALSE}
+```{r, eval=FALSE, message=FALSE, warning=FALSE, results=FALSE}
 myGAPIT <- GAPIT(
   Y=myY[,c(1,2)],
   CV = tab,
@@ -92,7 +93,7 @@ myGAPIT <- GAPIT(
 )
 ```
 
-```{r}
+```{r eval=FALSE}
 if (! dir.exists('output/GAPIT')){
   dir.create('output/GAPIT')
 }
@@ -100,7 +101,7 @@ if (! dir.exists('output/GAPIT')){
 
 R doesn't have an in-built function to move files, so I copy and delete the output files here. There's a package which adds file-moving but I'm not adding a whole dependency just for one convenience function, I'm not a Node.js person ;) 
 
-```{r}
+```{r eval=FALSE}
 for(file in list.files('.', pattern='GAPIT*')) {
   file.copy(file, 'output/GAPIT')
   file.remove(file)
@@ -351,5 +352,76 @@ yields %>%
   group_by(Gene, Group) %>% 
   summarise('Yield difference when gene present' = diff(`Mean yield`)) %>% 
   knitr::kable(digits=2)
+```
+
+
+# Manhattan plots
+
+A reviewer asked for Manhattan plots. 
+
+```{r}
+# slightly modified from https://danielroelfs.com/blog/how-i-create-manhattan-plots-using-ggplot/
+# Thanks :) 
+myplot <- function(f) {
+  print(f)
+  mlm <- read_csv(paste('./output/GAPIT/', f, sep=''))
+  mlm <- mlm %>% filter(SNP != 'GlymaLee.02G228600.1.p')
+  data_cum <- mlm %>% 
+    group_by(Chromosome) %>% 
+    summarise(max_bp = max(Position)) %>% 
+    mutate(bp_add = lag(cumsum(max_bp), default = 0)) %>% 
+    select(Chromosome, bp_add)
+  
+  mlm <- mlm %>% 
+    inner_join(data_cum, by = "Chromosome") %>% 
+    mutate(bp_cum = Position + bp_add)
+  
+  axis_set <- mlm %>% 
+    group_by(Chromosome) %>% 
+    summarize(center = mean(bp_cum))
+  
+  ylim <- mlm %>% 
+     filter(`FDR_Adjusted_P-values` == min(`FDR_Adjusted_P-values`)) %>% 
+     mutate(ylim = abs(floor(log10(`FDR_Adjusted_P-values`))) + 1) %>% 
+     pull(ylim)
+  
+  mlm_plot <- ggplot(mlm, aes(x = bp_cum, y = -log10(`FDR_Adjusted_P-values`), 
+                color = as_factor(Chromosome))) +
+    geom_hline(yintercept = -log10(0.05), color = "grey40", linetype = "dashed") + 
+    geom_point(alpha = 0.75) +
+    scale_x_continuous(label = axis_set$Chromosome, breaks = axis_set$center) +
+    scale_y_continuous(expand = c(0,0), limits = c(0, ylim)) +
+    scale_color_manual(values = rep(c("#276FBF", "#183059"), unique(length(axis_set$Chromosome)))) +
+    labs(x = NULL, 
+         y = "-log<sub>10</sub>(p)") + 
+    theme_minimal() +
+    theme( 
+      legend.position = "none",
+      panel.border = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.title.y = element_markdown(),
+      #axis.text.x = element_text(angle = 60, size = 8, vjust = 0.5)
+    )
+mlm_plot
+}
+```
+
+```{r}
+files <- list.files(path='./output/GAPIT/', '*GWAS.Results.csv')
+names(files) <- str_split(files, pattern = '\\.', simplify=T)[,2]
+# remove MLM as there are no hits
+files <- files[c('GLM','MLMM','FarmCPU')]
+plot_list <- purrr::map(files, myplot)
+```
+
+```{r}
+result <- plot_list$GLM /  plot_list$FarmCPU + plot_annotation(tag_levels = 'A')
+
+result
+```
+
+```{r}
+cowplot::save_plot(filename = 'output/GWAS_Manhattan.png',result, base_height = 5, base_width=8)
 ```
 
