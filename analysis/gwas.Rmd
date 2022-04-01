@@ -18,11 +18,17 @@ library(ggsignif)
 library(cowplot)
 library(ggsci)
 library(patchwork)
+library(broom)
+library(ggpubr)
+library(kableExtra)
 ```
+
+# Running GAPIT
 
 First, we have to make the principal components - making them based on NLR genes alone is probably garbage. Let's make them based on all publicly available SNPs from [here](https://research-repository.uwa.edu.au/en/datasets/soybean-pangenome-snps-assembly-annotation-pav).
 
 I ran the following on a bigger server which is why it's marked as not to run when I rerun workflowr.
+
 
 ```{r eval=FALSE}
 if (!file.exists('data/SNPs_lee.id.biallic_maf_0.05_geno_0.1.vcf.gz')) {
@@ -99,6 +105,7 @@ if (! dir.exists('output/GAPIT')){
 }
 ```
 
+# Analysing GAPIT output
 R doesn't have an in-built function to move files, so I copy and delete the output files here. There's a package which adds file-moving but I'm not adding a whole dependency just for one convenience function, I'm not a Node.js person ;) 
 
 ```{r eval=FALSE}
@@ -131,7 +138,7 @@ for(i in seq_along(results_files)) {
     results_df <- rbind(results_df, filt_df)
   }
 }
-results_df %>% knitr::kable()
+results_df %>% kbl() %>%  kable_styling()
 ```
 
 Ah beautiful, one NLR gene found by all methods, and a bunch of extra pangenome genes found by FarmCPU/GLM. However the one gene found by all methods has a horrible MAF so we'll probably end up ignoring that.
@@ -184,6 +191,8 @@ candidates <- candidates %>%
   filter(SNP != 'GlymaLee.02G228600.1.p')
 candidates %>% knitr::kable()
 ```
+
+# Visualising per-gene differences
 
 ```{r fig.height=8, fig.width=8}
 plots <- list()
@@ -354,6 +363,116 @@ yields %>%
   knitr::kable(digits=2)
 ```
 
+# Better kinship modeling
+
+A reviewer pointed out that this post-hoc analysis does not account for kinship, so let's make it a bit nicer by using PC1 and PC2 as covariates.
+
+```{r}
+big_t <- list()
+for(i in 1:nrow(candidates)) {
+  this_cand = candidates[i,]
+  p <- pav_table %>% 
+    filter(Individual == this_cand$SNP) %>% 
+    pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
+    inner_join(yield) %>% 
+    inner_join(groups, by = c('Line'='Data-storage-ID')) %>% 
+    mutate(Presence = case_when(
+      Presence == 0.0 ~ 'Lost',
+      Presence == 1.0 ~ 'Present'
+    ))
+  # now get EV1/EV2 (PC1,PC2)
+  p <- p %>% left_join(tab, by=c('Line'='sample.id'))
+  big_t[[this_cand$SNP]] <- tidy(lm(Yield ~ Presence + Group + EV1 + EV2, data=p)) %>% 
+    filter(term == 'PresencePresent')
+}
+big_t <- bind_rows(big_t, .id='gene')
+big_t %>% kbl() %>%  kable_styling()
+```
+
+All p < 0.05, just like the GWAS. Estimates are all positive except for one gene.
+Let's also correct for multiple testing
+
+```{r}
+big_t$FDR <- p.adjust(big_t$p.value)
+big_t %>% kbl() %>%  kable_styling()
+```
+Same as before. Now let's run this for every single group.
+```{r}
+bigger_t <- list()
+for(i in 1:nrow(candidates)) {
+  this_cand = candidates[i,]
+  p <- pav_table %>% 
+    filter(Individual == this_cand$SNP) %>% 
+    pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
+    inner_join(yield) %>% 
+    inner_join(groups, by = c('Line'='Data-storage-ID')) %>% 
+    mutate(Presence = case_when(
+      Presence == 0.0 ~ 'Lost',
+      Presence == 1.0 ~ 'Present'
+    ))
+  p <- p %>% left_join(tab, by=c('Line'='sample.id'))
+  # now iterate over the groups
+  for( x in unique(p$Group)) {
+    subp <- p %>% filter(Group == x)
+    
+    print(i)
+    print(x)
+    thisname <- paste(this_cand$SNP, x, sep='')
+    bigger_t[[thisname]] <- tidy(lm(Yield ~ Presence + EV1 + EV2, data=subp)) %>% 
+      filter(term == 'PresencePresent')
+  }  
+}
+bigger_t <- bind_rows(bigger_t, .id='gene')
+bigger_t$FDR <- p.adjust(bigger_t$p.value)
+bigger_t %>% kbl() %>%  kable_styling()
+```
+
+```{r}
+bigger_t %>% filter(FDR < 0.05) %>% kbl() %>%  kable_styling()
+```
+
+OK let's remake the above plots only with these two p-values
+
+```{r}
+my_test <- function(x = NULL, y = NULL) {
+  print(y)
+  results <- tidy(lm(Yield ~ Presence + Group + EV1 + EV2))
+  return(results)
+}
+plots <- list()
+for(i in 1:nrow(candidates)) {
+  this_cand = candidates[i,]
+  p <- pav_table %>% 
+    filter(Individual == this_cand$SNP) %>% 
+    pivot_longer(!Individual, names_to = 'Line', values_to = 'Presence') %>% 
+    inner_join(yield) %>% 
+    inner_join(groups, by = c('Line'='Data-storage-ID')) %>% 
+    mutate(Presence = case_when(
+      Presence == 0.0 ~ 'Lost',
+      Presence == 1.0 ~ 'Present'
+    )) %>% 
+    left_join(tab, by=c('Line'='sample.id')) %>% 
+    ggplot(aes(x=Presence, 
+               y = Yield, 
+               group=Presence, 
+               color=Group)) + 
+    geom_boxplot() + 
+    geom_jitter(alpha=0.9, size=0.4) + 
+    facet_wrap(~Group) +
+    geom_signif(comparisons = list(c('Lost', 'Present')), 
+              test = 'my_test',
+              map_signif_level = T) +
+    theme_minimal_hgrid() +
+    ylab(expression(paste('Yield [Mg ', ha ^ -1, ']'))) +
+    scale_color_manual(values = col_list)
+
+  plots[[i]] <- p
+}
+# 
+# wrap_plots(plots) + 
+#   plot_annotation(tag_levels = 'A') +
+#   plot_layout(guides='collect') & theme(legend.position = 'none')
+```
 
 # Manhattan plots
 
@@ -412,7 +531,7 @@ files <- list.files(path='./output/GAPIT/', '*GWAS.Results.csv')
 names(files) <- str_split(files, pattern = '\\.', simplify=T)[,2]
 # remove MLM as there are no hits
 files <- files[c('GLM','MLMM','FarmCPU')]
-plot_list <- purrr::map(files, myplot)
+plot_list <- lapply(files, myplot)
 ```
 
 ```{r}
